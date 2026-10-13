@@ -207,7 +207,7 @@ def check_hook_coverage(layer_types, stats: QuantStats) -> HookCoverage:
                 f"-> {'ok' if st_ok else 'MISMATCH'}")
     passed = kv_ok and st_ok
     if not passed and stats.state_calls == 0 and expected_state:
-        msgs.append("WARNING: state hook never fired. kernels 허브가 GatedDeltaNet forward를 교체해 "
-                    "update_recurrent_state를 우회했을 가능성. USE_HUB_KERNELS=NO (import 전) 또는 "
-                    "from_pretrained(use_kernels=False)로 재시도.")
+        msgs.append("WARNING: state 훅이 한 번도 호출되지 않았습니다. kernels 허브가 GatedDeltaNet forward를 "
+                    "교체해 update_recurrent_state를 건너뛰었을 수 있습니다. transformers를 import하기 전에 "
+                    "USE_HUB_KERNELS=NO를 설정하거나 from_pretrained(use_kernels=False)로 다시 실행해 보십시오.")
     return HookCoverage(passed, expected_kv, expected_state, seen_kv, seen_state, msgs)
