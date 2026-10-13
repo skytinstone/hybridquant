@@ -237,3 +237,35 @@ def test_check_hook_coverage_on_tiny_model(model, input_ids):
     wrong = QuantStats(kv_calls=1, state_calls=1, layers_seen_kv={0}, layers_seen_state={0, 1, 2})
     cov = check_hook_coverage(LAYER_TYPES, wrong)
     assert not cov.passed and "MISMATCH" in cov.report()
+
+
+# ---------------------------------------------------------------- dtype resolution (T4 vs Ampere+ vs CPU)
+
+
+def test_resolve_dtype(monkeypatch):
+    from hybridquant import resolve_dtype
+
+    assert resolve_dtype(torch.float16) is torch.float16
+    assert resolve_dtype("bf16") is torch.bfloat16
+    assert resolve_dtype("FP16") is torch.float16
+    assert resolve_dtype("fp32") is torch.float32
+    with pytest.raises(ValueError):
+        resolve_dtype("int8")
+
+    # env override is honoured by "auto" (this is what the Colab GPU-selection cell sets)
+    monkeypatch.setenv("HQ_DTYPE", "fp16")
+    assert resolve_dtype("auto") is torch.float16
+    monkeypatch.delenv("HQ_DTYPE")
+
+    # pure auto: no CUDA here, so the answer depends only on MPS availability
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    monkeypatch.setattr(torch.backends.mps, "is_available", lambda: False)
+    assert resolve_dtype("auto") is torch.float32
+    monkeypatch.setattr(torch.backends.mps, "is_available", lambda: True)
+    assert resolve_dtype("auto") is torch.bfloat16
+    # simulated T4 (capability 7.5) vs A100 (8.0)
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
+    monkeypatch.setattr(torch.cuda, "get_device_capability", lambda idx=0: (7, 5))
+    assert resolve_dtype("auto") is torch.float16
+    monkeypatch.setattr(torch.cuda, "get_device_capability", lambda idx=0: (8, 0))
+    assert resolve_dtype("auto") is torch.bfloat16

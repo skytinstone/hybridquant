@@ -61,7 +61,7 @@ feeds the continuation one token at a time.
 
 ## Colab workflow
 
-1. Open the badge above (or `File > Open notebook > GitHub` in Colab and paste the repo URL).
+1. Open the badge above (or `File > Open notebook > GitHub` in Colab and paste the repo URL). Works on T4, L4, A100 and H100: the **GPU selection cell** detects the card and sets dtype (fp16 on T4, bf16 otherwise) and whether to install the fast kernels (skipped on T4, pure-torch fallback instead).
 2. First cell clones the repo. For a **private** repo, store a GitHub token in Colab
    `Secrets` (left sidebar, key icon) under the name `GH_TOKEN`; the notebook reads it
    with `google.colab.userdata.get("GH_TOKEN")`.

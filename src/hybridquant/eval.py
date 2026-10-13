@@ -16,6 +16,7 @@ Two complementary metrics:
 from __future__ import annotations
 
 import math
+import os
 import re
 from dataclasses import dataclass, asdict
 
@@ -23,11 +24,48 @@ import torch
 
 from .hooks import HybridQuantConfig, QuantStats, quantized_cache, make_cache
 
-__all__ = ["decode_nll", "DecodeResult", "generate_and_score", "GenResult", "load_model"]
+__all__ = ["decode_nll", "DecodeResult", "generate_and_score", "GenResult", "load_model", "resolve_dtype", "DTYPE_ALIASES"]
 
 
-def load_model(name: str, dtype=torch.bfloat16, device_map="auto", text_only: bool = True, **from_pretrained_kwargs):
+DTYPE_ALIASES = {
+    "bf16": torch.bfloat16, "bfloat16": torch.bfloat16,
+    "fp16": torch.float16, "float16": torch.float16, "half": torch.float16,
+    "fp32": torch.float32, "float32": torch.float32,
+}
+
+
+def resolve_dtype(dtype="auto") -> torch.dtype:
+    """Pick a compute dtype for the current device.
+
+    * a ``torch.dtype`` is returned as is;
+    * a name in ``DTYPE_ALIASES`` ("bf16", "fp16", "fp32", ...) is looked up;
+    * ``"auto"`` first honours the ``HQ_DTYPE`` environment variable (set by the
+      Colab GPU-selection cell), otherwise: CUDA with compute capability >= 8.0
+      (A100/H100/L4) -> bf16; older CUDA (T4, V100) -> fp16 because they have no
+      bf16 tensor cores; Apple MPS -> bf16; CPU -> fp32.
+    """
+    if isinstance(dtype, torch.dtype):
+        return dtype
+    name = (dtype or "auto").strip().lower()
+    if name == "auto":
+        name = os.environ.get("HQ_DTYPE", "auto").strip().lower()
+    if name == "auto":
+        if torch.cuda.is_available():
+            major, _ = torch.cuda.get_device_capability(0)
+            return torch.bfloat16 if major >= 8 else torch.float16
+        if getattr(torch.backends, "mps", None) is not None and torch.backends.mps.is_available():
+            return torch.bfloat16
+        return torch.float32
+    if name not in DTYPE_ALIASES:
+        raise ValueError(f"unknown dtype {dtype!r}; use one of {sorted(DTYPE_ALIASES)} or 'auto'")
+    return DTYPE_ALIASES[name]
+
+
+def load_model(name: str, dtype="auto", device_map="auto", text_only: bool = True, **from_pretrained_kwargs):
     """Load a Qwen3.5 checkpoint. Returns (model, tokenizer).
+
+    ``dtype`` is resolved with :func:`resolve_dtype` ("auto" picks bf16 on
+    Ampere+ GPUs and MPS, fp16 on T4-class GPUs, fp32 on CPU).
 
     ``text_only`` loads the language model without the vision tower, which
     saves VRAM on Colab. Falls back to the multimodal class if unavailable.
@@ -35,6 +73,13 @@ def load_model(name: str, dtype=torch.bfloat16, device_map="auto", text_only: bo
     """
     from transformers import AutoTokenizer, AutoConfig
 
+    dtype = resolve_dtype(dtype)
+    # Apple MPS: from_pretrained(device_map="auto") crashes (SIGSEGV/SIGABRT) when the dtype is not bf16
+    # on torch 2.14 / transformers 5.19. Load on CPU and move afterwards; CUDA paths are untouched.
+    move_to = None
+    if device_map == "auto" and not torch.cuda.is_available() and torch.backends.mps.is_available() \
+            and dtype is not torch.bfloat16:
+        device_map, move_to = "cpu", "mps"
     tok = AutoTokenizer.from_pretrained(name)
     model = None
     if text_only:
@@ -48,6 +93,8 @@ def load_model(name: str, dtype=torch.bfloat16, device_map="auto", text_only: bo
         from transformers import AutoModelForMultimodalLM
 
         model = AutoModelForMultimodalLM.from_pretrained(name, dtype=dtype, device_map=device_map, **from_pretrained_kwargs)
+    if move_to is not None:
+        model = model.to(move_to)
     model.eval()
     return model, tok
 

@@ -52,10 +52,13 @@ def main():
     p.add_argument("--step", type=int, default=1)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--out", default="results/grid.jsonl")
+    p.add_argument("--dtype", default="auto", help="bf16 | fp16 | fp32 | auto (see hybridquant.resolve_dtype)")
     args = p.parse_args()
 
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
-    model, tok = load_model(args.model)
+    model, tok = load_model(args.model, dtype=args.dtype)
+    dtype_name = str(next(model.parameters()).dtype).replace("torch.", "")
+    print(f"model on {next(model.parameters()).device} dtype={dtype_name}")
     docs = load_wikitext_docs(tok, args.n_docs, args.prefill + args.decode, args.seed)
     print(f"loaded {len(docs)} docs of {args.prefill + args.decode} tokens")
 
@@ -74,7 +77,7 @@ def main():
                 mean = sum(r.mean_nll for r in per_doc) / len(per_doc)
                 var = sum((r.mean_nll - mean) ** 2 for r in per_doc) / max(1, len(per_doc) - 1)
                 row = {
-                    "model": args.model, "label": cfg.label(), "kv_bits": kvb, "state_bits": sb,
+                    "model": args.model, "dtype": dtype_name, "label": cfg.label(), "kv_bits": kvb, "state_bits": sb,
                     "kv_group": args.kv_group, "state_group": args.state_group,
                     "state_sym": args.state_sym, "state_sr": args.state_sr,
                     "prefill": args.prefill, "decode": args.decode, "n_docs": len(docs), "seed": args.seed,

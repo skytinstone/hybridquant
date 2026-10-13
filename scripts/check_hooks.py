@@ -32,6 +32,9 @@ def parse_args(argv=None):
     p.add_argument("--state-bits", type=int, default=4)
     p.add_argument("--prefill", type=int, default=128)
     p.add_argument("--decode", type=int, default=32)
+    p.add_argument("--dtype", default="auto",
+                   help="bf16 | fp16 | fp32 | auto (auto: bf16 on Ampere+/MPS, fp16 on T4-class GPUs, fp32 on CPU; "
+                        "HQ_DTYPE env overrides)")
     p.add_argument("--no-hub-kernels", action="store_true",
                    help="set USE_HUB_KERNELS=NO before importing transformers and pass use_kernels=False")
     p.add_argument("--text", default="The theory of general relativity describes gravity as a geometric "
@@ -76,8 +79,10 @@ def main(argv=None) -> int:
         print(f"could not inspect hub_kernels: {e}")
 
     load_kwargs = {"use_kernels": False} if args.no_hub_kernels else {}
-    model, tok = load_model(args.model, **load_kwargs)
-    print(f"model: {args.model} on {next(model.parameters()).device} "
+    if torch.cuda.is_available():
+        print(f"cuda device: {torch.cuda.get_device_name(0)} capability={torch.cuda.get_device_capability(0)}")
+    model, tok = load_model(args.model, dtype=args.dtype, **load_kwargs)
+    print(f"model: {args.model} on {next(model.parameters()).device} dtype={next(model.parameters()).dtype} "
           f"use_kernels={getattr(model, 'use_kernels', None)}")
 
     layer_types = get_layer_types(model.config)

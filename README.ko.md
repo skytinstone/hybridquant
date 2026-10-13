@@ -71,7 +71,7 @@ python scripts/check_hooks.py --model Qwen/Qwen3.5-0.8B --kv-bits 2 --state-bits
 
 ## Colab 워크플로
 
-1. 위 배지를 열거나, Colab에서 `File > Open notebook > GitHub`에 레포 URL을 붙여넣는다.
+1. 위 배지를 열거나, Colab에서 `File > Open notebook > GitHub`에 레포 URL을 붙여넣는다. T4, L4, A100, H100 모두 지원한다. **GPU 선택 셀**이 연결된 카드를 감지해 dtype(T4는 fp16, 나머지는 bf16)과 고속 커널 설치 여부(T4는 건너뛰고 순수 torch 폴백)를 정한다.
 2. 첫 셀이 레포를 clone한다. **비공개** 레포라면 Colab `Secrets`(왼쪽 사이드바 열쇠 아이콘)에 `GH_TOKEN` 이름으로 GitHub 토큰을 저장한다. 노트북은 `google.colab.userdata.get("GH_TOKEN")`으로 읽는다. HF 토큰도 같은 방식으로 `HF_TOKEN`에 저장하면 된다(없으면 경고만 하고 넘어간다).
 3. 결과는 `results/*.jsonl`에 기록된다. 마지막 셀로 레포에 커밋하거나(`git add results && git commit && git push`) Drive로 복사한다.
 4. Colab에서 노트북을 수정해 저장하려면 `File > Save a copy in GitHub`.
