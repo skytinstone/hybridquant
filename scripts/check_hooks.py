@@ -87,6 +87,13 @@ def main(argv=None) -> int:
 
     layer_types = get_layer_types(model.config)
     print(f"layer_types ({len(layer_types)}): {layer_types}")
+    probe = make_cache(model)
+    classes = sorted({type(l).__name__ for l in probe.layers})
+    print(f"cache layer classes: {classes}")
+    hooked = {"DynamicLayer", "LinearAttentionLayer", "LinearAttentionAndFullAttentionLayer",
+              "DynamicSlidingWindowLayer", "LinearAttentionAndSlidingWindowAttentionLayer"}
+    if not set(classes) <= hooked:
+        print(f"WARNING: cache classes not covered by the hooks: {sorted(set(classes) - hooked)}")
 
     rep = replaced_forwards(model)
     if rep:

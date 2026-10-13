@@ -18,7 +18,7 @@ from .hooks import HybridQuantConfig
 from .quant import QuantSpec
 
 __all__ = ["GRID_DEFAULTS", "ALLOWED_DATASETS", "CELL_KEYS", "load_config", "resolve_settings", "iter_runs",
-           "config_from_run", "run_key"]
+           "config_from_run", "run_key", "load_task_config"]
 
 GRID_DEFAULTS: dict = {
     "model": "Qwen/Qwen3.5-0.8B",
@@ -140,3 +140,25 @@ def config_from_run(run: dict) -> HybridQuantConfig:
 def run_key(model: str, label: str, seed: int) -> tuple:
     """Identity of one jsonl row, used to resume."""
     return (model, label, int(seed))
+
+
+def load_task_config(path: str | Path | None, task_defaults: dict, overrides: dict | None = None) -> tuple[dict, dict]:
+    """Settings for task scripts (GSM8K, NIAH): grid keys go through resolve_settings, the rest are task keys.
+
+    Returns (grid_settings, task_settings). Unknown keys are rejected. ``overrides`` (explicit CLI
+    values) win over the file for both kinds of keys.
+    """
+    import yaml
+
+    data = {}
+    if path is not None:
+        with open(path, encoding="utf-8") as f:
+            data = yaml.safe_load(f) or {}
+    data.update({k: v for k, v in (overrides or {}).items() if v is not None})
+    unknown = set(data) - set(GRID_DEFAULTS) - set(task_defaults)
+    if unknown:
+        raise ValueError(f"{path}: unknown keys {sorted(unknown)}")
+    grid_part = {k: v for k, v in data.items() if k in GRID_DEFAULTS and k != "dataset"}
+    task = dict(task_defaults)
+    task.update({k: v for k, v in data.items() if k in task_defaults})
+    return resolve_settings(grid_part), task

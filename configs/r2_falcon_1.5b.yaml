@@ -1,0 +1,23 @@
+# Round 2 second architecture: Falcon-H1 (parallel attention + Mamba-2 in every layer).
+# The runner first checks with scripts/check_hooks.py that the cache layers are hooked; otherwise this step is skipped.
+# Mamba-2 state is [B, n_heads, head_dim, d_state]; fake_quant groups along the last dim (d_state).
+model: tiiuae/Falcon-H1-1.5B-Instruct
+dtype: auto
+cells:
+  - {kv_bits: 16, state_bits: 16}
+  - {kv_bits: 4,  state_bits: 16}
+  - {kv_bits: 16, state_bits: 8}
+  - {kv_bits: 16, state_bits: 6}
+  - {kv_bits: 16, state_bits: 4}
+  - {kv_bits: 4,  state_bits: 6}
+  - {kv_bits: 2,  state_bits: 8}
+  - {kv_bits: 4,  state_bits: 4}
+state_error_feedback: [false, true]
+seeds: [0, 1, 2]
+n_docs: 20
+prefill: 256
+decode: 256
+step: 1
+batch_size: 8
+dataset: wikitext2
+out: results/r2_falcon_1.5b.jsonl

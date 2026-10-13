@@ -12,15 +12,24 @@ __all__ = ["cache_sizes", "total_bits", "total_bytes"]
 
 def cache_sizes(text_config) -> dict:
     lt = list(text_config.layer_types)
-    sizes = {
-        "L_a": lt.count("full_attention"),
-        "L_g": lt.count("linear_attention"),
-        "H_kv": int(text_config.num_key_value_heads),
-        "d": int(text_config.head_dim),
-        "H": int(text_config.linear_num_value_heads),
-        "d_k": int(text_config.linear_key_head_dim),
-        "d_v": int(text_config.linear_value_head_dim),
-    }
+    hybrid = lt.count("hybrid") + lt.count("hybrid_sliding")
+    if getattr(text_config, "model_type", "") == "falcon_h1":
+        # Mamba-2 state [B, mamba_n_heads, mamba_d_head, mamba_d_state] in every (hybrid) layer
+        sizes = {
+            "L_a": hybrid, "L_g": hybrid,
+            "H_kv": int(text_config.num_key_value_heads), "d": int(text_config.head_dim),
+            "H": int(text_config.mamba_n_heads), "d_k": int(text_config.mamba_d_head), "d_v": int(text_config.mamba_d_state),
+        }
+    else:
+        sizes = {
+            "L_a": lt.count("full_attention") + lt.count("sliding_attention") + hybrid,
+            "L_g": lt.count("linear_attention") + hybrid,
+            "H_kv": int(text_config.num_key_value_heads),
+            "d": int(text_config.head_dim),
+            "H": int(text_config.linear_num_value_heads),
+            "d_k": int(text_config.linear_key_head_dim),
+            "d_v": int(text_config.linear_value_head_dim),
+        }
     sizes["kv_per_token"] = 2 * sizes["L_a"] * sizes["H_kv"] * sizes["d"]          # K and V elements per token
     sizes["state_elems"] = sizes["L_g"] * sizes["H"] * sizes["d_k"] * sizes["d_v"]  # fixed
     return sizes

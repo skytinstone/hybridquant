@@ -1,0 +1,21 @@
+# Round 2 second domain: allenai/c4 en validation (first shard, first 5000 docs joined), 0.8B core cells x EF off/on.
+model: Qwen/Qwen3.5-0.8B
+dtype: auto
+cells:
+- {kv_bits: 16, state_bits: 16}
+- {kv_bits: 4, state_bits: 16}
+- {kv_bits: 16, state_bits: 8}
+- {kv_bits: 16, state_bits: 6}
+- {kv_bits: 16, state_bits: 4}
+- {kv_bits: 4, state_bits: 6}
+- {kv_bits: 2, state_bits: 8}
+- {kv_bits: 4, state_bits: 4}
+state_error_feedback: [false, true]
+seeds: [0, 1, 2]
+n_docs: 20
+prefill: 256
+decode: 256
+step: 1
+batch_size: 8
+dataset: c4
+out: results/r2_c4_0.8b.jsonl

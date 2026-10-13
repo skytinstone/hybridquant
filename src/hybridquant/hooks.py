@@ -238,8 +238,10 @@ def check_hook_coverage(layer_types, stats: QuantStats) -> HookCoverage:
     skips ``cache.update_recurrent_state``; the message says so.
     """
     layer_types = list(layer_types)
-    expected_kv = {i for i, t in enumerate(layer_types) if t == "full_attention"}
-    expected_state = {i for i, t in enumerate(layer_types) if t == "linear_attention"}
+    # Qwen3.5: full_attention / linear_attention. Falcon-H1: every layer is "hybrid" (attention + Mamba-2),
+    # cached by LinearAttentionAndFullAttentionLayer, so it counts for both sides.
+    expected_kv = {i for i, t in enumerate(layer_types) if t in ("full_attention", "sliding_attention", "hybrid", "hybrid_sliding")}
+    expected_state = {i for i, t in enumerate(layer_types) if t in ("linear_attention", "hybrid", "hybrid_sliding")}
     seen_kv = set(stats.layers_seen_kv)
     seen_state = set(stats.layers_seen_state)
     msgs = []

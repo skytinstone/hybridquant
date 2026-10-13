@@ -1,0 +1,29 @@
+# Round 2 GSM8K (reduced, used by run_all): 7 cells EF off + 3 state-6/4 cells EF on, seed 0, 200 problems.
+# Sampling follows the Qwen3.5 model card, thinking mode for text tasks: temperature 1.0, top_p 0.95, top_k 20, min_p 0.
+# presence_penalty 1.5 from the card is not available in transformers.generate and is omitted.
+model: Qwen/Qwen3.5-4B
+dtype: auto
+dataset: gsm8k
+n_problems: 200
+subset_seed: 0
+subset_file: results/gsm8k_subset200.json
+thinking: true
+max_new_tokens: 4096
+temperature: 1.0
+top_p: 0.95
+top_k: 20
+min_p: 0.0
+batch_size: 8
+cells:
+- {kv_bits: 16, state_bits: 16, error_feedback: false}
+- {kv_bits: 4, state_bits: 16, error_feedback: false}
+- {kv_bits: 16, state_bits: 8, error_feedback: false}
+- {kv_bits: 16, state_bits: 6, error_feedback: false}
+- {kv_bits: 16, state_bits: 4, error_feedback: false}
+- {kv_bits: 4, state_bits: 6, error_feedback: false}
+- {kv_bits: 2, state_bits: 8, error_feedback: false}
+- {kv_bits: 16, state_bits: 6, error_feedback: true}
+- {kv_bits: 16, state_bits: 4, error_feedback: true}
+- {kv_bits: 4, state_bits: 6, error_feedback: true}
+seeds: [0]
+out: results/r2_gsm8k_4b.jsonl

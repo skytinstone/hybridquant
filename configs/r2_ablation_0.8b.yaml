@@ -1,0 +1,45 @@
+# Round 2 state-format ablation, 0.8B: (KV4,S6) and (KV4,S4) x state_group {32,64,128,-1} x symmetric x stochastic. EF off.
+model: Qwen/Qwen3.5-0.8B
+dtype: auto
+cells:
+- {kv_bits: 4, state_bits: 6, state_group: 32, state_symmetric: false, state_stochastic: false}
+- {kv_bits: 4, state_bits: 6, state_group: 32, state_symmetric: false, state_stochastic: true}
+- {kv_bits: 4, state_bits: 6, state_group: 32, state_symmetric: true, state_stochastic: false}
+- {kv_bits: 4, state_bits: 6, state_group: 32, state_symmetric: true, state_stochastic: true}
+- {kv_bits: 4, state_bits: 6, state_group: 64, state_symmetric: false, state_stochastic: false}
+- {kv_bits: 4, state_bits: 6, state_group: 64, state_symmetric: false, state_stochastic: true}
+- {kv_bits: 4, state_bits: 6, state_group: 64, state_symmetric: true, state_stochastic: false}
+- {kv_bits: 4, state_bits: 6, state_group: 64, state_symmetric: true, state_stochastic: true}
+- {kv_bits: 4, state_bits: 6, state_group: 128, state_symmetric: false, state_stochastic: false}
+- {kv_bits: 4, state_bits: 6, state_group: 128, state_symmetric: false, state_stochastic: true}
+- {kv_bits: 4, state_bits: 6, state_group: 128, state_symmetric: true, state_stochastic: false}
+- {kv_bits: 4, state_bits: 6, state_group: 128, state_symmetric: true, state_stochastic: true}
+- {kv_bits: 4, state_bits: 6, state_group: -1, state_symmetric: false, state_stochastic: false}
+- {kv_bits: 4, state_bits: 6, state_group: -1, state_symmetric: false, state_stochastic: true}
+- {kv_bits: 4, state_bits: 6, state_group: -1, state_symmetric: true, state_stochastic: false}
+- {kv_bits: 4, state_bits: 6, state_group: -1, state_symmetric: true, state_stochastic: true}
+- {kv_bits: 4, state_bits: 4, state_group: 32, state_symmetric: false, state_stochastic: false}
+- {kv_bits: 4, state_bits: 4, state_group: 32, state_symmetric: false, state_stochastic: true}
+- {kv_bits: 4, state_bits: 4, state_group: 32, state_symmetric: true, state_stochastic: false}
+- {kv_bits: 4, state_bits: 4, state_group: 32, state_symmetric: true, state_stochastic: true}
+- {kv_bits: 4, state_bits: 4, state_group: 64, state_symmetric: false, state_stochastic: false}
+- {kv_bits: 4, state_bits: 4, state_group: 64, state_symmetric: false, state_stochastic: true}
+- {kv_bits: 4, state_bits: 4, state_group: 64, state_symmetric: true, state_stochastic: false}
+- {kv_bits: 4, state_bits: 4, state_group: 64, state_symmetric: true, state_stochastic: true}
+- {kv_bits: 4, state_bits: 4, state_group: 128, state_symmetric: false, state_stochastic: false}
+- {kv_bits: 4, state_bits: 4, state_group: 128, state_symmetric: false, state_stochastic: true}
+- {kv_bits: 4, state_bits: 4, state_group: 128, state_symmetric: true, state_stochastic: false}
+- {kv_bits: 4, state_bits: 4, state_group: 128, state_symmetric: true, state_stochastic: true}
+- {kv_bits: 4, state_bits: 4, state_group: -1, state_symmetric: false, state_stochastic: false}
+- {kv_bits: 4, state_bits: 4, state_group: -1, state_symmetric: false, state_stochastic: true}
+- {kv_bits: 4, state_bits: 4, state_group: -1, state_symmetric: true, state_stochastic: false}
+- {kv_bits: 4, state_bits: 4, state_group: -1, state_symmetric: true, state_stochastic: true}
+state_error_feedback: [false]
+seeds: [0, 1, 2]
+n_docs: 20
+prefill: 256
+decode: 256
+step: 1
+batch_size: 8
+dataset: wikitext2
+out: results/r2_ablation_0.8b.jsonl

@@ -24,7 +24,8 @@ import torch
 
 from .hooks import HybridQuantConfig, QuantStats, quantized_cache, make_cache
 
-__all__ = ["decode_nll", "decode_nll_batch", "DecodeResult", "generate_and_score", "GenResult", "load_model", "resolve_dtype", "DTYPE_ALIASES"]
+__all__ = ["decode_nll", "decode_nll_batch", "DecodeResult", "generate_and_score", "generate_batch", "GenResult",
+           "load_model", "resolve_dtype", "DTYPE_ALIASES", "extract_answer", "normalize_answer", "repeat_ratio"]
 
 
 DTYPE_ALIASES = {
@@ -193,6 +194,24 @@ def _extract_boxed(text: str) -> str | None:
     return m[-1].strip() if m else None
 
 
+def extract_answer(text: str) -> str | None:
+    """Last \\boxed{} expression; otherwise the last number after the thinking block."""
+    boxed = _extract_boxed(text)
+    if boxed:
+        return boxed
+    tail = text.split("</think>")[-1]
+    nums = re.findall(r"-?\d[\d,]*(?:\.\d+)?", tail)
+    return nums[-1] if nums else None
+
+
+def normalize_answer(s: str | None) -> str:
+    return re.sub(r"[,\s$]", "", s or "").rstrip(".")
+
+
+def repeat_ratio(ids: list[int], n: int = 8) -> float:
+    return _repeat_ratio(ids, n)
+
+
 def _repeat_ratio(ids: list[int], n: int = 8) -> float:
     if len(ids) < 2 * n:
         return 0.0
@@ -233,3 +252,27 @@ def generate_and_score(model, tok, question: str, cfg: HybridQuantConfig, gold: 
         correct = norm(ans) == norm(gold)
     return GenResult(cfg.label(), text, len(new_ids), len(new_ids) >= max_new_tokens,
                      _repeat_ratio(new_ids), ans, correct)
+
+
+
+@torch.no_grad()
+def generate_batch(model, tok, prompts: list[str], cfg: HybridQuantConfig, max_new_tokens: int,
+                   noise_seed: int | None = None, **gen_kwargs) -> list[list[int]]:
+    """Generate for several prompts at once under a quantized cache (left padding). Returns new token ids per prompt,
+    cut at the first pad token after generation stopped."""
+    device = next(model.parameters()).device
+    tok.padding_side = "left"
+    if tok.pad_token_id is None:
+        tok.pad_token = tok.eos_token
+    enc = tok(prompts, return_tensors="pt", padding=True).to(device)
+    with quantized_cache(cfg, noise_seed=noise_seed):
+        cache = make_cache(model)
+        out = model.generate(**enc, past_key_values=cache, max_new_tokens=max_new_tokens,
+                             pad_token_id=tok.pad_token_id, **gen_kwargs)
+    new = out[:, enc["input_ids"].shape[1]:].tolist()
+    result = []
+    for row in new:
+        if tok.pad_token_id != tok.eos_token_id and tok.pad_token_id in row:
+            row = row[:row.index(tok.pad_token_id)]
+        result.append(row)
+    return result
