@@ -158,3 +158,18 @@ def test_windows_warn_when_block_runs_past_available(capsys):
     assert "WARNING" in capsys.readouterr().out
     with pytest.raises(ValueError):
         windows_from_tokens(ids[:50], n_docs=1, min_tokens=100)
+
+
+# ---------------------------------------------------------------- fp16 safety guard
+
+
+def test_non_finite_nll_raises_with_hint(model, input_ids, monkeypatch):
+    import hybridquant.eval as ev
+    real = torch.log_softmax
+
+    def poisoned(x, dim=-1):
+        out = real(x, dim=dim); out[..., 0] = float("nan"); return out
+    monkeypatch.setattr(ev.torch, "log_softmax", poisoned)
+    ids = input_ids[:1].clone(); ids[0, 8:] = 0          # score token 0 whose log-prob is poisoned
+    with pytest.raises(FloatingPointError, match="fp32"):
+        decode_nll(model, ids, prefill_len=8, cfg=HybridQuantConfig())

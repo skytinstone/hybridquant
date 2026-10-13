@@ -1,5 +1,6 @@
 torch>=2.6
-transformers @ git+https://github.com/huggingface/transformers.git@main
+# pinned to the commit used for round 1/2 (5.19.0.dev0). Re-pin at round 3.
+transformers @ git+https://github.com/huggingface/transformers.git@66e0f4a27b801be168eb232ca222fb94caf0cb51
 accelerate>=1.0
 datasets>=3.0
 flash-linear-attention>=0.3

@@ -486,3 +486,43 @@ def summary_figure(figure_bases: list, out_dir: Path):
     for ax, b in zip(axes.flat, bases):
         ax.imshow(mpimg.imread(str(b) + ".png")); ax.set_title(os.path.basename(str(b)), fontsize=8)
     return _save(fig, out_dir, "summary_overview"), "대표 그림 8장 개요", "Overview of eight representative figures"
+
+
+def main(argv=None):
+    """python analysis/figures.py --stage <name> --inputs <jsonl...>  (figures only; report.py makes both)"""
+    import argparse
+    from common import load_jsonl, split_by_kind
+    p = argparse.ArgumentParser(description=main.__doc__)
+    p.add_argument("--stage", required=True)
+    p.add_argument("--inputs", nargs="+", required=True)
+    p.add_argument("--out-dir", default=None, help="default results/figures/<stage>")
+    args = p.parse_args(argv)
+    out_dir = Path(args.out_dir) if args.out_dir else ROOT / "results" / "figures" / args.stage
+    kinds = split_by_kind(load_jsonl(args.inputs))
+    made = []
+    if "grid" in kinds:
+        g = kinds["grid"]
+        if g.source.str.contains("superadd").any():
+            made += superadd_figures(g[g.source.str.contains("superadd")], args.stage, out_dir)
+        if g.source.str.contains("ablation").any():
+            made += ablation_figures(g[g.source.str.contains("ablation")], args.stage, out_dir)
+        rest = g[~g.source.str.contains("superadd|ablation")]
+        if len(rest):
+            made += grid_figures(rest, args.stage, out_dir)
+            if args.stage == "all":
+                r = scale_figure(rest, out_dir)
+                if r: made.append(r)
+    if "layer_sweep" in kinds:
+        made += layer_sweep_figures(kinds["layer_sweep"], args.stage, out_dir)
+    if "gsm8k" in kinds:
+        made += gsm8k_figures(kinds["gsm8k"], args.stage, out_dir)
+    if "niah" in kinds:
+        made += niah_figures(kinds["niah"], args.stage, out_dir, kinds.get("grid"))
+    if not made:
+        print("WARNING: no figures made (no matching results)")
+    for base, cap_kr, cap_en in made:
+        print(f"saved {os.path.relpath(str(base), ROOT)}.pdf/.png: {cap_en}")
+
+
+if __name__ == "__main__":
+    main()

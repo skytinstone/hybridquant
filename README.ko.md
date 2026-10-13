@@ -11,89 +11,64 @@
 
 ## 무엇을 하는 코드인가
 
-하이브리드 LLM은 추론 중에 두 종류의 메모리를 유지합니다.
+하이브리드 LLM은 추론 중에 두 종류의 메모리를 유지합니다. KV cache는 컨텍스트에 비례해 커지고 recurrent state는 고정 크기입니다. 선행 연구는 두 메모리를 각각 따로 양자화했습니다. 이 레포는 총 메모리 예산이 정해져 있을 때 비트를 둘 사이에 어떻게 나눠야 하고 두 오차가 서로 어떤 영향을 주는지를 묻습니다. 모든 계산은 fake quantization(양자화 후 바로 역양자화)이고 커스텀 커널은 없으며, 정확도와 메모리만 측정합니다.
 
-| 메모리 | 생성 레이어 | 형태 | 컨텍스트에 따라 커지는지 |
-|---|---|---|---|
-| KV cache | softmax 어텐션 레이어 | `[B, H_kv, T, d]` | 커집니다 |
-| recurrent state | Gated DeltaNet / Mamba-2 레이어 | `[B, H, d_k, d_v]` | 고정 크기입니다 |
+## 무엇을 측정하는가
 
-선행 연구는 둘 중 하나만 따로 양자화했습니다. 이 레포는 다음 질문을 다룹니다. **총 메모리 예산이 정해져 있을 때 비트를 둘 사이에 어떻게 나눠야 하고, 두 오차는 서로 어떤 영향을 주는가?**
-
-모든 계산은 **fake quantization**(PyTorch에서 양자화한 뒤 바로 역양자화)입니다. 커스텀 커널은 없습니다. 정확도와 메모리를 측정하고, 지연 시간은 측정하지 않습니다.
+- **decode 시점 NLL.** prefill 뒤 continuation을 한 토큰씩 넣는 teacher-forced NLL입니다. state 오차는 이 경로에서만 쌓이므로 1차 지표이며, 단순 forward PPL로는 state 효과가 보이지 않습니다.
+- **RTN 대 error feedback.** state를 양자화하는 모든 셀을 RTN과 EF(저장 잔차를 다음 저장에 더함) 두 번 돌리고, EF를 모든 표의 비교축으로 둡니다.
+- **노이즈 대조 조건.** 초가산 검증에서 한쪽의 양자화를 같은 오차 RMS의 가우시안 노이즈로 바꿔 오차 크기와 양자화 구조를 분리합니다.
+- **통계.** 셀당 문서 20개 × 시드 3개입니다. 시드는 겹치지 않는 문서 블록을 고르므로 시드 분산은 문서 샘플 분산입니다. fp 대비 차이는 문서 대응 부트스트랩 95% CI(1000회)로 보고하고, CI가 0을 포함하면 "구분 불가"로 표기합니다.
+- **배치 decode는 결과를 바꾸지 않습니다.** 길이가 같은 문서를 패딩 없이 배치로 돌리며, 배치와 단일 문서의 NLL이 같은지 테스트로 확인합니다.
 
 ## 구조
 
-```
-src/hybridquant/
-  quant.py    fake-quant 프리미티브 (asym/sym, group, stochastic rounding)
-  hooks.py    transformers 캐시 레이어의 저장 시점 훅 (KV 쓰기, state 쓰기) + 훅 커버리지 판정
-  eval.py     decode 시점 NLL (teacher-forced), 생성 + 행동 통계, dtype 자동 결정
-scripts/
-  check_hooks.py  실제 체크포인트에서 훅이 layer_types대로 발화하는지 PASS/FAIL 판정
-  run_grid.py     WikiText-2에서 비트 배분 그리드 -> results/*.jsonl
-notebooks/
-  01_setup_colab.ipynb          Colab 설정 + 스모크 테스트
-  02_equations_walkthrough.ipynb  논문 수식 (1)~(5)를 모델과 코드로 검증
-tests/
-  test_smoke_cpu.py     작은 랜덤 초기화 Qwen3.5로 CPU에서 훅과 양자화 검증
-  test_equations.py     gated delta rule과 transformers 커널 비교, 오차 전파 항등식(식 4) 검증
-docs/
-  experiment_log.md decision_log.md related_work.md
-```
+영문 README의 Layout과 같습니다. 핵심만 적으면 src/hybridquant/는 quant(양자화), hooks(캐시 훅과 EF), eval(배치 decode와 생성), data(WikiText-2와 C4 창 로더), config(YAML과 셀 목록), budget(식 1과 5), meta(실행 메타데이터)이고, configs/는 라운드 1과 2의 YAML 13개, scripts/는 실행기(run_grid, layer_sweep, run_gsm8k, run_niah)와 러너(run_round1, run_round2, run_all), 점검 도구(check_hooks, vram_check, estimate_time), 맥 동기화 스크립트입니다. analysis/는 보고서와 그림 생성, notebooks/는 Colab 진입점(01), 수식 검증(02), 결과 대시보드(03)입니다. results/는 git으로 추적합니다.
 
 ## 훅 동작 방식
 
-`transformers`는 두 메모리를 모두 `DynamicCache`에 저장하고, 각 레이어는 `DynamicLayer`(어텐션) 또는 `LinearAttentionLayer`(GDN/Mamba)입니다. 다음 두 메서드를 패치합니다.
+transformers의 DynamicCache 레이어 두 메서드를 패치합니다. `DynamicLayer.update`는 새 토큰의 K/V를 저장 전에, `LinearAttentionLayer.update_recurrent_state`는 state를 저장 전에 양자화합니다. Falcon-H1의 hybrid 레이어는 두 클래스를 모두 상속하므로 같은 훅이 걸립니다. 모델 코드는 수정하지 않습니다.
 
-* `DynamicLayer.update(k, v)`: 새 토큰의 K/V를 append 전에 per-token으로 양자화합니다.
-* `LinearAttentionLayer.update_recurrent_state(S)`: `S`를 저장 전에 양자화합니다.
-
-그래서 다음 decode 스텝은 반올림된 state를 읽게 됩니다. 모델 코드는 수정하지 않습니다.
-
-```python
-from hybridquant import HybridQuantConfig, load_model, decode_nll
-model, tok = load_model("Qwen/Qwen3.5-0.8B")
-cfg = HybridQuantConfig.uniform(kv_bits=4, state_bits=8)
-ids = tok(text, return_tensors="pt")["input_ids"]
-r = decode_nll(model, ids, prefill_len=256, cfg=cfg, max_decode=256)
-print(r.ppl, r.stats)
-```
-
-한 가지 짚고 갈 점이 있습니다. prefill 중에는 chunked 커널이 중간 state를 full precision으로 유지하고 최종 state만 양자화됩니다. 따라서 state 오차는 토큰 단위 decode 중에만 쌓이고, 그래서 `decode_nll`이 continuation을 한 토큰씩 넣습니다.
+결과를 읽을 때 한 가지를 염두에 두어야 합니다. prefill 중에는 중간 state가 full precision이고 최종 state만 양자화되므로 state 오차는 토큰 단위 decode 중에만 쌓입니다.
 
 ## 훅 검증
 
-GPU에서는 `kernels` 허브가 `Qwen3_5GatedDeltaNet.forward`를 통째로 바꿔치기해 state 훅을 조용히 건너뛸 수 있습니다. 실험 전에 반드시 확인합니다.
+GPU에서는 kernels 허브가 GatedDeltaNet forward를 통째로 바꿔 state 훅을 건너뛸 수 있습니다. 실험 전에 `scripts/check_hooks.py`로 PASS를 확인하고, FAIL이면 `--no-hub-kernels`로 다시 실행합니다.
 
-```bash
-python scripts/check_hooks.py --model Qwen/Qwen3.5-0.8B --kv-bits 2 --state-bits 4
-# FAIL이고 state_calls=0이면:
-python scripts/check_hooks.py --model Qwen/Qwen3.5-0.8B --kv-bits 2 --state-bits 4 --no-hub-kernels
-```
+## GPU와 dtype
 
-`--no-hub-kernels`는 transformers를 import하기 전에 `USE_HUB_KERNELS=NO`를 설정하고 `from_pretrained(use_kernels=False)`를 넘깁니다. 근거는 `docs/decision_log.md`에 있습니다.
+`load_model(dtype="auto")`는 compute capability 8.0 이상(A100, H100, L4)과 MPS에서 bf16, T4 같은 구형 CUDA에서 fp16, CPU에서 fp32를 고릅니다. 즉 T4에서는 실험이 fp16으로 돕니다. GDN 점화식과 decay 계산, fake 양자화는 fp32로 수행되고, decode_nll은 비유한 NLL이 나오면 fp32 재실행 힌트와 함께 중단합니다. 수식 검증 노트북 02만 T4에서 fp32를 씁니다. T4에서는 고속 커널을 설치하지 않고 순수 torch 폴백을 씁니다.
 
 ## Colab 워크플로
 
-1. 위 배지를 열거나, Colab에서 `File > Open notebook > GitHub`에 레포 URL을 붙여넣습니다.
-2. **0. 토큰 설정** 셀에서 토큰을 넣습니다. 비공개 레포라면 `GH_TOKEN`, HF 모델 다운로드에는 `HF_TOKEN`이 필요합니다. Colab Secrets(왼쪽 사이드바 열쇠 아이콘)에 같은 이름으로 저장해 두면 셀이 자동으로 읽고, 없으면 경고만 하고 넘어갑니다.
-3. **1. GPU 선택** 셀이 연결된 카드를 감지해 dtype(T4는 fp16, 나머지는 bf16)과 고속 커널 설치 여부(T4는 건너뛰고 순수 torch 폴백)를 정합니다. T4, L4, A100, H100을 지원합니다.
-4. 결과는 `results/*.jsonl`에 쌓입니다. 마지막 셀로 레포에 커밋하거나 Drive로 복사합니다.
-5. Colab에서 노트북을 고쳐 저장하려면 `File > Save a copy in GitHub`를 씁니다.
+1. 배지를 열거나 Colab에서 레포 URL로 노트북을 엽니다. T4, L4, A100, H100 중 하나를 고릅니다.
+2. **0. 토큰 설정** 셀에서 GH_TOKEN(비공개 레포, push)과 HF_TOKEN을 Colab Secrets로 넣습니다. 토큰이 없으면 셀은 경고만 하고 넘어가지만, 그 경우 결과는 push되지 않고 Drive로만 복사됩니다.
+3. **1. GPU 선택** 셀이 카드를 감지해 dtype과 커널 설치 여부를 정합니다.
+4. 훅 검증 셀이 PASS인지 본 뒤, 필요하면 Drive를 마운트하고 **백그라운드 실행** 셀을 실행합니다. run_all.sh가 라운드 1과 2를 순서대로 돌리며 단계마다 보고서와 그림을 만들고 results/를 커밋해 push합니다. 세션이 끊기면 같은 셀을 다시 실행하면 끝난 행은 건너뜁니다.
+5. 진행은 진행 확인 셀이나 notebooks/03_results_dashboard.ipynb로 봅니다. 맥에서는 `scripts/install_sync_launchd.sh`가 30분마다 pull해서 ~/Downloads/hybridquant_results/날짜/에 복사합니다.
 
-## 로컬 검증 (맥, CPU 또는 MPS)
+노트북 셀을 손으로 하나씩 실행하는 것은 디버깅용입니다.
+
+## 논문 재현
 
 ```bash
-python3.11 -m venv .venv && source .venv/bin/activate
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install "transformers @ git+https://github.com/huggingface/transformers.git@main" accelerate datasets pytest
-pip install -e .
-pytest tests -q
+bash scripts/run_round1.sh      # smoke_0.8b, grid_0.8b, superadd_0.8b, layer_sweep(0.8B), grid_4b_core
+bash scripts/run_round2.sh      # ablation, c4, niah 0.8B, 2B, gsm8k 4B, niah 4B, 9B, Falcon-H1 1.5B
+bash scripts/run_all.sh         # 두 라운드와 종합 보고서
+python analysis/report.py --stage all --inputs results/*.jsonl --out results/reports/summary.md
+python analysis/figures.py --stage grid_0.8b --inputs results/grid_0.8b.jsonl
 ```
 
-Apple Silicon이면 0.8B는 MPS에서 바로 돌아갑니다. `load_model`의 기본값이 MPS를 자동으로 잡습니다.
+라운드 3(외부 H100의 27B)은 아직 정의돼 있지 않아 명령이 없습니다. 표는 results/reports/<stage>.md, 그림은 results/figures/<stage>/에 PDF와 PNG로 저장됩니다. 노트북 02의 수식 그림은 paper/figures/에 저장되고, 논문 소스로 옮기는 일은 아직 수동입니다(paper/tables/는 없습니다).
+
+## 로컬 검증 (맥)
+
+CPU만 쓸 때는 `pip install torch --index-url https://download.pytorch.org/whl/cpu`, Apple Silicon에서 MPS를 쓸 때는 index-url 없이 `pip install torch`를 설치한 뒤 `pip install -r requirements.txt pytest`와 `pip install -e .`를 하고 `pytest tests -q`로 확인합니다. MPS에서는 Qwen3.5-0.8B가 그대로 돌아갑니다. requirements.txt는 transformers를 라운드 1/2에서 쓴 커밋(66e0f4a)으로 고정하며 라운드 3 시점에 다시 고정합니다.
 
 ## 진행 상황
 
-`docs/experiment_log.md`를 참고하십시오. 현재 마일스톤은 **M1**(환경 + 훅 + 베이스라인)입니다.
+현재 마일스톤은 **M2**(비트 배분 그리드, EF, 초가산, 레이어 스윕, 라운드 1 Colab 실행 중)입니다. 결과는 [docs/experiment_log.md](docs/experiment_log.md), 설계 결정은 [docs/decision_log.md](docs/decision_log.md)에 있습니다.
+
+## 데이터, 인용, 라이선스
+
+WikiText-2(Merity et al. 2016, Salesforce/wikitext), C4(Raffel et al. 2020, allenai/c4 validation 샤드 0의 앞 5000문서), GSM8K(Cobbe et al. 2021, openai/gsm8k test 200문제 고정 부분집합)를 씁니다. 인용 정보는 영문 README의 Citation과 CITATION.cff에 있으며 arXiv 번호는 아직 없습니다. 라이선스는 MIT입니다.

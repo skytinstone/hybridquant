@@ -166,6 +166,11 @@ def decode_nll_batch(model, input_ids: torch.Tensor, prefill_len: int, cfg: Hybr
             logits = out.logits[:, -1].float()
             pos += nxt.shape[1]
     summary = stats.summary()
+    bad = [b for b in range(B) if not all(math.isfinite(v) for v in nll[b])]
+    if bad:
+        raise FloatingPointError(
+            f"non-finite NLL in {len(bad)} of {B} documents under {cfg.label()} with model dtype "
+            f"{next(model.parameters()).dtype}; fp16 overflow is the usual cause, rerun with --dtype fp32")
     return [DecodeResult(cfg.label(), prefill_len, len(nll[b]), nll[b], summary) for b in range(B)]
 
 
