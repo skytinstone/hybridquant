@@ -5,8 +5,6 @@ build/
 dist/
 .venv/
 .ipynb_checkpoints/
-results/*.jsonl
-results/*.csv
 results/*.png
 !results/.gitkeep
 *.safetensors
