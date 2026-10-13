@@ -17,7 +17,7 @@ import time
 
 import torch
 
-from hybridquant import HybridQuantConfig, decode_nll, load_model
+from hybridquant import HybridQuantConfig, decode_nll, load_model, run_metadata
 
 
 def load_wikitext_docs(tok, n_docs: int, min_tokens: int, seed: int = 0):
@@ -56,6 +56,8 @@ def main():
     args = p.parse_args()
 
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+    meta = run_metadata()
+    print("run metadata:", json.dumps(meta))
     model, tok = load_model(args.model, dtype=args.dtype)
     dtype_name = str(next(model.parameters()).dtype).replace("torch.", "")
     print(f"model on {next(model.parameters()).device} dtype={dtype_name}")
@@ -85,6 +87,7 @@ def main():
                     "nll_curve": [sum(r.nll_per_pos[i] for r in per_doc) / len(per_doc)
                                   for i in range(min(len(r.nll_per_pos) for r in per_doc))],
                     "sec": time.time() - t0,
+                    "meta": meta,
                 }
                 f.write(json.dumps(row) + "\n"); f.flush()
                 print(f"{cfg.label():28s} nll={mean:.4f} ±{var**0.5:.4f}  ({row['sec']:.0f}s)")

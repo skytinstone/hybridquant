@@ -4,6 +4,9 @@
 
 [English](README.md) | 한국어
 
+> English README.md is the source of truth; this is a Korean summary.
+> 영문 README.md가 기준 문서입니다. 이 문서는 한국어 요약이며, 두 문서가 다르면 영문을 따릅니다.
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/skytinstone/hybridquant/blob/main/notebooks/01_setup_colab.ipynb)
 
 ## 무엇을 하는 코드인가
