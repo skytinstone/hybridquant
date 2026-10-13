@@ -12,3 +12,4 @@ results/*.png
 *.safetensors
 *.bin
 .DS_Store
+paper/figures/debug/

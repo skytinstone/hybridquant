@@ -30,9 +30,11 @@ scripts/
   check_hooks.py  check that the hooks fire on a real checkpoint (PASS/FAIL against layer_types)
   run_grid.py     bit-allocation grid on WikiText-2 -> results/*.jsonl
 notebooks/
-  01_setup_colab.ipynb  Colab setup + smoke test
+  01_setup_colab.ipynb          Colab setup + smoke test
+  02_equations_walkthrough.ipynb  paper equations (1)-(5) checked against the model and the code
 tests/
   test_smoke_cpu.py     hook and quantization checks on a tiny random Qwen3.5, CPU only
+  test_equations.py     gated delta rule vs transformers kernel, error-propagation identity (eq. 4)
 docs/
   experiment_log.md decision_log.md related_work.md
 ```

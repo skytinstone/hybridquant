@@ -30,9 +30,11 @@ scripts/
   check_hooks.py  실제 체크포인트에서 훅이 layer_types대로 발화하는지 PASS/FAIL 판정
   run_grid.py     WikiText-2에서 비트 배분 그리드 -> results/*.jsonl
 notebooks/
-  01_setup_colab.ipynb  Colab 설정 + 스모크 테스트
+  01_setup_colab.ipynb          Colab 설정 + 스모크 테스트
+  02_equations_walkthrough.ipynb  논문 수식 (1)~(5)를 모델과 코드로 검증
 tests/
   test_smoke_cpu.py     작은 랜덤 초기화 Qwen3.5로 CPU에서 훅과 양자화 검증
+  test_equations.py     gated delta rule과 transformers 커널 비교, 오차 전파 항등식(식 4) 검증
 docs/
   experiment_log.md decision_log.md related_work.md
 ```
