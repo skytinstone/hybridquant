@@ -24,7 +24,7 @@ import torch
 
 from .hooks import HybridQuantConfig, QuantStats, quantized_cache, make_cache
 
-__all__ = ["decode_nll", "DecodeResult", "generate_and_score", "GenResult", "load_model", "resolve_dtype", "DTYPE_ALIASES"]
+__all__ = ["decode_nll", "decode_nll_batch", "DecodeResult", "generate_and_score", "GenResult", "load_model", "resolve_dtype", "DTYPE_ALIASES"]
 
 
 DTYPE_ALIASES = {
@@ -123,42 +123,58 @@ class DecodeResult:
 
 
 @torch.no_grad()
-def decode_nll(model, input_ids: torch.Tensor, prefill_len: int, cfg: HybridQuantConfig,
-               max_decode: int | None = None, step: int = 1) -> DecodeResult:
-    """Teacher-forced decode NLL under a quantized cache.
+def decode_nll_batch(model, input_ids: torch.Tensor, prefill_len: int, cfg: HybridQuantConfig,
+                     max_decode: int | None = None, step: int = 1, noise_seed: int | None = None,
+                     stats: QuantStats | None = None) -> list[DecodeResult]:
+    """Teacher-forced decode NLL for a batch of equal-length documents.
 
-    input_ids: [1, T] token ids. Positions [0, prefill_len) are prefilled in one
-    forward; positions [prefill_len, T) are fed ``step`` tokens at a time.
-    ``step=1`` is the faithful decode path (slow but exact). Larger ``step``
-    uses the chunked GDN kernel between quantization points (faster, coarser).
+    input_ids: [B, T] token ids (no padding: every row has the same length).
+    Positions [0, prefill_len) are prefilled in one forward; positions
+    [prefill_len, T) are fed ``step`` tokens at a time. ``step=1`` is the faithful
+    decode path (slow but exact). Larger ``step`` uses the chunked GDN kernel between
+    quantization points (faster, coarser). Returns one DecodeResult per row.
     """
-    assert input_ids.dim() == 2 and input_ids.shape[0] == 1, "batch size 1 only"
+    assert input_ids.dim() == 2, "input_ids must be [B, T]"
     device = next(model.parameters()).device
     ids = input_ids.to(device)
-    T = ids.shape[1]
+    B, T = ids.shape
     end = T if max_decode is None else min(T, prefill_len + max_decode)
 
-    stats = QuantStats()
-    nll = []
-    with quantized_cache(cfg, stats):
+    stats = stats if stats is not None else QuantStats()
+    nll = [[] for _ in range(B)]
+    with quantized_cache(cfg, stats, noise_seed=noise_seed):
         cache = make_cache(model)
-        out = model(input_ids=ids[:, :prefill_len], past_key_values=cache, use_cache=True)
+        out = model(input_ids=ids[:, :prefill_len], past_key_values=cache, use_cache=True, logits_to_keep=1)
         logits = out.logits[:, -1].float()
         pos = prefill_len
         while pos < end:
             nxt = ids[:, pos:pos + step]
             # score the first token of this chunk with the previous logits
             lp = torch.log_softmax(logits, dim=-1)
-            nll.append(-lp[0, nxt[0, 0]].item())
-            out = model(input_ids=nxt, past_key_values=cache, use_cache=True)
-            if step > 1:
+            first = -lp.gather(1, nxt[:, :1]).squeeze(1)
+            for b in range(B):
+                nll[b].append(first[b].item())
+            out = model(input_ids=nxt, past_key_values=cache, use_cache=True,
+                        logits_to_keep=0 if nxt.shape[1] > 1 else 1)
+            if nxt.shape[1] > 1:
                 # score remaining tokens of the chunk with their teacher-forced logits
-                lps = torch.log_softmax(out.logits[0, :-1].float(), dim=-1)
-                for j in range(1, nxt.shape[1]):
-                    nll.append(-lps[j - 1, nxt[0, j]].item())
+                lps = torch.log_softmax(out.logits[:, :-1].float(), dim=-1)
+                rest = -lps.gather(2, nxt[:, 1:].unsqueeze(-1)).squeeze(-1)   # [B, step-1]
+                for b in range(B):
+                    nll[b].extend(rest[b].tolist())
             logits = out.logits[:, -1].float()
             pos += nxt.shape[1]
-    return DecodeResult(cfg.label(), prefill_len, len(nll), nll, stats.summary())
+    summary = stats.summary()
+    return [DecodeResult(cfg.label(), prefill_len, len(nll[b]), nll[b], summary) for b in range(B)]
+
+
+@torch.no_grad()
+def decode_nll(model, input_ids: torch.Tensor, prefill_len: int, cfg: HybridQuantConfig,
+               max_decode: int | None = None, step: int = 1, noise_seed: int | None = None) -> DecodeResult:
+    """Single-document wrapper around :func:`decode_nll_batch` (input_ids [1, T])."""
+    assert input_ids.dim() == 2 and input_ids.shape[0] == 1, "decode_nll takes one document; use decode_nll_batch"
+    return decode_nll_batch(model, input_ids, prefill_len, cfg, max_decode=max_decode, step=step,
+                            noise_seed=noise_seed)[0]
 
 
 @dataclass

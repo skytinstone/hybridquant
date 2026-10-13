@@ -1,17 +1,19 @@
-# Full grid for the paper: 4x3 cells x 20 docs x 3 seeds, 512 prefill + 512 decode.
-# Seeds change the document sample (and SR noise if enabled). Expect hours for 4B/9B on A100.
+# Round 1 main grid, 0.8B: 5x5 cells x EF off/on (EF only where state < 16) x 3 seeds x 20 docs.
+# Seeds select disjoint document blocks; variance across seeds is document-sample variance.
 model: Qwen/Qwen3.5-0.8B
 dtype: auto
-kv_bits: [16, 8, 4, 2]
-state_bits: [16, 8, 4]
+kv_bits: [16, 8, 4, 3, 2]
+state_bits: [16, 8, 6, 5, 4]
 kv_group: 128
 state_group: 128
 state_symmetric: false
 state_stochastic: false
+state_error_feedback: [false, true]
 seeds: [0, 1, 2]
 n_docs: 20
-prefill: 512
-decode: 512
+prefill: 256
+decode: 256
 step: 1
+batch_size: 8
 dataset: wikitext2
 out: results/grid_0.8b.jsonl

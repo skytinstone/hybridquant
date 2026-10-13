@@ -1,0 +1,21 @@
+# Superadditivity check, 0.8B: is NLL(KV4+S4) larger than fp + dKV4 + dS4?
+# The two noise-match cells replace one side's quantization by Gaussian noise of equal RMS
+# (same error energy, no quantization structure) to tell structure from magnitude.
+model: Qwen/Qwen3.5-0.8B
+dtype: auto
+cells:
+  - {kv_bits: 16, state_bits: 16}
+  - {kv_bits: 16, state_bits: 4}
+  - {kv_bits: 4,  state_bits: 16}
+  - {kv_bits: 4,  state_bits: 4}
+  - {kv_bits: 4,  state_bits: 4, kv_noise_match: true}
+  - {kv_bits: 4,  state_bits: 4, state_noise_match: true}
+state_error_feedback: [false]
+seeds: [0, 1, 2]
+n_docs: 20
+prefill: 256
+decode: 256
+step: 1
+batch_size: 8
+dataset: wikitext2
+out: results/superadd_0.8b.jsonl

@@ -17,6 +17,11 @@ Two intervention points cover the whole hybrid memory of a Qwen3.5 model:
 Both patches are class-level and guarded by a context manager so they can be
 turned on/off per experiment without reloading the model.
 
+Error feedback (state only): with ``QuantSpec.error_feedback`` the hook keeps a
+per-layer residual r. It stores Q(S + r) and sets r = (S + r) - Q(S + r), so the
+stored values track the true state in cumulative sum (bounded residual). The
+residual is reset to zero at the prefill store (first write into a layer's state).
+
 Semantics to keep in mind (document these in the paper):
 * During prefill the chunked kernel computes with full-precision intermediate
   states and only the *final* state is quantized. State quantization error
@@ -27,6 +32,7 @@ Semantics to keep in mind (document these in the paper):
 from __future__ import annotations
 
 import contextlib
+import warnings
 from dataclasses import dataclass, field
 
 import torch
@@ -54,11 +60,15 @@ class HybridQuantConfig:
 
     @classmethod
     def uniform(cls, kv_bits: int, state_bits: int, kv_group: int = 128, state_group: int = 128,
-                state_symmetric: bool = False, state_stochastic: bool = False) -> "HybridQuantConfig":
+                state_symmetric: bool = False, state_stochastic: bool = False,
+                state_error_feedback: bool = False, kv_noise_match: bool = False,
+                state_noise_match: bool = False) -> "HybridQuantConfig":
+        kv = QuantSpec(kv_bits, kv_group, noise_match=kv_noise_match)
         return cls(
-            key=QuantSpec(kv_bits, kv_group),
-            value=QuantSpec(kv_bits, kv_group),
-            state=QuantSpec(state_bits, state_group, symmetric=state_symmetric, stochastic=state_stochastic),
+            key=kv,
+            value=kv,
+            state=QuantSpec(state_bits, state_group, symmetric=state_symmetric, stochastic=state_stochastic,
+                            error_feedback=state_error_feedback, noise_match=state_noise_match),
         )
 
 
@@ -73,6 +83,8 @@ class QuantStats:
     layers_seen_state: set = field(default_factory=set)
     # optional: per-layer relative error of the last state quantization
     last_state_rel_err: dict = field(default_factory=dict)
+    # error-feedback residual buffers, layer_idx -> fp32 tensor (filled only when EF is on)
+    ef_residuals: dict = field(default_factory=dict)
 
     def summary(self) -> str:
         return (f"kv_calls={self.kv_calls} kv_tokens={self.kv_tokens} "
@@ -81,30 +93,47 @@ class QuantStats:
 
 
 def _layer_idx(layer_obj) -> int | None:
-    # Cache layers don't know their index; we attach it in ``_tag_layers``.
+    # Cache layers don't know their index; we attach it in ``tag_cache_layers``.
     return getattr(layer_obj, "_hq_layer_idx", None)
 
 
-def _quant_state_tensor(state: torch.Tensor, spec: QuantSpec) -> torch.Tensor:
+def _quant_state_tensor(state: torch.Tensor, spec: QuantSpec, generator=None) -> torch.Tensor:
     # state: [B, H, d_k, d_v]. Group along d_v (rows of the associative memory).
-    return fake_quant(state, spec)
+    return fake_quant(state, spec, generator)
 
 
-def _quant_kv_tensor(x: torch.Tensor, spec: QuantSpec) -> torch.Tensor:
+def _quant_kv_tensor(x: torch.Tensor, spec: QuantSpec, generator=None) -> torch.Tensor:
     # x: [B, H_kv, T, head_dim]. Per-token groups along head_dim.
-    return fake_quant(x, spec)
+    return fake_quant(x, spec, generator)
 
 
 @contextlib.contextmanager
-def quantized_cache(cfg: HybridQuantConfig, stats: QuantStats | None = None, track_error: bool = False):
+def quantized_cache(cfg: HybridQuantConfig, stats: QuantStats | None = None, track_error: bool = False,
+                    noise_seed: int | None = None):
     """Patch transformers cache layers so every write is fake-quantized.
+
+    ``noise_seed`` fixes the randomness of stochastic rounding and noise-match
+    (one torch.Generator per device). ``stats.ef_residuals`` holds the error
+    feedback buffers while the context is open.
 
     Usage::
 
         with quantized_cache(cfg, stats):
-            out = model.generate(**inputs, max_new_tokens=256)
+            out = model.generate(**inputs, past_key_values=cache, max_new_tokens=256)
     """
     stats = stats if stats is not None else QuantStats()
+    stats.ef_residuals.clear()
+    residuals = stats.ef_residuals
+    generators: dict[str, torch.Generator] = {}
+    warned = {"ef_no_idx": False}
+
+    def gen_for(x: torch.Tensor):
+        if noise_seed is None:
+            return None
+        dev = x.device.type
+        if dev not in generators:
+            generators[dev] = torch.Generator(device=dev).manual_seed(noise_seed)
+        return generators[dev]
 
     DynamicLayer = cache_utils.DynamicLayer
     LinearLayer = cache_utils.LinearAttentionLayer
@@ -115,9 +144,9 @@ def quantized_cache(cfg: HybridQuantConfig, stats: QuantStats | None = None, tra
         idx = _layer_idx(self)
         if cfg.attn_layers is None or idx in cfg.attn_layers:
             if cfg.key.enabled:
-                key_states = _quant_kv_tensor(key_states, cfg.key)
+                key_states = _quant_kv_tensor(key_states, cfg.key, gen_for(key_states))
             if cfg.value.enabled:
-                value_states = _quant_kv_tensor(value_states, cfg.value)
+                value_states = _quant_kv_tensor(value_states, cfg.value, gen_for(value_states))
             stats.kv_calls += 1
             stats.kv_tokens += key_states.shape[-2]
             if idx is not None:
@@ -129,7 +158,22 @@ def quantized_cache(cfg: HybridQuantConfig, stats: QuantStats | None = None, tra
         if cfg.gdn_layers is None or idx in cfg.gdn_layers:
             # Count every call (like the KV hook) so an fp baseline still proves the hook fired.
             if cfg.state.enabled:
-                q = _quant_state_tensor(recurrent_states, cfg.state)
+                x = recurrent_states
+                use_ef = cfg.state.error_feedback
+                if use_ef and idx is None:
+                    if not warned["ef_no_idx"]:
+                        warnings.warn("error feedback needs tagged cache layers (use make_cache); EF disabled")
+                        warned["ef_no_idx"] = True
+                    use_ef = False
+                if use_ef:
+                    is_prefill = not self.is_recurrent_states_initialized[state_idx]
+                    r = residuals.get(idx)
+                    if is_prefill or r is None or r.shape != x.shape:
+                        r = torch.zeros(x.shape, dtype=torch.float32, device=x.device)
+                    x = (x.float() + r).to(recurrent_states.dtype)
+                q = _quant_state_tensor(x, cfg.state, gen_for(x))
+                if use_ef:
+                    residuals[idx] = x.float() - q.float()
                 if track_error and idx is not None:
                     d = (q.float() - recurrent_states.float()).norm() / recurrent_states.float().norm().clamp_min(1e-12)
                     stats.last_state_rel_err[idx] = d.item()
