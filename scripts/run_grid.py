@@ -23,7 +23,7 @@ from hybridquant import HybridQuantConfig, decode_nll, load_model, run_metadata
 def load_wikitext_docs(tok, n_docs: int, min_tokens: int, seed: int = 0):
     from datasets import load_dataset
 
-    ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
+    ds = load_dataset("Salesforce/wikitext", "wikitext-2-raw-v1", split="test")
     texts = [t for t in ds["text"] if len(t) > 2000]
     g = torch.Generator().manual_seed(seed)
     order = torch.randperm(len(texts), generator=g).tolist()
