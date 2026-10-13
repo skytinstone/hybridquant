@@ -1,0 +1,16 @@
+# 0.8B smoke grid: pipeline check, one seed. ~10 min on L4 / A100.
+model: Qwen/Qwen3.5-0.8B
+dtype: auto
+kv_bits: [16, 8, 4, 2]
+state_bits: [16, 8, 4]
+kv_group: 128
+state_group: 128
+state_symmetric: false
+state_stochastic: false
+seeds: [0]
+n_docs: 8
+prefill: 256
+decode: 256
+step: 1
+dataset: wikitext2
+out: results/smoke_0.8b.jsonl

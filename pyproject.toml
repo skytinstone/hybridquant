@@ -8,7 +8,7 @@ version = "0.0.1"
 description = "Joint KV-cache and recurrent-state fake quantization for hybrid linear-attention LLMs"
 requires-python = ">=3.10"
 license = {text = "MIT"}
-dependencies = ["torch>=2.6", "transformers>=4.57", "accelerate", "datasets", "numpy", "tqdm"]
+dependencies = ["torch>=2.6", "transformers>=4.57", "accelerate", "datasets", "numpy", "tqdm", "pyyaml"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
