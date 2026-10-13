@@ -2,6 +2,8 @@
 
 Joint KV-cache and recurrent-state quantization for hybrid linear-attention LLMs (Qwen3.5, Falcon-H1).
 
+English | [한국어](README.ko.md)
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/skytinstone/hybridquant/blob/main/notebooks/01_setup_colab.ipynb)
 
 ## What this is
@@ -25,7 +27,8 @@ src/hybridquant/
   hooks.py    store-time hooks on transformers cache layers (KV write, state write)
   eval.py     decode-time NLL (teacher-forced), generation + behaviour stats
 scripts/
-  run_grid.py bit-allocation grid on WikiText-2 -> results/*.jsonl
+  check_hooks.py  verify hooks fire on a real checkpoint (PASS/FAIL vs layer_types)
+  run_grid.py     bit-allocation grid on WikiText-2 -> results/*.jsonl
 notebooks/
   01_setup_colab.ipynb  one-click Colab setup + smoke test
 docs/
