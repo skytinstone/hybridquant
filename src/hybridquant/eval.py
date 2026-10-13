@@ -26,11 +26,12 @@ from .hooks import HybridQuantConfig, QuantStats, quantized_cache, make_cache
 __all__ = ["decode_nll", "DecodeResult", "generate_and_score", "GenResult", "load_model"]
 
 
-def load_model(name: str, dtype=torch.bfloat16, device_map="auto", text_only: bool = True):
+def load_model(name: str, dtype=torch.bfloat16, device_map="auto", text_only: bool = True, **from_pretrained_kwargs):
     """Load a Qwen3.5 checkpoint. Returns (model, tokenizer).
 
     ``text_only`` loads the language model without the vision tower, which
     saves VRAM on Colab. Falls back to the multimodal class if unavailable.
+    Extra kwargs go to ``from_pretrained`` (e.g. ``use_kernels=False``).
     """
     from transformers import AutoTokenizer, AutoConfig
 
@@ -40,13 +41,13 @@ def load_model(name: str, dtype=torch.bfloat16, device_map="auto", text_only: bo
         try:
             from transformers import AutoModelForCausalLM
 
-            model = AutoModelForCausalLM.from_pretrained(name, dtype=dtype, device_map=device_map)
+            model = AutoModelForCausalLM.from_pretrained(name, dtype=dtype, device_map=device_map, **from_pretrained_kwargs)
         except Exception as e:  # noqa: BLE001
             print(f"[load_model] text-only load failed ({type(e).__name__}: {e}); falling back to multimodal class")
     if model is None:
         from transformers import AutoModelForMultimodalLM
 
-        model = AutoModelForMultimodalLM.from_pretrained(name, dtype=dtype, device_map=device_map)
+        model = AutoModelForMultimodalLM.from_pretrained(name, dtype=dtype, device_map=device_map, **from_pretrained_kwargs)
     model.eval()
     return model, tok
 

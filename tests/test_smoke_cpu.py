@@ -209,3 +209,31 @@ def test_patches_restored_on_exception():
             raise RuntimeError("boom")
     assert cache_utils.DynamicLayer.update is orig_update
     assert cache_utils.LinearAttentionLayer.update_recurrent_state is orig_state
+
+
+# ---------------------------------------------------------------- check_hooks judgement (shared with scripts/check_hooks.py)
+
+
+def test_check_hook_coverage_on_tiny_model(model, input_ids):
+    from hybridquant import check_hook_coverage
+
+    stats = QuantStats()
+    with quantized_cache(_uniform(2, 4), stats):
+        cache = make_cache(model)
+        model(input_ids=input_ids[:, :8], past_key_values=cache, use_cache=True)
+        model(input_ids=input_ids[:, 8:9], past_key_values=cache, use_cache=True)
+    cov = check_hook_coverage(model.config.layer_types, stats)
+    assert cov.passed, cov.report()
+    assert cov.expected_kv == {3} and cov.expected_state == {0, 1, 2}
+    assert cov.report().startswith("hook coverage: PASS")
+
+    # negative case: state hook silently bypassed (what a hub kernel replacing GDN.forward would look like)
+    bypassed = QuantStats(kv_calls=stats.kv_calls, layers_seen_kv=set(stats.layers_seen_kv))
+    cov = check_hook_coverage(LAYER_TYPES, bypassed)
+    assert not cov.passed
+    assert "update_recurrent_state" in cov.report()
+
+    # negative case: wrong layer index on the KV side
+    wrong = QuantStats(kv_calls=1, state_calls=1, layers_seen_kv={0}, layers_seen_state={0, 1, 2})
+    cov = check_hook_coverage(LAYER_TYPES, wrong)
+    assert not cov.passed and "MISMATCH" in cov.report()

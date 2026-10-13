@@ -34,7 +34,8 @@ from transformers import cache_utils
 
 from .quant import QuantSpec, fake_quant
 
-__all__ = ["HybridQuantConfig", "QuantStats", "quantized_cache", "make_cache", "tag_cache_layers"]
+__all__ = ["HybridQuantConfig", "QuantStats", "quantized_cache", "make_cache", "tag_cache_layers",
+           "HookCoverage", "check_hook_coverage"]
 
 
 @dataclass(frozen=True)
@@ -165,3 +166,48 @@ def make_cache(model):
     cache = DynamicCache(config=model.config)
     tag_cache_layers(cache)
     return cache
+
+
+@dataclass
+class HookCoverage:
+    """Result of comparing QuantStats against a model's layer_types."""
+
+    passed: bool
+    expected_kv: set
+    expected_state: set
+    seen_kv: set
+    seen_state: set
+    messages: list
+
+    def report(self) -> str:
+        head = "PASS" if self.passed else "FAIL"
+        return "\n".join([f"hook coverage: {head}"] + [f"  {m}" for m in self.messages])
+
+
+def check_hook_coverage(layer_types, stats: QuantStats) -> HookCoverage:
+    """Judge whether the hooks fired on exactly the layers that ``layer_types`` says they should.
+
+    ``layers_seen_kv`` must equal the set of ``full_attention`` indices and
+    ``layers_seen_state`` must equal the set of ``linear_attention`` indices.
+    If the state side never fired at all, the most likely cause on GPU is that
+    the kernels hub replaced ``Qwen3_5GatedDeltaNet.forward`` wholesale, which
+    skips ``cache.update_recurrent_state``; the message says so.
+    """
+    layer_types = list(layer_types)
+    expected_kv = {i for i, t in enumerate(layer_types) if t == "full_attention"}
+    expected_state = {i for i, t in enumerate(layer_types) if t == "linear_attention"}
+    seen_kv = set(stats.layers_seen_kv)
+    seen_state = set(stats.layers_seen_state)
+    msgs = []
+    kv_ok = seen_kv == expected_kv and stats.kv_calls > 0
+    st_ok = seen_state == expected_state and stats.state_calls > 0
+    msgs.append(f"kv:    calls={stats.kv_calls} seen={sorted(seen_kv)} expected={sorted(expected_kv)} "
+                f"-> {'ok' if kv_ok else 'MISMATCH'}")
+    msgs.append(f"state: calls={stats.state_calls} seen={sorted(seen_state)} expected={sorted(expected_state)} "
+                f"-> {'ok' if st_ok else 'MISMATCH'}")
+    passed = kv_ok and st_ok
+    if not passed and stats.state_calls == 0 and expected_state:
+        msgs.append("WARNING: state hook never fired. kernels 허브가 GatedDeltaNet forward를 교체해 "
+                    "update_recurrent_state를 우회했을 가능성. USE_HUB_KERNELS=NO (import 전) 또는 "
+                    "from_pretrained(use_kernels=False)로 재시도.")
+    return HookCoverage(passed, expected_kv, expected_state, seen_kv, seen_state, msgs)
