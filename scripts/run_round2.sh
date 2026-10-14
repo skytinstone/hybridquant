@@ -3,6 +3,7 @@
 # Each step is resumable; after each step: report (analysis/report.py), git commit + push, optional Drive rsync.
 # A failing step is logged and the sequence continues. Log: results/round2.log
 set -u
+set -o pipefail
 cd "$(dirname "$0")/.."
 mkdir -p results results/reports
 LOG=results/round2.log
@@ -16,7 +17,8 @@ commit_results() {
   git add results >/dev/null 2>&1 || true
   if git diff --cached --quiet; then log "nothing to commit"; return 0; fi
   git commit -q -m "$1" || { log "commit failed"; return 0; }
-  if ! git push origin HEAD 2>>results/push_failures.log; then
+  # git prints the remote URL (with any embedded token) on a rejected push; mask it before it reaches the log
+  if ! git push origin HEAD 2>&1 | sed -E "s#(https://)[^@/]+@#\1***@#" >> results/push_failures.log; then
     echo "[$(date -u +%FT%TZ)] push failed after: $1" >> results/push_failures.log
     log "push failed (logged), continuing"
   else

@@ -35,7 +35,19 @@ def load_jsonl(paths) -> pd.DataFrame:
                     rows.append(r)
     if not rows:
         return pd.DataFrame()
-    return ensure_defaults(pd.DataFrame(rows))
+    return ensure_defaults(drop_duplicate_rows(pd.DataFrame(rows)))
+
+
+# One run = one row. A runner started twice on the same results file appends the same run again;
+# the first row is kept. "source" keeps the check inside each file.
+DEDUP_KEYS = ("source", "model", "label", "seed", "state_bits", "layer_idx", "context_len", "depth", "idx")
+
+
+def drop_duplicate_rows(df: pd.DataFrame) -> pd.DataFrame:
+    keys = [k for k in DEDUP_KEYS if k in df.columns]
+    if not keys:
+        return df
+    return df.drop_duplicates(subset=keys, keep="first").reset_index(drop=True)
 
 
 DEFAULTS = (("seed", 0), ("error_feedback", False), ("kv_noise_match", False), ("state_noise_match", False),
