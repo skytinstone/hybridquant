@@ -76,6 +76,10 @@ if tok:
 subprocess.run(["git", "-C", REPO, "add", "results"])
 c = subprocess.run(["git", "-C", REPO, "commit", "-q", "-m", "results: final (dedupe, regenerated reports and figures)"], capture_output=True, text=True)
 print("  commit:", (c.stdout + c.stderr).strip() or "ok")
+# code may have been merged into main meanwhile; rebase the results commits on top so the push is a fast-forward
+pr = subprocess.run(["git", "-C", REPO, "pull", "--rebase", "-q", "origin", "main"], capture_output=True, text=True)
+if pr.returncode != 0:
+    print("  pull --rebase failed:", (pr.stdout + pr.stderr).strip()[-300:])
 p = subprocess.run(["git", "-C", REPO, "push", "origin", "HEAD"], capture_output=True, text=True)
 msg = (p.stdout + p.stderr).strip()
 print("  push:", "ok" if p.returncode == 0 else "FAILED", (msg.replace(tok, "***") if tok else msg)[-300:])
