@@ -1,0 +1,16 @@
+# Round 3 NIAH on Qwen3.5-4B for the recipe cells of Table 1: (KV4,S8) and (KV4,S6), EF off/on.
+model: Qwen/Qwen3.5-4B
+dtype: auto
+dataset: niah
+context_lens: [4096, 16384]
+depths: [0.1, 0.3, 0.5, 0.7, 0.9]
+n_per_depth: 10
+needle_seed: 0
+max_new_tokens: 32
+cells:
+- {kv_bits: 4, state_bits: 8}
+- {kv_bits: 4, state_bits: 6}
+state_error_feedback: [false, true]
+seeds: [0]
+batch_size: 1
+out: results/r3_niah_recipe_4b.jsonl
