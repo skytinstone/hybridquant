@@ -1,5 +1,5 @@
 # Report: all
-generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_falcon_1.5b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, smoke_0.8b.jsonl, smoke_0.8b_mps.jsonl, superadd_0.8b.jsonl
+generated 2026-10-14T15:55:04+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, smoke_0.8b.jsonl, smoke_0.8b_mps.jsonl, superadd_0.8b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-0.8B / c4: fp 베이스라인 mean NLL 3.154 (시드 3개, 문서 20개/시드).
@@ -8,15 +8,15 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 - state 8bit: fp 대비 +0.025 nats (95% CI +0.021~+0.030).
 - KV4+S4 초가산: 실측 Δ +1.095 대 단독합 +1.055, 초과분 +0.040 nats (문서 대응 95% CI +0.019~+0.060).
 - error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.222 nats (6개 셀, 범위 -0.528~-0.013).
-- Qwen3.5-0.8B / wikitext2: fp 베이스라인 mean NLL 2.988 (시드 3개, 문서 20개/시드).
-- state 4bit (KV fp): fp 대비 +1.046 nats (95% CI +1.022~+1.078).
-- KV 4bit (state fp): fp 대비 +0.028 nats (95% CI +0.024~+0.030).
-- state 8bit: fp 대비 -0.030 nats (95% CI +0.011~+0.020).
-- KV 2bit: fp 대비 +0.403 nats (95% CI +0.425~+0.470).
-- KV4+S4 초가산: 실측 Δ +1.098 대 단독합 +1.074, 초과분 +0.024 nats (문서 대응 95% CI N/A).
-- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.215 nats (20개 셀, 범위 -0.608~+0.022).
-- KV 노이즈 대조(같은 RMS의 가우시안 노이즈): Δ +1.047 대 실제 양자화 +1.098 nats.
-- state 노이즈 대조(같은 RMS의 가우시안 노이즈): Δ +10.018 대 실제 양자화 +1.098 nats.
+- Qwen3.5-0.8B / wikitext2: fp 베이스라인 mean NLL 2.974 (시드 3개, 문서 20개/시드).
+- state 4bit (KV fp): fp 대비 +1.049 nats (95% CI +1.001~+1.094).
+- KV 4bit (state fp): fp 대비 +0.028 nats (95% CI +0.024~+0.032).
+- state 8bit: fp 대비 +0.015 nats (95% CI +0.010~+0.020).
+- KV 2bit: fp 대비 +0.439 nats (95% CI +0.416~+0.464).
+- KV4+S4 초가산: 실측 Δ +1.105 대 단독합 +1.076, 초과분 +0.029 nats (문서 대응 95% CI +0.009~+0.049).
+- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.222 nats (20개 셀, 범위 -0.634~+0.001).
+- KV 노이즈 대조(같은 RMS의 가우시안 노이즈): Δ +1.061 대 실제 양자화 +1.105 nats.
+- state 노이즈 대조(같은 RMS의 가우시안 노이즈): Δ +10.033 대 실제 양자화 +1.105 nats.
 - Qwen3.5-2B / wikitext2: fp 베이스라인 mean NLL 2.605 (시드 3개, 문서 20개/시드).
 - state 4bit (KV fp): fp 대비 +1.808 nats (95% CI +1.725~+1.896).
 - KV 4bit (state fp): fp 대비 +0.011 nats (95% CI +0.009~+0.014).
@@ -34,12 +34,6 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 - state 8bit: fp 대비 +0.003 nats (95% CI -0.000~+0.006) (구분 불가 / not distinguishable).
 - KV4+S4 초가산: 실측 Δ +0.287 대 단독합 +0.289, 초과분 -0.002 nats (문서 대응 95% CI -0.009~+0.005) (구분 불가 / not distinguishable).
 - error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.045 nats (6개 셀, 범위 -0.127~+0.002).
-- Falcon-H1-1.5B-Instruct / wikitext2: fp 베이스라인 mean NLL 5.890 (시드 3개, 문서 20개/시드).
-- state 4bit (KV fp): fp 대비 -0.030 nats (95% CI -0.069~+0.010) (구분 불가 / not distinguishable).
-- KV 4bit (state fp): fp 대비 -0.010 nats (95% CI -0.019~-0.001).
-- state 8bit: fp 대비 +0.000 nats (95% CI -0.006~+0.007) (구분 불가 / not distinguishable).
-- KV4+S4 초가산: 실측 Δ -0.040 대 단독합 -0.040, 초과분 +0.000 nats (문서 대응 95% CI -0.016~+0.015) (구분 불가 / not distinguishable).
-- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 +0.017 nats (6개 셀, 범위 +0.003~+0.036).
 - Qwen3.5-0.8B: 레이어 하나만 state int4로 양자화했을 때 ΔNLL 최대는 레이어 0 (+0.2175), 최소는 레이어 9 (-0.0085), 전체 합 +0.5747.
 - n_half(오차 반감 토큰 수)와 ΔNLL의 Spearman 상관 -0.08 (순열 p=0.783).
 - Qwen3.5-4B GSM8K fp 정답률 0.600 (문제 200개, 95% CI 0.535~0.665), 평균 생성 토큰 2912, 예산 소진율 0.48.
@@ -57,15 +51,15 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 - state 8-bit: +0.025 nats over fp (95% CI +0.021~+0.030).
 - KV4+S4 superadditivity: measured +1.095 vs sum of single effects +1.055; excess +0.040 nats (paired 95% CI +0.019~+0.060).
 - error feedback: mean change in dNLL versus RTN at the same bits -0.222 nats (6 cells, range -0.528~-0.013).
-- Qwen3.5-0.8B / wikitext2: fp baseline mean NLL 2.988 (3 seeds, 20 docs per seed).
-- state 4-bit (KV fp): +1.046 nats over fp (95% CI +1.022~+1.078).
-- KV 4-bit (state fp): +0.028 nats over fp (95% CI +0.024~+0.030).
-- state 8-bit: -0.030 nats over fp (95% CI +0.011~+0.020).
-- KV 2-bit: +0.403 nats over fp (95% CI +0.425~+0.470).
-- KV4+S4 superadditivity: measured +1.098 vs sum of single effects +1.074; excess +0.024 nats (paired 95% CI N/A).
-- error feedback: mean change in dNLL versus RTN at the same bits -0.215 nats (20 cells, range -0.608~+0.022).
-- KV noise control (Gaussian noise of equal RMS): +1.047 vs real quantization +1.098 nats.
-- state noise control (Gaussian noise of equal RMS): +10.018 vs real quantization +1.098 nats.
+- Qwen3.5-0.8B / wikitext2: fp baseline mean NLL 2.974 (3 seeds, 20 docs per seed).
+- state 4-bit (KV fp): +1.049 nats over fp (95% CI +1.001~+1.094).
+- KV 4-bit (state fp): +0.028 nats over fp (95% CI +0.024~+0.032).
+- state 8-bit: +0.015 nats over fp (95% CI +0.010~+0.020).
+- KV 2-bit: +0.439 nats over fp (95% CI +0.416~+0.464).
+- KV4+S4 superadditivity: measured +1.105 vs sum of single effects +1.076; excess +0.029 nats (paired 95% CI +0.009~+0.049).
+- error feedback: mean change in dNLL versus RTN at the same bits -0.222 nats (20 cells, range -0.634~+0.001).
+- KV noise control (Gaussian noise of equal RMS): +1.061 vs real quantization +1.105 nats.
+- state noise control (Gaussian noise of equal RMS): +10.033 vs real quantization +1.105 nats.
 - Qwen3.5-2B / wikitext2: fp baseline mean NLL 2.605 (3 seeds, 20 docs per seed).
 - state 4-bit (KV fp): +1.808 nats over fp (95% CI +1.725~+1.896).
 - KV 4-bit (state fp): +0.011 nats over fp (95% CI +0.009~+0.014).
@@ -83,12 +77,6 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 - state 8-bit: +0.003 nats over fp (95% CI -0.000~+0.006) (구분 불가 / not distinguishable).
 - KV4+S4 superadditivity: measured +0.287 vs sum of single effects +0.289; excess -0.002 nats (paired 95% CI -0.009~+0.005) (구분 불가 / not distinguishable).
 - error feedback: mean change in dNLL versus RTN at the same bits -0.045 nats (6 cells, range -0.127~+0.002).
-- Falcon-H1-1.5B-Instruct / wikitext2: fp baseline mean NLL 5.890 (3 seeds, 20 docs per seed).
-- state 4-bit (KV fp): -0.030 nats over fp (95% CI -0.069~+0.010) (구분 불가 / not distinguishable).
-- KV 4-bit (state fp): -0.010 nats over fp (95% CI -0.019~-0.001).
-- state 8-bit: +0.000 nats over fp (95% CI -0.006~+0.007) (구분 불가 / not distinguishable).
-- KV4+S4 superadditivity: measured -0.040 vs sum of single effects -0.040; excess +0.000 nats (paired 95% CI -0.016~+0.015) (구분 불가 / not distinguishable).
-- error feedback: mean change in dNLL versus RTN at the same bits +0.017 nats (6 cells, range +0.003~+0.036).
 - Qwen3.5-0.8B: quantizing one layer's state to int4, the largest dNLL is layer 0 (+0.2175) and the smallest layer 9 (-0.0085); sum over layers +0.5747.
 - Spearman correlation between n_half (error half-life) and dNLL: -0.08 (permutation p=0.783).
 - Qwen3.5-4B GSM8K fp accuracy 0.600 (200 problems, 95% CI 0.535~0.665), mean 2912 tokens, budget-exhaustion 0.48.
@@ -123,83 +111,83 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 ### Qwen3.5-0.8B / wikitext2
 | 셀 (cell) | 평균 NLL (mean NLL) | ± std (시드/문서) | Δ vs fp (delta) | 95% CI (paired bootstrap) | 총 메모리 MB, T=512 (memory) | 시드 (seeds) | 문서/시드 (docs) |
 |---|---|---|---|---|---|---|---|
-| fp | 2.9884 | ± 0.0740 (seeds) | +0.0000 | +0.000~+0.000 * | 15.73 | 3 | 20 |
-| fp+S8 | 2.9588 | ± 0.0021 (seeds) | -0.0296 | +0.011~+0.020 | 11.01 | 3 | 20 |
-| fp+S8[EF] | 2.9753 | ± 0.0492 (seeds) | -0.0130 | -0.000~+0.003 * | 11.01 | 3 | 20 |
-| fp+S6 | 3.1092 | ± 0.0522 (seeds) | +0.1209 | +0.122~+0.148 | 9.83 | 3 | 20 |
-| fp+S6[EF] | 3.0245 | ± 0.0522 (seeds) | +0.0362 | +0.044~+0.057 | 9.83 | 3 | 20 |
-| fp+S5 | 3.3457 | ± 0.0611 (seeds) | +0.3573 | +0.347~+0.395 | 9.24 | 3 | 20 |
-| fp+S5[EF] | 3.1203 | ± 0.0548 (seeds) | +0.1320 | +0.133~+0.158 | 9.24 | 3 | 20 |
-| fp+S4 | 4.0346 | ± 0.1116 (seeds) | +1.0462 | +1.022~+1.078 | 8.65 | 3 | 20 |
-| fp+S4[EF] | 3.4985 | ± 0.0841 (seeds) | +0.5101 | +0.495~+0.553 | 8.65 | 3 | 20 |
-| KV8+fp | 2.9426 | ± 0.0049 (seeds) | -0.0458 | -0.001~+0.000 * | 12.58 | 3 | 20 |
-| KV8+S8 | 2.9605 | ± 0.0029 (seeds) | -0.0278 | +0.013~+0.022 | 7.86 | 3 | 20 |
-| KV8+S8[EF] | 2.9757 | ± 0.0478 (seeds) | -0.0127 | -0.000~+0.003 * | 7.86 | 3 | 20 |
-| KV8+S6 | 3.1115 | ± 0.0508 (seeds) | +0.1232 | +0.124~+0.150 | 6.68 | 3 | 20 |
-| KV8+S6[EF] | 3.0214 | ± 0.0525 (seeds) | +0.0330 | +0.041~+0.054 | 6.68 | 3 | 20 |
-| KV8+S5 | 3.3370 | ± 0.0565 (seeds) | +0.3486 | +0.340~+0.387 | 6.09 | 3 | 20 |
-| KV8+S5[EF] | 3.1261 | ± 0.0478 (seeds) | +0.1377 | +0.139~+0.165 | 6.09 | 3 | 20 |
-| KV8+S4 | 3.9956 | ± 0.0464 (seeds) | +1.0072 | +1.012~+1.099 | 5.51 | 3 | 20 |
-| KV8+S4[EF] | 3.4883 | ± 0.0735 (seeds) | +0.4999 | +0.487~+0.541 | 5.51 | 3 | 20 |
-| KV4+fp | 3.0166 | ± 0.0746 (seeds) | +0.0282 | +0.024~+0.030 | 11.01 | 3 | 20 |
-| KV4+S8 | 2.9849 | ± 0.0070 (seeds) | -0.0035 | +0.035~+0.049 | 6.29 | 3 | 20 |
-| KV4+S8[EF] | 3.0036 | ± 0.0485 (seeds) | +0.0152 | +0.025~+0.034 | 6.29 | 3 | 20 |
-| KV4+S6 | 3.1391 | ± 0.0461 (seeds) | +0.1507 | +0.151~+0.179 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.2882 | ± 0.0553 (seeds) | +0.2998 | +0.294~+0.335 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.8254 | ± 0.0820 (seeds) | +0.8370 | +0.815~+0.889 | 5.11 | 3 | 20 |
-| KV4+S6 | 4.9960 | ± 0.0694 (seeds) | +2.0077 | +1.950~+2.094 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.1391 | ± 0.0461 (seeds) | +0.1507 | +0.155~+0.175 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.2882 | ± 0.0553 (seeds) | +0.2998 | +0.294~+0.335 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.8254 | ± 0.0820 (seeds) | +0.8370 | +0.815~+0.889 | 5.11 | 3 | 20 |
-| KV4+S6 | 4.9960 | ± 0.0694 (seeds) | +2.0077 | +1.950~+2.094 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.0358 | ± 0.0509 (seeds) | +0.0474 | +0.053~+0.070 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.0833 | ± 0.0619 (seeds) | +0.0949 | +0.097~+0.121 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.1955 | ± 0.0572 (seeds) | +0.2071 | +0.207~+0.236 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.5772 | ± 0.0607 (seeds) | +0.5888 | +0.574~+0.635 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.0701 | ± 0.0501 (seeds) | +0.0817 | +0.086~+0.106 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.1521 | ± 0.0531 (seeds) | +0.1637 | +0.163~+0.193 | 5.11 | 3 | 20 |
-| KV4+S6 | 3.4080 | ± 0.0492 (seeds) | +0.4196 | +0.411~+0.458 | 5.11 | 3 | 20 |
-| KV4+S6 | 4.1512 | ± 0.0836 (seeds) | +1.1629 | +1.132~+1.220 | 5.11 | 3 | 20 |
-| KV4+S6[EF] | 3.0505 | ± 0.0548 (seeds) | +0.0622 | +0.069~+0.084 | 5.11 | 3 | 20 |
-| KV4+S5 | 3.3777 | ± 0.0523 (seeds) | +0.3893 | +0.378~+0.430 | 4.52 | 3 | 20 |
-| KV4+S5[EF] | 3.1614 | ± 0.0595 (seeds) | +0.1731 | +0.172~+0.201 | 4.52 | 3 | 20 |
-| KV4+S4 | 4.0794 | ± 0.0717 (seeds) | +1.0911 | +1.059~+1.147 | 3.93 | 3 | 20 |
-| KV4+S4 | 6.3156 | ± 0.0750 (seeds) | +3.3272 | +3.225~+3.476 | 3.93 | 3 | 20 |
-| KV4+S4 | 8.2221 | ± 0.1129 (seeds) | +5.2337 | +5.115~+5.387 | 3.93 | 3 | 20 |
-| KV4+S4 | 10.9108 | ± 0.1141 (seeds) | +7.9224 | +7.750~+8.109 | 3.93 | 3 | 20 |
-| KV4+S4 | 4.0866 | ± 0.0835 (seeds) | +1.0983 | +1.082~+1.128 | 3.93 | 3 | 20 |
-| KV4+S4[Sgn] | 13.0067 | ± 0.0735 (seeds) | +10.0183 | +9.918~+10.147 | 3.93 | 3 | 20 |
-| KV4+S4 | 6.3156 | ± 0.0750 (seeds) | +3.3272 | +3.225~+3.476 | 3.93 | 3 | 20 |
-| KV4+S4 | 8.2221 | ± 0.1129 (seeds) | +5.2337 | +5.115~+5.387 | 3.93 | 3 | 20 |
-| KV4+S4 | 10.9108 | ± 0.1141 (seeds) | +7.9224 | +7.750~+8.109 | 3.93 | 3 | 20 |
-| KV4+S4 | 3.2781 | ± 0.0671 (seeds) | +0.2898 | +0.287~+0.320 | 3.93 | 3 | 20 |
-| KV4+S4 | 3.5033 | ± 0.0662 (seeds) | +0.5149 | +0.500~+0.559 | 3.93 | 3 | 20 |
-| KV4+S4 | 5.0265 | ± 0.0626 (seeds) | +2.0382 | +1.984~+2.125 | 3.93 | 3 | 20 |
-| KV4+S4 | 8.1244 | ± 0.1067 (seeds) | +5.1360 | +4.997~+5.296 | 3.93 | 3 | 20 |
-| KV4+S4 | 3.4933 | ± 0.0735 (seeds) | +0.5049 | +0.494~+0.545 | 3.93 | 3 | 20 |
-| KV4+S4 | 4.0039 | ± 0.0949 (seeds) | +1.0155 | +0.985~+1.075 | 3.93 | 3 | 20 |
-| KV4+S4 | 6.6089 | ± 0.0727 (seeds) | +3.6205 | +3.538~+3.735 | 3.93 | 3 | 20 |
-| KV4+S4 | 9.5837 | ± 0.1227 (seeds) | +6.5953 | +6.443~+6.771 | 3.93 | 3 | 20 |
-| KV4+S4[KVgn] | 4.0356 | ± 0.0837 (seeds) | +1.0472 | +1.015~+1.108 | 3.93 | 3 | 20 |
-| KV4+S4[EF] | 3.5397 | ± 0.0899 (seeds) | +0.5513 | +0.537~+0.595 | 3.93 | 3 | 20 |
-| KV3+fp | 3.1094 | ± 0.0521 (seeds) | +0.1211 | +0.125~+0.145 | 10.62 | 3 | 20 |
-| KV3+S8 | 3.1247 | ± 0.0530 (seeds) | +0.1363 | +0.139~+0.163 | 5.90 | 3 | 20 |
-| KV3+S8[EF] | 3.1134 | ± 0.0508 (seeds) | +0.1250 | +0.129~+0.150 | 5.90 | 3 | 20 |
-| KV3+S6 | 3.2636 | ± 0.0542 (seeds) | +0.2752 | +0.272~+0.308 | 4.72 | 3 | 20 |
-| KV3+S6[EF] | 3.1703 | ± 0.0549 (seeds) | +0.1819 | +0.181~+0.212 | 4.72 | 3 | 20 |
-| KV3+S5 | 3.5056 | ± 0.0656 (seeds) | +0.5172 | +0.502~+0.560 | 4.13 | 3 | 20 |
-| KV3+S5[EF] | 3.2938 | ± 0.0488 (seeds) | +0.3054 | +0.299~+0.340 | 4.13 | 3 | 20 |
-| KV3+S4 | 4.2840 | ± 0.0953 (seeds) | +1.2956 | +1.258~+1.359 | 3.54 | 3 | 20 |
-| KV3+S4[EF] | 3.7066 | ± 0.0953 (seeds) | +0.7182 | +0.700~+0.768 | 3.54 | 3 | 20 |
-| KV2+fp | 3.3914 | ± 0.0244 (seeds) | +0.4030 | +0.425~+0.470 | 10.22 | 3 | 20 |
-| KV2+S8 | 3.4021 | ± 0.0249 (seeds) | +0.4137 | +0.434~+0.482 | 5.51 | 3 | 20 |
-| KV2+S8[EF] | 3.4236 | ± 0.0562 (seeds) | +0.4353 | +0.424~+0.477 | 5.51 | 3 | 20 |
-| KV2+S6 | 3.6044 | ± 0.0560 (seeds) | +0.6160 | +0.601~+0.660 | 4.33 | 3 | 20 |
-| KV2+S6[EF] | 3.4954 | ± 0.0647 (seeds) | +0.5071 | +0.495~+0.549 | 4.33 | 3 | 20 |
-| KV2+S5 | 3.8869 | ± 0.0592 (seeds) | +0.8985 | +0.878~+0.950 | 3.74 | 3 | 20 |
-| KV2+S5[EF] | 3.6323 | ± 0.0461 (seeds) | +0.6440 | +0.627~+0.690 | 3.74 | 3 | 20 |
-| KV2+S4 | 4.7601 | ± 0.0531 (seeds) | +1.7718 | +1.772~+1.868 | 3.15 | 3 | 20 |
-| KV2+S4[EF] | 4.1517 | ± 0.0753 (seeds) | +1.1633 | +1.142~+1.215 | 3.15 | 3 | 20 |
+| fp | 2.9742 | ± 0.0494 (seeds) | +0.0000 | +0.000~+0.000 * | 15.73 | 3 | 20 |
+| fp+S8 | 2.9891 | ± 0.0505 (seeds) | +0.0149 | +0.010~+0.020 | 11.01 | 3 | 20 |
+| fp+S8[EF] | 2.9753 | ± 0.0492 (seeds) | +0.0012 | -0.000~+0.003 * | 11.01 | 3 | 20 |
+| fp+S6 | 3.1092 | ± 0.0522 (seeds) | +0.1351 | +0.122~+0.148 | 9.83 | 3 | 20 |
+| fp+S6[EF] | 3.0245 | ± 0.0522 (seeds) | +0.0504 | +0.044~+0.057 | 9.83 | 3 | 20 |
+| fp+S5 | 3.3457 | ± 0.0611 (seeds) | +0.3715 | +0.347~+0.395 | 9.24 | 3 | 20 |
+| fp+S5[EF] | 3.1203 | ± 0.0548 (seeds) | +0.1462 | +0.133~+0.158 | 9.24 | 3 | 20 |
+| fp+S4 | 4.0227 | ± 0.0931 (seeds) | +1.0485 | +1.001~+1.094 | 8.65 | 3 | 20 |
+| fp+S4[EF] | 3.4985 | ± 0.0841 (seeds) | +0.5243 | +0.495~+0.553 | 8.65 | 3 | 20 |
+| KV8+fp | 2.9739 | ± 0.0493 (seeds) | -0.0003 | -0.001~+0.000 * | 12.58 | 3 | 20 |
+| KV8+S8 | 2.9908 | ± 0.0498 (seeds) | +0.0167 | +0.012~+0.021 | 7.86 | 3 | 20 |
+| KV8+S8[EF] | 2.9757 | ± 0.0478 (seeds) | +0.0015 | -0.000~+0.003 * | 7.86 | 3 | 20 |
+| KV8+S6 | 3.1115 | ± 0.0508 (seeds) | +0.1374 | +0.124~+0.150 | 6.68 | 3 | 20 |
+| KV8+S6[EF] | 3.0214 | ± 0.0525 (seeds) | +0.0472 | +0.041~+0.054 | 6.68 | 3 | 20 |
+| KV8+S5 | 3.3370 | ± 0.0565 (seeds) | +0.3628 | +0.340~+0.387 | 6.09 | 3 | 20 |
+| KV8+S5[EF] | 3.1261 | ± 0.0478 (seeds) | +0.1519 | +0.139~+0.165 | 6.09 | 3 | 20 |
+| KV8+S4 | 4.0196 | ± 0.0816 (seeds) | +1.0454 | +0.999~+1.092 | 5.51 | 3 | 20 |
+| KV8+S4[EF] | 3.4883 | ± 0.0735 (seeds) | +0.5141 | +0.487~+0.541 | 5.51 | 3 | 20 |
+| KV4+fp | 3.0017 | ± 0.0489 (seeds) | +0.0275 | +0.024~+0.032 | 11.01 | 3 | 20 |
+| KV4+S8 | 3.0172 | ± 0.0493 (seeds) | +0.0430 | +0.035~+0.050 | 6.29 | 3 | 20 |
+| KV4+S8[EF] | 3.0036 | ± 0.0485 (seeds) | +0.0294 | +0.025~+0.034 | 6.29 | 3 | 20 |
+| KV4+S6 | 3.1391 | ± 0.0461 (seeds) | +0.1649 | +0.151~+0.179 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.2882 | ± 0.0553 (seeds) | +0.3140 | +0.294~+0.335 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.8254 | ± 0.0820 (seeds) | +0.8512 | +0.815~+0.889 | 5.11 | 3 | 20 |
+| KV4+S6 | 4.9960 | ± 0.0694 (seeds) | +2.0219 | +1.950~+2.094 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.1391 | ± 0.0461 (seeds) | +0.1649 | +0.151~+0.179 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.2882 | ± 0.0553 (seeds) | +0.3140 | +0.294~+0.335 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.8254 | ± 0.0820 (seeds) | +0.8512 | +0.815~+0.889 | 5.11 | 3 | 20 |
+| KV4+S6 | 4.9960 | ± 0.0694 (seeds) | +2.0219 | +1.950~+2.094 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.0358 | ± 0.0509 (seeds) | +0.0616 | +0.053~+0.070 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.0833 | ± 0.0619 (seeds) | +0.1091 | +0.097~+0.121 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.1955 | ± 0.0572 (seeds) | +0.2213 | +0.207~+0.236 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.5772 | ± 0.0607 (seeds) | +0.6030 | +0.574~+0.635 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.0701 | ± 0.0501 (seeds) | +0.0959 | +0.086~+0.106 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.1521 | ± 0.0531 (seeds) | +0.1779 | +0.163~+0.193 | 5.11 | 3 | 20 |
+| KV4+S6 | 3.4080 | ± 0.0492 (seeds) | +0.4338 | +0.411~+0.458 | 5.11 | 3 | 20 |
+| KV4+S6 | 4.1512 | ± 0.0836 (seeds) | +1.1771 | +1.132~+1.220 | 5.11 | 3 | 20 |
+| KV4+S6[EF] | 3.0505 | ± 0.0548 (seeds) | +0.0764 | +0.069~+0.084 | 5.11 | 3 | 20 |
+| KV4+S5 | 3.3777 | ± 0.0523 (seeds) | +0.4035 | +0.378~+0.430 | 4.52 | 3 | 20 |
+| KV4+S5[EF] | 3.1614 | ± 0.0595 (seeds) | +0.1873 | +0.172~+0.201 | 4.52 | 3 | 20 |
+| KV4+S4 | 4.0794 | ± 0.0717 (seeds) | +1.1053 | +1.059~+1.147 | 3.93 | 3 | 20 |
+| KV4+S4 | 6.3156 | ± 0.0750 (seeds) | +3.3414 | +3.225~+3.476 | 3.93 | 3 | 20 |
+| KV4+S4 | 8.2221 | ± 0.1129 (seeds) | +5.2479 | +5.115~+5.387 | 3.93 | 3 | 20 |
+| KV4+S4 | 10.9108 | ± 0.1141 (seeds) | +7.9366 | +7.750~+8.109 | 3.93 | 3 | 20 |
+| KV4+S4 | 4.0794 | ± 0.0717 (seeds) | +1.1053 | +1.059~+1.147 | 3.93 | 3 | 20 |
+| KV4+S4[Sgn] | 13.0067 | ± 0.0735 (seeds) | +10.0325 | +9.918~+10.147 | 3.93 | 3 | 20 |
+| KV4+S4 | 6.3156 | ± 0.0750 (seeds) | +3.3414 | +3.225~+3.476 | 3.93 | 3 | 20 |
+| KV4+S4 | 8.2221 | ± 0.1129 (seeds) | +5.2479 | +5.115~+5.387 | 3.93 | 3 | 20 |
+| KV4+S4 | 10.9108 | ± 0.1141 (seeds) | +7.9366 | +7.750~+8.109 | 3.93 | 3 | 20 |
+| KV4+S4 | 3.2781 | ± 0.0671 (seeds) | +0.3040 | +0.287~+0.320 | 3.93 | 3 | 20 |
+| KV4+S4 | 3.5033 | ± 0.0662 (seeds) | +0.5291 | +0.500~+0.559 | 3.93 | 3 | 20 |
+| KV4+S4 | 5.0265 | ± 0.0626 (seeds) | +2.0524 | +1.984~+2.125 | 3.93 | 3 | 20 |
+| KV4+S4 | 8.1244 | ± 0.1067 (seeds) | +5.1502 | +4.997~+5.296 | 3.93 | 3 | 20 |
+| KV4+S4 | 3.4933 | ± 0.0735 (seeds) | +0.5191 | +0.494~+0.545 | 3.93 | 3 | 20 |
+| KV4+S4 | 4.0039 | ± 0.0949 (seeds) | +1.0297 | +0.985~+1.075 | 3.93 | 3 | 20 |
+| KV4+S4 | 6.6089 | ± 0.0727 (seeds) | +3.6347 | +3.538~+3.735 | 3.93 | 3 | 20 |
+| KV4+S4 | 9.5837 | ± 0.1227 (seeds) | +6.6095 | +6.443~+6.771 | 3.93 | 3 | 20 |
+| KV4+S4[KVgn] | 4.0356 | ± 0.0837 (seeds) | +1.0614 | +1.015~+1.108 | 3.93 | 3 | 20 |
+| KV4+S4[EF] | 3.5397 | ± 0.0899 (seeds) | +0.5655 | +0.537~+0.595 | 3.93 | 3 | 20 |
+| KV3+fp | 3.1094 | ± 0.0521 (seeds) | +0.1353 | +0.125~+0.145 | 10.62 | 3 | 20 |
+| KV3+S8 | 3.1247 | ± 0.0530 (seeds) | +0.1505 | +0.139~+0.163 | 5.90 | 3 | 20 |
+| KV3+S8[EF] | 3.1134 | ± 0.0508 (seeds) | +0.1392 | +0.129~+0.150 | 5.90 | 3 | 20 |
+| KV3+S6 | 3.2636 | ± 0.0542 (seeds) | +0.2894 | +0.272~+0.308 | 4.72 | 3 | 20 |
+| KV3+S6[EF] | 3.1703 | ± 0.0549 (seeds) | +0.1961 | +0.181~+0.212 | 4.72 | 3 | 20 |
+| KV3+S5 | 3.5056 | ± 0.0656 (seeds) | +0.5314 | +0.502~+0.560 | 4.13 | 3 | 20 |
+| KV3+S5[EF] | 3.2938 | ± 0.0488 (seeds) | +0.3197 | +0.299~+0.340 | 4.13 | 3 | 20 |
+| KV3+S4 | 4.2840 | ± 0.0953 (seeds) | +1.3098 | +1.258~+1.359 | 3.54 | 3 | 20 |
+| KV3+S4[EF] | 3.7066 | ± 0.0953 (seeds) | +0.7324 | +0.700~+0.768 | 3.54 | 3 | 20 |
+| KV2+fp | 3.4136 | ± 0.0613 (seeds) | +0.4394 | +0.416~+0.464 | 10.22 | 3 | 20 |
+| KV2+S8 | 3.4222 | ± 0.0589 (seeds) | +0.4481 | +0.425~+0.475 | 5.51 | 3 | 20 |
+| KV2+S8[EF] | 3.4236 | ± 0.0562 (seeds) | +0.4495 | +0.424~+0.477 | 5.51 | 3 | 20 |
+| KV2+S6 | 3.6044 | ± 0.0560 (seeds) | +0.6302 | +0.601~+0.660 | 4.33 | 3 | 20 |
+| KV2+S6[EF] | 3.4954 | ± 0.0647 (seeds) | +0.5213 | +0.495~+0.549 | 4.33 | 3 | 20 |
+| KV2+S5 | 3.8869 | ± 0.0592 (seeds) | +0.9127 | +0.878~+0.950 | 3.74 | 3 | 20 |
+| KV2+S5[EF] | 3.6323 | ± 0.0461 (seeds) | +0.6582 | +0.627~+0.690 | 3.74 | 3 | 20 |
+| KV2+S4 | 4.7861 | ± 0.0933 (seeds) | +1.8120 | +1.759~+1.864 | 3.15 | 3 | 20 |
+| KV2+S4[EF] | 4.1517 | ± 0.0753 (seeds) | +1.1775 | +1.142~+1.215 | 3.15 | 3 | 20 |
 
 \* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
 
@@ -258,26 +246,6 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 | KV4+S4[EF] | 2.3334 | ± 0.0395 (seeds) | +0.1639 | +0.146~+0.182 | 10.49 | 3 | 20 |
 | KV2+S8 | 2.3003 | ± 0.0381 (seeds) | +0.1308 | +0.119~+0.144 | 14.68 | 3 | 20 |
 | KV2+S8[EF] | 2.3022 | ± 0.0382 (seeds) | +0.1328 | +0.121~+0.145 | 14.68 | 3 | 20 |
-
-\* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
-
-### Falcon-H1-1.5B-Instruct / wikitext2
-| 셀 (cell) | 평균 NLL (mean NLL) | ± std (시드/문서) | Δ vs fp (delta) | 95% CI (paired bootstrap) | 총 메모리 MB, T=512 (memory) | 시드 (seeds) | 문서/시드 (docs) |
-|---|---|---|---|---|---|---|---|
-| fp | 5.8905 | ± 0.0384 (seeds) | +0.0000 | +0.000~+0.000 * | 50.33 | 3 | 20 |
-| fp+S8 | 5.8908 | ± 0.0315 (seeds) | +0.0003 | -0.006~+0.007 * | 31.46 | 3 | 20 |
-| fp+S8[EF] | 5.8939 | ± 0.0391 (seeds) | +0.0034 | +0.002~+0.005 | 31.46 | 3 | 20 |
-| fp+S6 | 5.8869 | ± 0.0250 (seeds) | -0.0036 | -0.018~+0.012 * | 26.74 | 3 | 20 |
-| fp+S6[EF] | 5.8987 | ± 0.0360 (seeds) | +0.0082 | +0.002~+0.014 | 26.74 | 3 | 20 |
-| fp+S4 | 5.8603 | ± 0.0505 (seeds) | -0.0302 | -0.069~+0.010 * | 22.02 | 3 | 20 |
-| fp+S4[EF] | 5.8930 | ± 0.0305 (seeds) | +0.0025 | -0.014~+0.018 * | 22.02 | 3 | 20 |
-| KV4+fp | 5.8807 | ± 0.0328 (seeds) | -0.0098 | -0.019~-0.001 | 40.89 | 3 | 20 |
-| KV4+S6 | 5.8802 | ± 0.0189 (seeds) | -0.0103 | -0.026~+0.005 * | 17.30 | 3 | 20 |
-| KV4+S6[EF] | 5.8905 | ± 0.0307 (seeds) | +0.0000 | -0.011~+0.011 * | 17.30 | 3 | 20 |
-| KV4+S4 | 5.8506 | ± 0.0468 (seeds) | -0.0399 | -0.072~-0.008 | 12.58 | 3 | 20 |
-| KV4+S4[EF] | 5.8869 | ± 0.0273 (seeds) | -0.0036 | -0.020~+0.013 * | 12.58 | 3 | 20 |
-| KV2+S8 | 5.9998 | ± 0.0362 (seeds) | +0.1093 | +0.062~+0.164 | 20.45 | 3 | 20 |
-| KV2+S8[EF] | 6.0054 | ± 0.0332 (seeds) | +0.1149 | +0.069~+0.169 | 20.45 | 3 | 20 |
 
 \* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
 
@@ -363,35 +331,27 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 | Qwen/Qwen3.5-4B | KV4+S4[EF] | True | 4 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
 
 ## [KR/EN] 그림 목록
-- `results/figures/all/superadd_bars_Qwen3.5-0.8B.pdf` / `.png`: 셀별 ΔNLL 막대(95% CI)와 fp+ΔKV+ΔS 예측값(점선), 차이가 초과분 / dNLL per cell (95% CI) with the additive prediction fp+dKV+dS (dotted); the gap is the excess
-- `results/figures/all/superadd_hist_Qwen3.5-0.8B.pdf` / `.png`: 문서별 초과분 히스토그램 / Histogram of the per-document excess
-- `results/figures/all/superadd_noise_Qwen3.5-0.8B.pdf` / `.png`: noise_match 조건과 실제 양자화 조건의 문서별 NLL 대응(대각선 = 동일) / Per-document NLL, noise-match versus real quantization (diagonal = equal)
 - `results/figures/all/ablation_Qwen3.5-0.8B.pdf` / `.png`: state 양자화 포맷 ablation: group 크기 × (symmetric, stochastic), 셀별 패널 / State-format ablation: group size x (symmetric, stochastic), one panel per cell
 - `results/figures/all/heatmap_Qwen3.5-0.8B.pdf` / `.png`: Qwen3.5-0.8B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-0.8B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
 - `results/figures/all/lines_Qwen3.5-0.8B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
-- `results/figures/all/pareto_Qwen3.5-0.8B.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/all/pareto_Qwen3.5-0.8B.pdf` / `.png`: 총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint / Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint
 - `results/figures/all/curves_Qwen3.5-0.8B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
 - `results/figures/all/violin_Qwen3.5-0.8B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
 - `results/figures/all/heatmap_Qwen3.5-2B.pdf` / `.png`: Qwen3.5-2B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-2B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
 - `results/figures/all/lines_Qwen3.5-2B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
-- `results/figures/all/pareto_Qwen3.5-2B.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/all/pareto_Qwen3.5-2B.pdf` / `.png`: 총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint / Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint
 - `results/figures/all/curves_Qwen3.5-2B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
 - `results/figures/all/violin_Qwen3.5-2B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
 - `results/figures/all/heatmap_Qwen3.5-4B.pdf` / `.png`: Qwen3.5-4B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-4B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
 - `results/figures/all/lines_Qwen3.5-4B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
-- `results/figures/all/pareto_Qwen3.5-4B.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/all/pareto_Qwen3.5-4B.pdf` / `.png`: 총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint / Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint
 - `results/figures/all/curves_Qwen3.5-4B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
 - `results/figures/all/violin_Qwen3.5-4B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
 - `results/figures/all/heatmap_Qwen3.5-9B.pdf` / `.png`: Qwen3.5-9B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-9B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
 - `results/figures/all/lines_Qwen3.5-9B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
-- `results/figures/all/pareto_Qwen3.5-9B.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/all/pareto_Qwen3.5-9B.pdf` / `.png`: 총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint / Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint
 - `results/figures/all/curves_Qwen3.5-9B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
 - `results/figures/all/violin_Qwen3.5-9B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
-- `results/figures/all/heatmap_Falcon-H1-1.5B-Instruct.pdf` / `.png`: Falcon-H1-1.5B-Instruct KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Falcon-H1-1.5B-Instruct: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
-- `results/figures/all/lines_Falcon-H1-1.5B-Instruct.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
-- `results/figures/all/pareto_Falcon-H1-1.5B-Instruct.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
-- `results/figures/all/curves_Falcon-H1-1.5B-Instruct.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
-- `results/figures/all/violin_Falcon-H1-1.5B-Instruct.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
 - `results/figures/all/scale.pdf` / `.png`: 모델 크기별 ΔNLL, 셀별 선, Falcon-H1은 삼각형 / dNLL versus model size per cell; Falcon-H1 as triangles
 - `results/figures/all/layer_bars_Qwen3.5-0.8B.pdf` / `.png`: 레이어 하나씩만 state 양자화했을 때의 ΔNLL / dNLL when only one layer's state is quantized
 - `results/figures/all/layer_halflife_Qwen3.5-0.8B.pdf` / `.png`: 오차 반감 토큰 수 n_half 대 ΔNLL 산점도, 회귀선, Spearman/Pearson(순열 p값) / Error half-life n_half versus dNLL with regression line; Spearman/Pearson with permutation p-values
@@ -409,11 +369,11 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 - `results/figures/all/summary_overview.pdf` / `.png`: 대표 그림 8장 개요 / Overview of eight representative figures
 
 ## 조건
-- 모델 (models): Qwen/Qwen3.5-0.8B, Qwen/Qwen3.5-2B, Qwen/Qwen3.5-4B, Qwen/Qwen3.5-9B, tiiuae/Falcon-H1-1.5B-Instruct
+- 모델 (models): Qwen/Qwen3.5-0.8B, Qwen/Qwen3.5-2B, Qwen/Qwen3.5-4B, Qwen/Qwen3.5-9B
 - GPU: NVIDIA A100-SXM4-40GB
 - dtype: bfloat16
-- commit: 0490bb2, 1f517a6, 4f6674b, 527bfa3, 569541d, 654fd48, 7fea085, 935f3ad, 9bb281c, a971d8d, b944556, cae4f7a, cbd6f92, e33cb9f
+- commit: 0490bb2, 1f517a6, 4f6674b, 527bfa3, 569541d, 7fea085, 935f3ad, 9bb281c, a971d8d, b944556, cae4f7a, e33cb9f
 - 날짜 (dates): 2026-10-14
-- 시드 수 (seeds): 3, 문서 수/시드 (docs): [2, 8, 20], 행 (rows): 3120
-- 입력 파일 (sources): grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_falcon_1.5b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, smoke_0.8b.jsonl, smoke_0.8b_mps.jsonl, superadd_0.8b.jsonl
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [8, 20], 행 (rows): 3044
+- 입력 파일 (sources): grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, superadd_0.8b.jsonl
 - 실패/건너뜀 기록 (failures): see results/push_failures.log

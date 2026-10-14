@@ -46,7 +46,7 @@ def _core(agg: pd.DataFrame) -> pd.DataFrame:
 def grid_heatmap(agg: pd.DataFrame, model: str, out_dir: Path):
     sub = agg[(agg.model == model) & (~agg.kv_noise_match) & (~agg.state_noise_match)]
     panels = [(False, "EF off")] + ([(True, "EF on")] if sub.error_feedback.any() else [])
-    fig, axes = plt.subplots(1, len(panels), figsize=(4.4 * len(panels), 3.6), squeeze=False)
+    fig, axes = plt.subplots(1, len(panels), figsize=(4.6 * len(panels), 3.6), squeeze=False, layout="constrained")
     vmax = np.nanmax(np.abs(sub.delta.values)) if len(sub) else 1
     for ax, (ef, title) in zip(axes[0], panels):
         s = sub[sub.error_feedback == ef] if ef else sub[(~sub.error_feedback) | (sub.state_bits >= 16)]
@@ -62,7 +62,7 @@ def grid_heatmap(agg: pd.DataFrame, model: str, out_dir: Path):
                 v = pv.values[i, j]
                 if np.isfinite(v):
                     ax.text(j, i, f"{v:+.3f}", ha="center", va="center", fontsize=8)
-        fig.colorbar(im, ax=ax, shrink=0.8, label="dNLL (nats)")
+        fig.colorbar(im, ax=ax, shrink=0.8, label="dNLL (nats)" if ax is axes[0][-1] else None)
     base = _save(fig, out_dir, f"heatmap_{short_model(model)}")
     return base, f"{short_model(model)} KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on", \
         f"{short_model(model)}: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on"
@@ -317,11 +317,26 @@ def layer_sweep_figures(df: pd.DataFrame, stage: str, out_dir: Path):
 # ================================================================ ablation
 
 
+def drop_duplicate_group(sub: pd.DataFrame) -> pd.DataFrame:
+    """group = -1 means one scale per state row; when d_v equals an explicit group size (128 for Qwen3.5) the two
+    settings are identical and the -1 rows are dropped so figures and tables do not show the same bars twice."""
+    if (sub.state_group < 0).any():
+        keys = ["kv_bits", "state_bits", "state_sym", "state_sr", "error_feedback"]
+        neg = sub[sub.state_group < 0].set_index(keys).delta
+        for g in sorted(sub.state_group[sub.state_group > 0].unique()):
+            pos = sub[sub.state_group == g].set_index(keys).delta
+            common = neg.index.intersection(pos.index)
+            if len(common) and np.allclose(neg[common].values, pos[common].values, atol=1e-9):
+                return sub[sub.state_group >= 0]
+    return sub
+
+
 def ablation_figures(df: pd.DataFrame, stage: str, out_dir: Path):
     agg = aggregate_grid(df)
     out = []
     for model in sorted(agg.model.unique()):
         sub = agg[(agg.model == model) & (agg.state_bits < 16)]
+        sub = drop_duplicate_group(sub)
         cells = sorted({(a, b) for a, b in zip(sub.kv_bits, sub.state_bits)})
         if not cells:
             continue

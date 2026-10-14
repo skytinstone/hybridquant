@@ -188,7 +188,8 @@ def build_report(stage: str, inputs: list[str], out_path: str) -> str:
         if any("superadd" in s for s in srcs):
             figs += F.superadd_figures(kinds["grid"][kinds["grid"].source.str.contains("superadd")], stage, fig_dir)
         if any("ablation" in s for s in srcs):
-            figs += F.ablation_figures(kinds["grid"][kinds["grid"].source.str.contains("ablation")], stage, fig_dir)
+            # the ablation config has no fp cell; keep the fp rows borrowed from the matching grid so deltas exist
+            figs += F.ablation_figures(kinds["grid"][kinds["grid"].source.str.contains("ablation|fp borrowed")], stage, fig_dir)
         rest = kinds["grid"][~kinds["grid"].source.str.contains("superadd|ablation|fp borrowed")]   # borrowed fp rows only serve the deltas
         if len(rest):
             figs += F.grid_figures(rest, stage, fig_dir)
