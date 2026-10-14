@@ -89,28 +89,36 @@ def grid_lines(agg: pd.DataFrame, model: str, out_dir: Path):
 
 
 def grid_pareto(agg: pd.DataFrame, model: str, out_dir: Path):
+    """Memory versus dNLL at T = 512, 4k and 32k (one panel each); the Pareto front is drawn per panel."""
+    from common import PARETO_T
     sub = agg[(agg.model == model) & (~agg.kv_noise_match) & (~agg.state_noise_match) & agg.mem_bytes_T512.notna()]
     if sub.empty or sub.mem_bytes_T512.isna().all():
         return None
-    fig, ax = plt.subplots(figsize=(5.5, 3.8))
+    Ts = [T for T in PARETO_T if f"mem_bytes_T{T}" in sub.columns]
+    fig, axes = plt.subplots(1, len(Ts), figsize=(3.6 * len(Ts), 3.6), sharey=True)
+    axes = np.atleast_1d(axes)
     markers = {"fp": "*", "KV-only": "s", "state-only": "^", "joint": "o"}
-    for t, m in markers.items():
-        s = sub[sub.type == t]
-        if s.empty:
-            continue
-        ax.scatter(s.mem_bytes_T512 / 1e6, s.delta, marker=m, s=45, label=t,
-                   c=["C3" if ef else "C0" for ef in s.error_feedback], edgecolors="k", linewidths=0.4)
-        for _, r in s.iterrows():
-            ax.annotate(r.cell, (r.mem_bytes_T512 / 1e6, r.delta), fontsize=6, xytext=(3, 2), textcoords="offset points")
-    pts = [(r.mem_bytes_T512 / 1e6, r.delta) for _, r in sub.iterrows() if np.isfinite(r.delta)]
-    front = sorted(p for p in pts if not any((q[0] <= p[0] and q[1] <= p[1] and q != p) for q in pts))
-    if len(front) >= 2:
-        ax.plot([p[0] for p in front], [p[1] for p in front], "k--", lw=1, label="Pareto front")
-    ax.set_xlabel("total cache memory at T=512 (MB, bits x elements)"); ax.set_ylabel("dNLL vs fp (nats)")
-    ax.set_title(f"{short_model(model)}: memory vs accuracy (blue EF off, red EF on)"); ax.legend(fontsize=7)
+    for ax, T in zip(axes, Ts):
+        col = f"mem_bytes_T{T}"
+        for t, m in markers.items():
+            s_ = sub[sub.type == t]
+            if s_.empty:
+                continue
+            ax.scatter(s_[col] / 1e6, s_.delta, marker=m, s=40, label=t,
+                       c=["C3" if ef else "C0" for ef in s_.error_feedback], edgecolors="k", linewidths=0.4)
+            for _, r in s_.iterrows():
+                ax.annotate(r.cell, (r[col] / 1e6, r.delta), fontsize=5.5, xytext=(3, 2), textcoords="offset points")
+        pts = [(r[col] / 1e6, r.delta) for _, r in sub.iterrows() if np.isfinite(r.delta)]
+        front = sorted(p for p in pts if not any((q[0] <= p[0] and q[1] <= p[1] and q != p) for q in pts))
+        if len(front) >= 2:
+            ax.plot([p[0] for p in front], [p[1] for p in front], "k--", lw=1, label="Pareto front")
+        ax.set_xlabel(f"total cache memory at T={T if T < 1024 else str(T // 1024) + 'k'} (MB)")
+        ax.set_title(f"T = {T:,}", fontsize=9)
+    axes[0].set_ylabel("dNLL vs fp (nats)"); axes[0].legend(fontsize=6.5)
+    fig.suptitle(f"{short_model(model)}: memory vs accuracy (blue EF off, red EF on)", fontsize=10)
     base = _save(fig, out_dir, f"pareto_{short_model(model)}")
-    return base, "총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint", \
-        "Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint"
+    return base, "총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint", \
+        "Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint"
 
 
 def grid_curves(df: pd.DataFrame, model: str, out_dir: Path, window: int = 16):
