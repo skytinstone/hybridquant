@@ -19,7 +19,8 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import FP_LABEL, ROOT, T_BUDGET, aggregate_grid, bootstrap_ci, ci_contains_zero, fmt_ci, load_jsonl, \
+from common import FP_LABEL, ROOT, T_BUDGET, aggregate_grid, bootstrap_ci, borrow_fp_rows, ci_contains_zero, \
+    drop_cross_file_duplicates, fmt_ci, load_jsonl, \
     run_conditions, short_model, spearman, split_by_kind  # noqa: E402
 import figures as F  # noqa: E402
 
@@ -171,6 +172,12 @@ def df_to_md(t: pd.DataFrame, floatfmt: str = "{:.4f}") -> str:
 
 def build_report(stage: str, inputs: list[str], out_path: str) -> str:
     df = load_jsonl(inputs)
+    if len(df) and stage == "all":
+        # smoke runs (few docs, one seed) must not be pooled with the full grids of the same model
+        df = df[~df.source.str.startswith("smoke")].reset_index(drop=True)
+        df = drop_cross_file_duplicates(df)
+    if len(df):
+        df = borrow_fp_rows(df)
     fig_dir = FIG_ROOT / stage
     kr, en, tables, figs = [], [], [], []
     kinds = split_by_kind(df) if len(df) else {}
@@ -181,8 +188,9 @@ def build_report(stage: str, inputs: list[str], out_path: str) -> str:
         if any("superadd" in s for s in srcs):
             figs += F.superadd_figures(kinds["grid"][kinds["grid"].source.str.contains("superadd")], stage, fig_dir)
         if any("ablation" in s for s in srcs):
-            figs += F.ablation_figures(kinds["grid"][kinds["grid"].source.str.contains("ablation")], stage, fig_dir)
-        rest = kinds["grid"][~kinds["grid"].source.str.contains("superadd|ablation")]
+            # the ablation config has no fp cell; keep the fp rows borrowed from the matching grid so deltas exist
+            figs += F.ablation_figures(kinds["grid"][kinds["grid"].source.str.contains("ablation|fp borrowed")], stage, fig_dir)
+        rest = kinds["grid"][~kinds["grid"].source.str.contains("superadd|ablation|fp borrowed")]   # borrowed fp rows only serve the deltas
         if len(rest):
             figs += F.grid_figures(rest, stage, fig_dir)
         if stage == "all":

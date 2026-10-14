@@ -1,5 +1,5 @@
 # Report: r2_gsm8k_4b
-generated 2026-10-14T22:54:42+00:00 from r2_gsm8k_4b.jsonl
+generated 2026-10-14T22:56:38+00:00 from r2_gsm8k_4b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-4B GSM8K fp 정답률 0.600 (문제 200개, 95% CI 0.535~0.665), 평균 생성 토큰 2912, 예산 소진율 0.48.

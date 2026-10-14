@@ -1,0 +1,14 @@
+\begin{tabular}{rrrllr}
+\toprule
+$b_{kv}$ & $b_s$ & Mem.\ (MB, \%) & $\Delta$NLL RTN [95\% CI] & $\Delta$NLL EF [95\% CI] & $n$ \\
+\midrule
+bf16 & bf16 & 41.9 (100) & $+0.000$ [+0.000, +0.000] & n/a & 3$\times$20 \\
+bf16 & 8 & 29.4 (70) & $+0.004$ [+0.001, +0.007] & $-0.000$ [-0.002, +0.001] & 3$\times$20 \\
+bf16 & 6 & 26.2 (62) & $+0.088$ [+0.078, +0.097] & $+0.037$ [+0.030, +0.045] & 3$\times$20 \\
+bf16 & 4 & 23.1 (55) & $+0.825$ [+0.751, +0.902] & $+0.476$ [+0.437, +0.518] & 3$\times$20 \\
+4 & bf16 & 29.4 (70) & $+0.001$ [-0.003, +0.004] & n/a & 3$\times$20 \\
+4 & 6 & 13.6 (32) & $+0.091$ [+0.081, +0.101] & $+0.044$ [+0.036, +0.053] & 3$\times$20 \\
+2 & 8 & 14.7 (35) & $+0.258$ [+0.239, +0.279] & $+0.258$ [+0.240, +0.278] & 3$\times$20 \\
+\bottomrule
+\end{tabular}
+% Qwen3.5-4B, WikiText-2: core and recipe cells. Memory = bits x elements / 8 at T = 512 without scale/zero overhead; n = seeds x documents per cell.

@@ -1,0 +1,20 @@
+# Round 3 GSM8K: the S8+EF cell missing from round 2 (tests the claim that EF repairs INT8-state reasoning). Same subset and sampling.
+# Sampling follows the Qwen3.5 model card, thinking mode for text tasks: temperature 1.0, top_p 0.95, top_k 20, min_p 0.
+# presence_penalty 1.5 from the card is not available in transformers.generate and is omitted.
+model: Qwen/Qwen3.5-4B
+dtype: auto
+dataset: gsm8k
+n_problems: 200
+subset_seed: 0
+subset_file: results/gsm8k_subset200.json
+thinking: true
+max_new_tokens: 4096
+temperature: 1.0
+top_p: 0.95
+top_k: 20
+min_p: 0.0
+batch_size: 8
+cells:
+- {kv_bits: 16, state_bits: 8, error_feedback: true}
+seeds: [0]
+out: results/r3_gsm8k_s8ef_4b.jsonl

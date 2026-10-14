@@ -1,5 +1,5 @@
 # Report: r2_niah_4b
-generated 2026-10-14T13:51:08+00:00 from r2_niah_4b.jsonl
+generated 2026-10-14T22:56:38+00:00 from r2_niah_4b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-4B NIAH 컨텍스트 4096: fp 정확도 1.00 (문제 50개), 가장 낮은 셀 KV2+fp 0.94.

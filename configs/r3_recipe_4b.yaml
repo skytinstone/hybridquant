@@ -1,0 +1,17 @@
+# Round 3 recipe cells on Qwen3.5-4B that the paper quotes but round 1 did not run: (KV4,S8), (KV8,S8) and the
+# (KV4,S6) pair, EF off/on, same documents and seeds as grid_4b_core so they merge into one table.
+model: Qwen/Qwen3.5-4B
+dtype: auto
+cells:
+  - {kv_bits: 4, state_bits: 8}
+  - {kv_bits: 8, state_bits: 8}
+  - {kv_bits: 4, state_bits: 4}
+state_error_feedback: [false, true]
+seeds: [0, 1, 2]
+n_docs: 20
+prefill: 256
+decode: 256
+step: 1
+batch_size: 8
+dataset: wikitext2
+out: results/r3_recipe_4b.jsonl

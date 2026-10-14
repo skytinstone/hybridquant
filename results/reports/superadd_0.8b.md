@@ -1,5 +1,5 @@
 # Report: superadd_0.8b
-generated 2026-10-14T13:50:20+00:00 from superadd_0.8b.jsonl
+generated 2026-10-14T22:56:20+00:00 from superadd_0.8b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-0.8B / wikitext2: fp 베이스라인 mean NLL 2.974 (시드 3개, 문서 20개/시드).

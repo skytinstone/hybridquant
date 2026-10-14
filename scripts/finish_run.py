@@ -43,7 +43,7 @@ for p in sorted(glob.glob(f"{REPO}/results/*.jsonl")):
 # (2) 시작된 모든 단계의 보고서와 그림, 전체 요약 재생성 (FAILED 로 끝났다가 이어 돌린 단계도 포함합니다)
 print("\n[2] 보고서 재생성")
 stages = []
-for lg in ("round1.log", "round2.log"):
+for lg in ("round1.log", "round2.log", "round3.log"):
     p = f"{REPO}/results/{lg}"
     if os.path.exists(p):
         stages += [m.group(1) for l in open(p) for m in [re.search(r"=== step (\S+):", l)] if m]
@@ -76,6 +76,10 @@ if tok:
 subprocess.run(["git", "-C", REPO, "add", "results"])
 c = subprocess.run(["git", "-C", REPO, "commit", "-q", "-m", "results: final (dedupe, regenerated reports and figures)"], capture_output=True, text=True)
 print("  commit:", (c.stdout + c.stderr).strip() or "ok")
+# code may have been merged into main meanwhile; rebase the results commits on top so the push is a fast-forward
+pr = subprocess.run(["git", "-C", REPO, "pull", "--rebase", "-q", "origin", "main"], capture_output=True, text=True)
+if pr.returncode != 0:
+    print("  pull --rebase failed:", (pr.stdout + pr.stderr).strip()[-300:])
 p = subprocess.run(["git", "-C", REPO, "push", "origin", "HEAD"], capture_output=True, text=True)
 msg = (p.stdout + p.stderr).strip()
 print("  push:", "ok" if p.returncode == 0 else "FAILED", (msg.replace(tok, "***") if tok else msg)[-300:])

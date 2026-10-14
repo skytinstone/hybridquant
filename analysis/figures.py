@@ -46,7 +46,7 @@ def _core(agg: pd.DataFrame) -> pd.DataFrame:
 def grid_heatmap(agg: pd.DataFrame, model: str, out_dir: Path):
     sub = agg[(agg.model == model) & (~agg.kv_noise_match) & (~agg.state_noise_match)]
     panels = [(False, "EF off")] + ([(True, "EF on")] if sub.error_feedback.any() else [])
-    fig, axes = plt.subplots(1, len(panels), figsize=(4.4 * len(panels), 3.6), squeeze=False)
+    fig, axes = plt.subplots(1, len(panels), figsize=(4.6 * len(panels), 3.6), squeeze=False, layout="constrained")
     vmax = np.nanmax(np.abs(sub.delta.values)) if len(sub) else 1
     for ax, (ef, title) in zip(axes[0], panels):
         s = sub[sub.error_feedback == ef] if ef else sub[(~sub.error_feedback) | (sub.state_bits >= 16)]
@@ -62,7 +62,7 @@ def grid_heatmap(agg: pd.DataFrame, model: str, out_dir: Path):
                 v = pv.values[i, j]
                 if np.isfinite(v):
                     ax.text(j, i, f"{v:+.3f}", ha="center", va="center", fontsize=8)
-        fig.colorbar(im, ax=ax, shrink=0.8, label="dNLL (nats)")
+        fig.colorbar(im, ax=ax, shrink=0.8, label="dNLL (nats)" if ax is axes[0][-1] else None)
     base = _save(fig, out_dir, f"heatmap_{short_model(model)}")
     return base, f"{short_model(model)} KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on", \
         f"{short_model(model)}: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on"
@@ -89,28 +89,36 @@ def grid_lines(agg: pd.DataFrame, model: str, out_dir: Path):
 
 
 def grid_pareto(agg: pd.DataFrame, model: str, out_dir: Path):
+    """Memory versus dNLL at T = 512, 4k and 32k (one panel each); the Pareto front is drawn per panel."""
+    from common import PARETO_T
     sub = agg[(agg.model == model) & (~agg.kv_noise_match) & (~agg.state_noise_match) & agg.mem_bytes_T512.notna()]
     if sub.empty or sub.mem_bytes_T512.isna().all():
         return None
-    fig, ax = plt.subplots(figsize=(5.5, 3.8))
+    Ts = [T for T in PARETO_T if f"mem_bytes_T{T}" in sub.columns]
+    fig, axes = plt.subplots(1, len(Ts), figsize=(3.6 * len(Ts), 3.6), sharey=True)
+    axes = np.atleast_1d(axes)
     markers = {"fp": "*", "KV-only": "s", "state-only": "^", "joint": "o"}
-    for t, m in markers.items():
-        s = sub[sub.type == t]
-        if s.empty:
-            continue
-        ax.scatter(s.mem_bytes_T512 / 1e6, s.delta, marker=m, s=45, label=t,
-                   c=["C3" if ef else "C0" for ef in s.error_feedback], edgecolors="k", linewidths=0.4)
-        for _, r in s.iterrows():
-            ax.annotate(r.cell, (r.mem_bytes_T512 / 1e6, r.delta), fontsize=6, xytext=(3, 2), textcoords="offset points")
-    pts = [(r.mem_bytes_T512 / 1e6, r.delta) for _, r in sub.iterrows() if np.isfinite(r.delta)]
-    front = sorted(p for p in pts if not any((q[0] <= p[0] and q[1] <= p[1] and q != p) for q in pts))
-    if len(front) >= 2:
-        ax.plot([p[0] for p in front], [p[1] for p in front], "k--", lw=1, label="Pareto front")
-    ax.set_xlabel("total cache memory at T=512 (MB, bits x elements)"); ax.set_ylabel("dNLL vs fp (nats)")
-    ax.set_title(f"{short_model(model)}: memory vs accuracy (blue EF off, red EF on)"); ax.legend(fontsize=7)
+    for ax, T in zip(axes, Ts):
+        col = f"mem_bytes_T{T}"
+        for t, m in markers.items():
+            s_ = sub[sub.type == t]
+            if s_.empty:
+                continue
+            ax.scatter(s_[col] / 1e6, s_.delta, marker=m, s=40, label=t,
+                       c=["C3" if ef else "C0" for ef in s_.error_feedback], edgecolors="k", linewidths=0.4)
+            for _, r in s_.iterrows():
+                ax.annotate(r.cell, (r[col] / 1e6, r.delta), fontsize=5.5, xytext=(3, 2), textcoords="offset points")
+        pts = [(r[col] / 1e6, r.delta) for _, r in sub.iterrows() if np.isfinite(r.delta)]
+        front = sorted(p for p in pts if not any((q[0] <= p[0] and q[1] <= p[1] and q != p) for q in pts))
+        if len(front) >= 2:
+            ax.plot([p[0] for p in front], [p[1] for p in front], "k--", lw=1, label="Pareto front")
+        ax.set_xlabel(f"total cache memory at T={T if T < 1024 else str(T // 1024) + 'k'} (MB)")
+        ax.set_title(f"T = {T:,}", fontsize=9)
+    axes[0].set_ylabel("dNLL vs fp (nats)"); axes[0].legend(fontsize=6.5)
+    fig.suptitle(f"{short_model(model)}: memory vs accuracy (blue EF off, red EF on)", fontsize=10)
     base = _save(fig, out_dir, f"pareto_{short_model(model)}")
-    return base, "총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint", \
-        "Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint"
+    return base, "총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint", \
+        "Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint"
 
 
 def grid_curves(df: pd.DataFrame, model: str, out_dir: Path, window: int = 16):
@@ -309,11 +317,26 @@ def layer_sweep_figures(df: pd.DataFrame, stage: str, out_dir: Path):
 # ================================================================ ablation
 
 
+def drop_duplicate_group(sub: pd.DataFrame) -> pd.DataFrame:
+    """group = -1 means one scale per state row; when d_v equals an explicit group size (128 for Qwen3.5) the two
+    settings are identical and the -1 rows are dropped so figures and tables do not show the same bars twice."""
+    if (sub.state_group < 0).any():
+        keys = ["kv_bits", "state_bits", "state_sym", "state_sr", "error_feedback"]
+        neg = sub[sub.state_group < 0].set_index(keys).delta
+        for g in sorted(sub.state_group[sub.state_group > 0].unique()):
+            pos = sub[sub.state_group == g].set_index(keys).delta
+            common = neg.index.intersection(pos.index)
+            if len(common) and np.allclose(neg[common].values, pos[common].values, atol=1e-9):
+                return sub[sub.state_group >= 0]
+    return sub
+
+
 def ablation_figures(df: pd.DataFrame, stage: str, out_dir: Path):
     agg = aggregate_grid(df)
     out = []
     for model in sorted(agg.model.unique()):
         sub = agg[(agg.model == model) & (agg.state_bits < 16)]
+        sub = drop_duplicate_group(sub)
         cells = sorted({(a, b) for a, b in zip(sub.kv_bits, sub.state_bits)})
         if not cells:
             continue
@@ -469,7 +492,8 @@ def scale_figure(grid_df: pd.DataFrame, out_dir: Path):
         if len(f):
             ax.scatter(f.size_b, f.delta, marker="^", s=60, color=cmap(i / max(1, len(cells) - 1)), edgecolors="k")
     ax.set_xscale("log"); ax.set_xlabel("model size (B parameters, log)"); ax.set_ylabel("dNLL vs fp (nats)")
-    ax.set_title("dNLL across model sizes (circles Qwen3.5, triangles Falcon-H1)"); ax.legend(fontsize=7, ncol=2)
+    has_falcon = agg.model.str.contains("Falcon").any()
+    ax.set_title("dNLL across model sizes" + (" (circles Qwen3.5, triangles Falcon-H1)" if has_falcon else " (Qwen3.5)")); ax.legend(fontsize=7, ncol=2)
     return _save(fig, out_dir, "scale"), "모델 크기별 ΔNLL, 셀별 선, Falcon-H1은 삼각형", \
         "dNLL versus model size per cell; Falcon-H1 as triangles"
 

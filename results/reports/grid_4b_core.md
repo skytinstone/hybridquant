@@ -1,5 +1,5 @@
 # Report: grid_4b_core
-generated 2026-10-14T13:50:31+00:00 from grid_4b_core.jsonl
+generated 2026-10-14T22:56:24+00:00 from grid_4b_core.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-4B / wikitext2: fp 베이스라인 mean NLL 2.384 (시드 3개, 문서 20개/시드).
@@ -37,7 +37,7 @@ generated 2026-10-14T13:50:31+00:00 from grid_4b_core.jsonl
 ## [KR/EN] 그림 목록
 - `results/figures/grid_4b_core/heatmap_Qwen3.5-4B.pdf` / `.png`: Qwen3.5-4B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-4B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
 - `results/figures/grid_4b_core/lines_Qwen3.5-4B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
-- `results/figures/grid_4b_core/pareto_Qwen3.5-4B.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/grid_4b_core/pareto_Qwen3.5-4B.pdf` / `.png`: 총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint / Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint
 - `results/figures/grid_4b_core/curves_Qwen3.5-4B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
 - `results/figures/grid_4b_core/violin_Qwen3.5-4B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
 

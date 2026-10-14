@@ -1,0 +1,21 @@
+# Round 3 long decode, 0.8B: does state error keep growing past 256 decode tokens? Core cells x EF off/on,
+# prefill 256 + decode 1024, 10 docs x 3 seeds (windows of 1280 tokens).
+model: Qwen/Qwen3.5-0.8B
+dtype: auto
+cells:
+  - {kv_bits: 16, state_bits: 16}
+  - {kv_bits: 4,  state_bits: 16}
+  - {kv_bits: 16, state_bits: 8}
+  - {kv_bits: 16, state_bits: 6}
+  - {kv_bits: 16, state_bits: 4}
+  - {kv_bits: 4,  state_bits: 6}
+  - {kv_bits: 4,  state_bits: 4}
+state_error_feedback: [false, true]
+seeds: [0, 1, 2]
+n_docs: 10
+prefill: 256
+decode: 1024
+step: 1
+batch_size: 10
+dataset: wikitext2
+out: results/r3_longdecode_0.8b.jsonl

@@ -14,6 +14,7 @@ FP_LABEL = "Kfp_Vfp_Sfp"
 N_BOOT = 1000
 BOOT_SEED = 0
 T_BUDGET = 512
+PARETO_T = (512, 4096, 32768)   # context lengths for the Pareto panels (paper sec. 4.4)
 CORE_CELLS = [(16, 16), (4, 16), (16, 8), (16, 4), (4, 4), (2, 8)]
 
 
@@ -64,6 +65,53 @@ def ensure_defaults(df: pd.DataFrame) -> pd.DataFrame:
     if "per_doc_nll" not in df:
         df["per_doc_nll"] = None
     return df
+
+
+def borrow_fp_rows(df: pd.DataFrame, results_dir: Path | None = None) -> pd.DataFrame:
+    """Grid rows whose (model, dataset) has no fp cell (e.g. the state-format ablation) get the fp rows of
+    another results file with the same model, dataset, prefill, decode and n_docs. Those runs use the same
+    documents and seeds (the loader is deterministic in the seed), so the paired deltas stay valid.
+    smoke files are never used as a source."""
+    if df.empty or not {"label", "kv_bits", "model"} <= set(df.columns):
+        return df
+    results_dir = Path(results_dir) if results_dir is not None else ROOT / "results"
+    need = set()
+    for (model, dataset), g in df.groupby(["model", "dataset"]):
+        if (g.label == FP_LABEL).any() or "layer_idx" in g.columns and g.layer_idx.notna().any():
+            continue
+        need.add((model, dataset, int(g.prefill.iloc[0]), int(g.decode.iloc[0]), int(g.n_docs.iloc[0])))
+    if not need:
+        return df
+    extra, seen = [], set()
+    for path in sorted(results_dir.glob("*.jsonl")):
+        if path.name.startswith("smoke"):
+            continue
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                if FP_LABEL not in line:
+                    continue
+                r = json.loads(line)
+                if r.get("label") != FP_LABEL or "kv_bits" not in r:
+                    continue
+                key = (r.get("model"), r.get("dataset", "wikitext2"), int(r.get("prefill", 0)), int(r.get("decode", 0)), int(r.get("n_docs", 0)))
+                dedup = key + (int(r.get("seed", 0)),)
+                if key in need and dedup not in seen:
+                    seen.add(dedup)
+                    r["source"] = f"{path.name} (fp borrowed)"
+                    extra.append(r)
+    if not extra:
+        return df
+    return ensure_defaults(pd.concat([df, ensure_defaults(pd.DataFrame(extra))], ignore_index=True))
+
+
+RUN_KEYS = ("model", "dataset", "label", "seed", "state_bits", "layer_idx", "context_len", "depth", "idx")
+
+
+def drop_cross_file_duplicates(df: pd.DataFrame) -> pd.DataFrame:
+    """One row per run across files (the stage "all" pools every results file; grid and superadd share fp
+    and corner cells with identical values). The first file in input order wins."""
+    keys = [k for k in RUN_KEYS if k in df.columns]
+    return df.drop_duplicates(subset=keys, keep="first").reset_index(drop=True) if keys else df
 
 
 def kind_of(df: pd.DataFrame) -> str:
@@ -176,6 +224,8 @@ def aggregate_grid(df: pd.DataFrame) -> pd.DataFrame:
             sizes_cache[model] = _sizes_for(model)
         sz = sizes_cache[model]
         mem = (int(r0.kv_bits) * sz["kv_per_token"] * T_BUDGET + int(r0.state_bits) * sz["state_elems"]) / 8 if sz else float("nan")
+        mem_T = {T: (int(r0.kv_bits) * sz["kv_per_token"] * T + int(r0.state_bits) * sz["state_elems"]) / 8 if sz else float("nan")
+                 for T in PARETO_T}
         rows.append({
             "model": model, "dataset": dataset, "label": label, "cell": cell_name(r0),
             "kv_bits": int(r0.kv_bits), "state_bits": int(r0.state_bits),
@@ -189,6 +239,7 @@ def aggregate_grid(df: pd.DataFrame) -> pd.DataFrame:
             "std_kind": "seeds" if per_seed.size > 1 else "docs",
             "delta": delta, "ci_lo": ci[0], "ci_hi": ci[1], "n_paired": len(deltas),
             "mem_bytes_T512": mem,
+            **{f"mem_bytes_T{T}": v for T, v in mem_T.items()},
         })
     return pd.DataFrame(rows)
 
