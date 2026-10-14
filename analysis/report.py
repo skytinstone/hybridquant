@@ -189,7 +189,7 @@ def build_report(stage: str, inputs: list[str], out_path: str) -> str:
             figs += F.superadd_figures(kinds["grid"][kinds["grid"].source.str.contains("superadd")], stage, fig_dir)
         if any("ablation" in s for s in srcs):
             figs += F.ablation_figures(kinds["grid"][kinds["grid"].source.str.contains("ablation")], stage, fig_dir)
-        rest = kinds["grid"][~kinds["grid"].source.str.contains("superadd|ablation")]
+        rest = kinds["grid"][~kinds["grid"].source.str.contains("superadd|ablation|fp borrowed")]   # borrowed fp rows only serve the deltas
         if len(rest):
             figs += F.grid_figures(rest, stage, fig_dir)
         if stage == "all":
