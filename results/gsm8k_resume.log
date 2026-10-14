@@ -1,0 +1,128 @@
+nohup: ignoring input
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+settings: {"model": "Qwen/Qwen3.5-4B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false], "cells": [{"kv_bits": 16, "state_bits": 16, "error_feedback": false}, {"kv_bits": 4, "state_bits": 16, "error_feedback": false}, {"kv_bits": 16, "state_bits": 8, "error_feedback": false}, {"kv_bits": 16, "state_bits": 6, "error_feedback": false}, {"kv_bits": 16, "state_bits": 4, "error_feedback": false}, {"kv_bits": 4, "state_bits": 6, "error_feedback": false}, {"kv_bits": 2, "state_bits": 8, "error_feedback": false}, {"kv_bits": 16, "state_bits": 6, "error_feedback": true}, {"kv_bits": 16, "state_bits": 4, "error_feedback": true}, {"kv_bits": 4, "state_bits": 6, "error_feedback": true}], "seeds": [0], "n_docs": 8, "prefill": 256, "decode": 256, "step": 1, "batch_size": 16, "dataset": "gsm8k", "out": "results/r2_gsm8k_4b.jsonl", "n_problems": 200, "subset_seed": 0, "subset_file": "results/gsm8k_subset200.json", "thinking": true, "max_new_tokens": 4096, "temperature": 1.0, "top_p": 0.95, "top_k": 20, "min_p": 0.0}
+200 problems from openai/gsm8k test (subset file results/gsm8k_subset200.json)
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:48,  3.91it/s]Loading weights:   6%|▋         | 27/426 [00:00<00:04, 93.27it/s]Loading weights:  11%|█         | 47/426 [00:00<00:03, 125.89it/s]Loading weights:  18%|█▊        | 78/426 [00:00<00:01, 184.06it/s]Loading weights:  24%|██▎       | 101/426 [00:00<00:01, 180.34it/s]Loading weights:  31%|███       | 132/426 [00:00<00:01, 210.94it/s]Loading weights:  36%|███▋      | 155/426 [00:00<00:01, 205.16it/s]Loading weights:  43%|████▎     | 184/426 [00:01<00:01, 228.63it/s]Loading weights:  49%|████▉     | 209/426 [00:01<00:01, 214.99it/s]Loading weights:  56%|█████▌    | 237/426 [00:01<00:00, 218.66it/s]Loading weights:  61%|██████    | 260/426 [00:01<00:00, 218.06it/s]Loading weights:  68%|██████▊   | 289/426 [00:01<00:00, 237.29it/s]Loading weights:  74%|███████▎  | 314/426 [00:01<00:00, 221.73it/s]Loading weights:  81%|████████  | 343/426 [00:01<00:00, 239.83it/s]Loading weights:  86%|████████▋ | 368/426 [00:01<00:00, 222.46it/s]Loading weights:  93%|█████████▎| 397/426 [00:01<00:00, 233.14it/s]Loading weights:  99%|█████████▉| 421/426 [00:02<00:00, 223.30it/s]Loading weights: 100%|██████████| 426/426 [00:02<00:00, 202.09it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+seed 0 Kfp_Vfp_Sfp: 0 to do, 200 done
+seed 0 Kint4g128_Vint4g128_Sfp: 0 to do, 200 done
+seed 0 Kfp_Vfp_Sint8g128: 168 to do, 32 done
+  problems 16/168 (301s/batch)
+  problems 32/168 (298s/batch)
+  problems 48/168 (299s/batch)
+  problems 64/168 (297s/batch)
+  problems 80/168 (298s/batch)
+  problems 96/168 (297s/batch)
+  problems 112/168 (298s/batch)
+  problems 128/168 (297s/batch)
+  problems 144/168 (297s/batch)
+  problems 160/168 (297s/batch)
+  problems 168/168 (292s/batch)
+seed 0 Kfp_Vfp_Sint8g128                  acc=0.351 on 168 new problems
+seed 0 Kfp_Vfp_Sint6g128: 200 to do, 0 done
+  problems 16/200 (298s/batch)
+  problems 32/200 (296s/batch)
+  problems 48/200 (297s/batch)
+  problems 64/200 (297s/batch)
+  problems 80/200 (299s/batch)
+  problems 96/200 (296s/batch)
+  problems 112/200 (296s/batch)
+  problems 128/200 (297s/batch)
+  problems 144/200 (299s/batch)
+  problems 160/200 (299s/batch)
+  problems 176/200 (298s/batch)
+  problems 192/200 (297s/batch)
+  problems 200/200 (292s/batch)
+seed 0 Kfp_Vfp_Sint6g128                  acc=0.105 on 200 new problems
+seed 0 Kfp_Vfp_Sint4g128: 200 to do, 0 done
+  problems 16/200 (297s/batch)
+  problems 32/200 (297s/batch)
+  problems 48/200 (298s/batch)
+  problems 64/200 (298s/batch)
+  problems 80/200 (298s/batch)
+  problems 96/200 (297s/batch)
+  problems 112/200 (298s/batch)
+  problems 128/200 (298s/batch)
+  problems 144/200 (299s/batch)
+  problems 160/200 (299s/batch)
+  problems 176/200 (297s/batch)
+  problems 192/200 (297s/batch)
+  problems 200/200 (292s/batch)
+seed 0 Kfp_Vfp_Sint4g128                  acc=0.045 on 200 new problems
+seed 0 Kint4g128_Vint4g128_Sint6g128: 200 to do, 0 done
+  problems 16/200 (317s/batch)
+  problems 32/200 (316s/batch)
+  problems 48/200 (317s/batch)
+  problems 64/200 (316s/batch)
+  problems 80/200 (316s/batch)
+  problems 96/200 (316s/batch)
+  problems 112/200 (316s/batch)
+  problems 128/200 (316s/batch)
+  problems 144/200 (316s/batch)
+  problems 160/200 (316s/batch)
+  problems 176/200 (316s/batch)
+  problems 192/200 (318s/batch)
+  problems 200/200 (313s/batch)
+seed 0 Kint4g128_Vint4g128_Sint6g128      acc=0.100 on 200 new problems
+seed 0 Kint2g128_Vint2g128_Sint8g128: 200 to do, 0 done
+  problems 16/200 (320s/batch)
+  problems 32/200 (320s/batch)
+  problems 48/200 (318s/batch)
+  problems 64/200 (318s/batch)
+  problems 80/200 (320s/batch)
+  problems 96/200 (318s/batch)
+  problems 112/200 (318s/batch)
+  problems 128/200 (320s/batch)
+  problems 144/200 (318s/batch)
+  problems 160/200 (317s/batch)
+  problems 176/200 (318s/batch)
+  problems 192/200 (320s/batch)
+  problems 200/200 (313s/batch)
+seed 0 Kint2g128_Vint2g128_Sint8g128      acc=0.030 on 200 new problems
+seed 0 Kfp_Vfp_Sint6g128ef: 200 to do, 0 done
+  problems 16/200 (304s/batch)
+  problems 32/200 (302s/batch)
+  problems 48/200 (303s/batch)
+  problems 64/200 (303s/batch)
+  problems 80/200 (305s/batch)
+  problems 96/200 (304s/batch)
+  problems 112/200 (303s/batch)
+  problems 128/200 (303s/batch)
+  problems 144/200 (304s/batch)
+  problems 160/200 (304s/batch)
+  problems 176/200 (303s/batch)
+  problems 192/200 (301s/batch)
+  problems 200/200 (296s/batch)
+seed 0 Kfp_Vfp_Sint6g128ef                acc=0.560 on 200 new problems
+seed 0 Kfp_Vfp_Sint4g128ef: 200 to do, 0 done
+  problems 16/200 (301s/batch)
+  problems 32/200 (301s/batch)
+  problems 48/200 (302s/batch)
+  problems 64/200 (302s/batch)
+  problems 80/200 (301s/batch)
+  problems 96/200 (300s/batch)
+  problems 112/200 (300s/batch)
+  problems 128/200 (301s/batch)
+  problems 144/200 (300s/batch)
+  problems 160/200 (300s/batch)
+  problems 176/200 (304s/batch)
+  problems 192/200 (305s/batch)
+  problems 200/200 (297s/batch)
+seed 0 Kfp_Vfp_Sint4g128ef                acc=0.345 on 200 new problems
+seed 0 Kint4g128_Vint4g128_Sint6g128ef: 200 to do, 0 done
+  problems 16/200 (322s/batch)
+  problems 32/200 (319s/batch)
+  problems 48/200 (319s/batch)
+  problems 64/200 (322s/batch)
+  problems 80/200 (322s/batch)
+  problems 96/200 (320s/batch)
+  problems 112/200 (321s/batch)
+  problems 128/200 (321s/batch)
+  problems 144/200 (320s/batch)
+  problems 160/200 (319s/batch)
+  problems 176/200 (319s/batch)
+  problems 192/200 (319s/batch)
+  problems 200/200 (314s/batch)
+seed 0 Kint4g128_Vint4g128_Sint6g128ef    acc=0.555 on 200 new problems
+done: results/r2_gsm8k_4b.jsonl

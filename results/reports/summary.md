@@ -1,5 +1,5 @@
 # Report: all
-generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_falcon_1.5b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, smoke_0.8b.jsonl, smoke_0.8b_mps.jsonl, superadd_0.8b.jsonl
+generated 2026-10-14T22:55:18+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_falcon_1.5b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, smoke_0.8b.jsonl, smoke_0.8b_mps.jsonl, superadd_0.8b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-0.8B / c4: fp 베이스라인 mean NLL 3.154 (시드 3개, 문서 20개/시드).
@@ -43,8 +43,15 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 - Qwen3.5-0.8B: 레이어 하나만 state int4로 양자화했을 때 ΔNLL 최대는 레이어 0 (+0.2175), 최소는 레이어 9 (-0.0085), 전체 합 +0.5747.
 - n_half(오차 반감 토큰 수)와 ΔNLL의 Spearman 상관 -0.08 (순열 p=0.783).
 - Qwen3.5-4B GSM8K fp 정답률 0.600 (문제 200개, 95% CI 0.535~0.665), 평균 생성 토큰 2912, 예산 소진율 0.48.
-- fp+S8: 정답률 0.312 (fp 대비 -0.287), 토큰 3468, 반복률 0.122.
+- fp+S4: 정답률 0.045 (fp 대비 -0.555), 토큰 4084, 반복률 0.308.
+- fp+S4[EF]: 정답률 0.345 (fp 대비 -0.255), 토큰 3795, 반복률 0.375.
+- fp+S6: 정답률 0.105 (fp 대비 -0.495), 토큰 4083, 반복률 0.205.
+- fp+S6[EF]: 정답률 0.560 (fp 대비 -0.040), 토큰 3231, 반복률 0.092.
+- fp+S8: 정답률 0.345 (fp 대비 -0.255), 토큰 3677, 반복률 0.130.
+- KV2+S8: 정답률 0.030 (fp 대비 -0.570), 토큰 4096, 반복률 0.372.
 - KV4+fp: 정답률 0.595 (fp 대비 -0.005), 토큰 3121, 반복률 0.087.
+- KV4+S6: 정답률 0.100 (fp 대비 -0.500), 토큰 4096, 반복률 0.208.
+- KV4+S6[EF]: 정답률 0.555 (fp 대비 -0.045), 토큰 3133, 반복률 0.093.
 - Qwen3.5-0.8B NIAH 컨텍스트 4096: fp 정확도 1.00 (문제 50개), 가장 낮은 셀 KV2+fp 0.32.
 - Qwen3.5-0.8B NIAH 컨텍스트 16384: fp 정확도 1.00 (문제 50개), 가장 낮은 셀 KV2+fp 0.54.
 - Qwen3.5-4B NIAH 컨텍스트 4096: fp 정확도 1.00 (문제 50개), 가장 낮은 셀 KV2+fp 0.94.
@@ -92,8 +99,15 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 - Qwen3.5-0.8B: quantizing one layer's state to int4, the largest dNLL is layer 0 (+0.2175) and the smallest layer 9 (-0.0085); sum over layers +0.5747.
 - Spearman correlation between n_half (error half-life) and dNLL: -0.08 (permutation p=0.783).
 - Qwen3.5-4B GSM8K fp accuracy 0.600 (200 problems, 95% CI 0.535~0.665), mean 2912 tokens, budget-exhaustion 0.48.
-- fp+S8: accuracy 0.312 (-0.287 vs fp), 3468 tokens, repeat ratio 0.122.
+- fp+S4: accuracy 0.045 (-0.555 vs fp), 4084 tokens, repeat ratio 0.308.
+- fp+S4[EF]: accuracy 0.345 (-0.255 vs fp), 3795 tokens, repeat ratio 0.375.
+- fp+S6: accuracy 0.105 (-0.495 vs fp), 4083 tokens, repeat ratio 0.205.
+- fp+S6[EF]: accuracy 0.560 (-0.040 vs fp), 3231 tokens, repeat ratio 0.092.
+- fp+S8: accuracy 0.345 (-0.255 vs fp), 3677 tokens, repeat ratio 0.130.
+- KV2+S8: accuracy 0.030 (-0.570 vs fp), 4096 tokens, repeat ratio 0.372.
 - KV4+fp: accuracy 0.595 (-0.005 vs fp), 3121 tokens, repeat ratio 0.087.
+- KV4+S6: accuracy 0.100 (-0.500 vs fp), 4096 tokens, repeat ratio 0.208.
+- KV4+S6[EF]: accuracy 0.555 (-0.045 vs fp), 3133 tokens, repeat ratio 0.093.
 - Qwen3.5-0.8B NIAH context 4096: fp accuracy 1.00 (50 problems); lowest cell KV2+fp at 0.32.
 - Qwen3.5-0.8B NIAH context 16384: fp accuracy 1.00 (50 problems); lowest cell KV2+fp at 0.54.
 - Qwen3.5-4B NIAH context 4096: fp accuracy 1.00 (50 problems); lowest cell KV2+fp at 0.94.
@@ -307,8 +321,15 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 | model | cell | error_feedback | kv_bits | state_bits | acc | acc_std_seeds | acc_ci_lo | acc_ci_hi | n | n_seeds | mean_tokens | budget_rate | repeat_ratio |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Qwen/Qwen3.5-4B | fp | False | 16 | 16 | 0.6000 | N/A | 0.5349 | 0.6650 | 200 | 1 | 2912.4450 | 0.4850 | 0.0856 |
-| Qwen/Qwen3.5-4B | fp+S8 | False | 16 | 8 | 0.3125 | N/A | 0.1562 | 0.4688 | 32 | 1 | 3467.5312 | 0.7500 | 0.1222 |
+| Qwen/Qwen3.5-4B | fp+S4 | False | 16 | 4 | 0.0450 | N/A | 0.0200 | 0.0751 | 200 | 1 | 4083.7300 | 0.9650 | 0.3075 |
+| Qwen/Qwen3.5-4B | fp+S4[EF] | True | 16 | 4 | 0.3450 | N/A | 0.2850 | 0.4200 | 200 | 1 | 3795.3450 | 0.8050 | 0.3751 |
+| Qwen/Qwen3.5-4B | fp+S6 | False | 16 | 6 | 0.1050 | N/A | 0.0650 | 0.1500 | 200 | 1 | 4082.9300 | 0.9950 | 0.2049 |
+| Qwen/Qwen3.5-4B | fp+S6[EF] | True | 16 | 6 | 0.5600 | N/A | 0.4850 | 0.6300 | 200 | 1 | 3230.8550 | 0.5700 | 0.0921 |
+| Qwen/Qwen3.5-4B | fp+S8 | False | 16 | 8 | 0.3450 | N/A | 0.2800 | 0.4100 | 200 | 1 | 3676.6400 | 0.8200 | 0.1295 |
+| Qwen/Qwen3.5-4B | KV2+S8 | False | 2 | 8 | 0.0300 | N/A | 0.0100 | 0.0550 | 200 | 1 | 4096.0000 | 1.0000 | 0.3715 |
 | Qwen/Qwen3.5-4B | KV4+fp | False | 4 | 16 | 0.5950 | N/A | 0.5250 | 0.6600 | 200 | 1 | 3120.8400 | 0.5550 | 0.0867 |
+| Qwen/Qwen3.5-4B | KV4+S6 | False | 4 | 6 | 0.1000 | N/A | 0.0600 | 0.1400 | 200 | 1 | 4096.0000 | 1.0000 | 0.2082 |
+| Qwen/Qwen3.5-4B | KV4+S6[EF] | True | 4 | 6 | 0.5550 | N/A | 0.4900 | 0.6250 | 200 | 1 | 3133.1350 | 0.5300 | 0.0930 |
 
 ### Qwen3.5-0.8B
 | model | cell | error_feedback | kv_bits | state_bits | context_len | acc | ci_lo | ci_hi | n |
@@ -412,8 +433,8 @@ generated 2026-10-14T13:52:06+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, la
 - 모델 (models): Qwen/Qwen3.5-0.8B, Qwen/Qwen3.5-2B, Qwen/Qwen3.5-4B, Qwen/Qwen3.5-9B, tiiuae/Falcon-H1-1.5B-Instruct
 - GPU: NVIDIA A100-SXM4-40GB
 - dtype: bfloat16
-- commit: 0490bb2, 1f517a6, 4f6674b, 527bfa3, 569541d, 654fd48, 7fea085, 935f3ad, 9bb281c, a971d8d, b944556, cae4f7a, cbd6f92, e33cb9f
+- commit: 0490bb2, 1f517a6, 4f6674b, 527bfa3, 569541d, 654fd48, 7fea085, 935f3ad, 96b56bd, 9bb281c, a971d8d, b944556, cae4f7a, cbd6f92, e33cb9f
 - 날짜 (dates): 2026-10-14
-- 시드 수 (seeds): 3, 문서 수/시드 (docs): [2, 8, 20], 행 (rows): 3120
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [2, 8, 20], 행 (rows): 4688
 - 입력 파일 (sources): grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_falcon_1.5b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, smoke_0.8b.jsonl, smoke_0.8b_mps.jsonl, superadd_0.8b.jsonl
 - 실패/건너뜀 기록 (failures): see results/push_failures.log
