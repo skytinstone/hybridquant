@@ -2,6 +2,7 @@
 # Everything on one GPU: round 1 then round 2, then the summary report. Resumable: rerun to continue.
 #   nohup bash scripts/run_all.sh > results/run_all_nohup.log 2>&1 &
 set -u
+set -o pipefail
 cd "$(dirname "$0")/.."
 mkdir -p results results/reports
 # Guard: never run two copies on one GPU (they would recompute the same cells and double the memory).
@@ -31,6 +32,6 @@ if [ -f analysis/report.py ]; then
   $PY analysis/report.py --stage all --inputs results/*.jsonl --out results/reports/summary.md >>"$LOG" 2>&1 \
     && log "summary report: results/reports/summary.md" || log "summary report failed"
   git add results >/dev/null 2>&1; git commit -q -m "results: summary report" 2>/dev/null
-  git push origin HEAD 2>>results/push_failures.log || log "final push failed (logged)"
+  git push origin HEAD 2>&1 | sed -E "s#(https://)[^@/]+@#\1***@#" >> results/push_failures.log || log "final push failed (logged)"
 fi
 log "run_all finished"

@@ -63,8 +63,13 @@ if os.path.isdir(DRIVE):
 else:
     print("\n[3] Drive 가 마운트돼 있지 않아 건너뜁니다")
 
-# (4) 커밋과 push (토큰을 origin 에 다시 끼운 뒤 push 합니다)
+# (4) 커밋과 push (토큰을 origin 에 다시 끼운 뒤 push 합니다). 먼저 로그에 찍힌 토큰을 가립니다: GitHub push protection 이 막습니다.
 print("\n[4] 커밋과 push")
+for lp in glob.glob(f"{REPO}/results/*.log"):
+    txt = open(lp, encoding="utf-8", errors="replace").read()
+    masked = re.sub(r"(github_pat_|ghp_|hf_)[A-Za-z0-9_]+", r"\1***", txt)
+    if masked != txt:
+        open(lp, "w", encoding="utf-8").write(masked); print("  masked tokens in", os.path.relpath(lp, REPO))
 tok = os.environ.get("GH_TOKEN")
 if tok:
     subprocess.run(["git", "-C", REPO, "remote", "set-url", "origin", f"https://{tok}@github.com/skytinstone/hybridquant.git"], check=True)
