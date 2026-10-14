@@ -4,6 +4,14 @@
 set -u
 cd "$(dirname "$0")/.."
 mkdir -p results results/reports
+# Guard: never run two copies on one GPU (they would recompute the same cells and double the memory).
+LOCK=results/run_all.pid
+if [ -f "$LOCK" ] && kill -0 "$(cat "$LOCK" 2>/dev/null)" 2>/dev/null; then
+  echo "run_all.sh is already running (pid $(cat "$LOCK")); not starting a second copy"
+  exit 0
+fi
+echo $$ > "$LOCK"
+trap 'rm -f "$LOCK"' EXIT
 PY=${PYTHON:-python}
 LOG=results/run_all.log
 log() { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$LOG"; }
