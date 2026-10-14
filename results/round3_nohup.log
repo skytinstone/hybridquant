@@ -1,0 +1,5 @@
+[2026-10-14T23:00:05Z] round 3 start on NVIDIA A100-SXM4-40GB
+[2026-10-14T23:00:05Z] === Falcon-H1 hook pre-check
+[2026-10-14T23:00:17Z] === step r2_falcon_1.5b: python scripts/run_grid.py --config configs/r2_falcon_1.5b.yaml --dtype bf16
+[2026-10-14T23:37:52Z] step r2_falcon_1.5b OK
+[2026-10-14T23:38:04Z] report: results/reports/r2_falcon_1.5b.md
