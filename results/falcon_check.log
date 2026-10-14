@@ -1,0 +1,17 @@
+transformers hub kernels enabled: True (USE_HUB_KERNELS=<unset>)
+cuda device: NVIDIA A100-SXM4-40GB capability=(8, 0)
+Loading weights:   0%|          | 0/411 [00:00<?, ?it/s]Loading weights:   1%|▏         | 6/411 [00:00<00:06, 59.47it/s]Loading weights:  16%|█▌        | 66/411 [00:00<00:00, 372.10it/s]Loading weights:  30%|███       | 124/411 [00:00<00:00, 458.21it/s]Loading weights:  44%|████▍     | 181/411 [00:00<00:00, 488.50it/s]Loading weights:  59%|█████▉    | 243/411 [00:00<00:00, 525.16it/s]Loading weights:  72%|███████▏  | 297/411 [00:00<00:00, 530.04it/s]Loading weights:  86%|████████▋ | 355/411 [00:00<00:00, 542.01it/s]Loading weights: 100%|██████████| 411/411 [00:00<00:00, 503.13it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `mamba_chunk_scan_combined` is falling back to its reference PyTorch implementation because `mamba_ssm` is not installed. This is correct but much slower; install `mamba_ssm` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `selective_state_update` is falling back to its reference PyTorch implementation because `mamba_ssm` is not installed. This is correct but much slower; install `mamba_ssm` for the optimized kernel.
+model: tiiuae/Falcon-H1-1.5B-Instruct on cuda:0 dtype=torch.bfloat16 use_kernels=False
+layer_types (24): ['hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid']
+cache layer classes: ['LinearAttentionAndFullAttentionLayer']
+config Kint4g128_Vint4g128_Sint4g128: prefill=64 decode=8 mean_nll=0.0194
+QuantStats:
+  kv_calls=216 kv_tokens=1728 layers_seen_kv=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+  state_calls=24 layers_seen_state=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+hook coverage: PASS
+  kv:    calls=216 seen=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] expected=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] -> ok
+  state: calls=24 seen=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] expected=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] -> ok

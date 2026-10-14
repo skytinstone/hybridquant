@@ -1,0 +1,35 @@
+2026-10-14T03:03:38.409024Z notebook push failed: remote: Permission to skytinstone/hybridquant.git denied to skytinstone.
+fatal: unable to access 'https://github.com/skytinstone/hybridquant.git/': The requested URL returned error: 403
+remote: Permission to skytinstone/hybridquant.git denied to skytinstone.
+fatal: unable to access 'https://github.com/skytinstone/hybridquant.git/': The requested URL returned error: 403
+[2026-10-14T03:04:08Z] push failed after: results: round1 smoke_0.8b
+2026-10-14T03:50:55.241990Z notebook push failed: fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T03:51:36Z] push failed after: results: round1 smoke_0.8b
+2026-10-14T04:03:41.027872Z notebook push failed: fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+2026-10-14T04:04:40.480226Z notebook push failed: fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T04:35:44Z] push failed after: results: round1 grid_0.8b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T04:48:18Z] push failed after: results: round1 superadd_0.8b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T04:52:47Z] push failed after: results: round1 layer_sweep_0.8b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T05:27:05Z] push failed after: results: round1 grid_4b_core
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T06:33:26Z] push failed after: results: round2 r2_ablation_0.8b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T07:02:14Z] push failed after: results: round2 r2_c4_0.8b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T07:13:39Z] push failed after: results: round2 r2_niah_0.8b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T07:42:38Z] push failed after: results: round2 r2_scale_2b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T11:57:48Z] push failed after: results: round2 r2_gsm8k_4b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T12:19:42Z] push failed after: results: round2 r2_niah_4b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T12:47:32Z] push failed after: results: round2 r2_scale_9b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address
+[2026-10-14T13:45:59Z] push failed after: results: round2 r2_falcon_1.5b
+fatal: could not read Password for 'https://github_pat_***@github.com': No such device or address

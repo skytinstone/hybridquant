@@ -1,0 +1,841 @@
+[2026-10-14T05:27:05Z] round 2 start on NVIDIA A100-SXM4-40GB
+[2026-10-14T05:27:05Z] === step r2_ablation_0.8b: python scripts/run_grid.py --config configs/r2_ablation_0.8b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-0.8B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false], "cells": [{"kv_bits": 4, "state_bits": 6, "state_group": 32, "state_symmetric": false, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 6, "state_group": 32, "state_symmetric": false, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 6, "state_group": 32, "state_symmetric": true, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 6, "state_group": 32, "state_symmetric": true, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 6, "state_group": 64, "state_symmetric": false, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 6, "state_group": 64, "state_symmetric": false, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 6, "state_group": 64, "state_symmetric": true, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 6, "state_group": 64, "state_symmetric": true, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 6, "state_group": 128, "state_symmetric": false, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 6, "state_group": 128, "state_symmetric": false, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 6, "state_group": 128, "state_symmetric": true, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 6, "state_group": 128, "state_symmetric": true, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 6, "state_group": -1, "state_symmetric": false, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 6, "state_group": -1, "state_symmetric": false, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 6, "state_group": -1, "state_symmetric": true, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 6, "state_group": -1, "state_symmetric": true, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 4, "state_group": 32, "state_symmetric": false, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 4, "state_group": 32, "state_symmetric": false, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 4, "state_group": 32, "state_symmetric": true, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 4, "state_group": 32, "state_symmetric": true, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 4, "state_group": 64, "state_symmetric": false, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 4, "state_group": 64, "state_symmetric": false, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 4, "state_group": 64, "state_symmetric": true, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 4, "state_group": 64, "state_symmetric": true, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 4, "state_group": 128, "state_symmetric": false, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 4, "state_group": 128, "state_symmetric": false, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 4, "state_group": 128, "state_symmetric": true, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 4, "state_group": 128, "state_symmetric": true, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 4, "state_group": -1, "state_symmetric": false, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 4, "state_group": -1, "state_symmetric": false, "state_stochastic": true}, {"kv_bits": 4, "state_bits": 4, "state_group": -1, "state_symmetric": true, "state_stochastic": false}, {"kv_bits": 4, "state_bits": 4, "state_group": -1, "state_symmetric": true, "state_stochastic": true}], "seeds": [0, 1, 2], "n_docs": 20, "prefill": 256, "decode": 256, "step": 1, "batch_size": 8, "dataset": "wikitext2", "out": "results/r2_ablation_0.8b.jsonl"}
+96 runs (3 seeds); 0 already in results/r2_ablation_0.8b.jsonl
+run metadata: {"git_commit": "1f517a6", "git_dirty": true, "transformers": "5.19.0.dev0", "torch": "2.11.0+cu130", "device": "NVIDIA A100-SXM4-40GB", "python": "3.13.15", "timestamp_utc": "2026-10-14T05:27:10+00:00", "config": "configs/r2_ablation_0.8b.yaml"}
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:   6%|▌         | 18/320 [00:00<00:01, 179.85it/s]Loading weights:  39%|███▉      | 125/320 [00:00<00:00, 702.75it/s]Loading weights:  71%|███████   | 226/320 [00:00<00:00, 836.91it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 823.59it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (297354 > 262144). Running this sequence through the model will result in indexing errors
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+model on cuda:0 dtype=bfloat16
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 0)
+seed 0 Kint4g128_Vint4g128_Sint6g32       nll=3.0936 ±0.3943  (43s)
+seed 0 Kint4g128_Vint4g128_Sint6g32sr     nll=3.2597 ±0.4091  (42s)
+seed 0 Kint4g128_Vint4g128_Sint6g32s      nll=3.1527 ±0.4060  (40s)
+seed 0 Kint4g128_Vint4g128_Sint6g32ssr    nll=3.6313 ±0.4602  (41s)
+seed 0 Kint4g128_Vint4g128_Sint6g64       nll=3.1261 ±0.4037  (41s)
+seed 0 Kint4g128_Vint4g128_Sint6g64sr     nll=3.4621 ±0.4102  (42s)
+seed 0 Kint4g128_Vint4g128_Sint6g64s      nll=3.2129 ±0.4065  (40s)
+seed 0 Kint4g128_Vint4g128_Sint6g64ssr    nll=4.2396 ±0.4484  (41s)
+seed 0 Kint4g128_Vint4g128_Sint6g128      nll=3.1913 ±0.4041  (42s)
+seed 0 Kint4g128_Vint4g128_Sint6g128sr    nll=3.8970 ±0.4579  (42s)
+seed 0 Kint4g128_Vint4g128_Sint6g128s     nll=3.3489 ±0.4112  (40s)
+seed 0 Kint4g128_Vint4g128_Sint6g128ssr   nll=5.0500 ±0.4639  (41s)
+seed 0 Kint4g128_Vint4g128_Sint6g-1       nll=3.1913 ±0.4041  (41s)
+seed 0 Kint4g128_Vint4g128_Sint6g-1sr     nll=3.8970 ±0.4579  (42s)
+seed 0 Kint4g128_Vint4g128_Sint6g-1s      nll=3.3489 ±0.4112  (41s)
+seed 0 Kint4g128_Vint4g128_Sint6g-1ssr    nll=5.0500 ±0.4639  (41s)
+seed 0 Kint4g128_Vint4g128_Sint4g32       nll=3.3544 ±0.4152  (41s)
+seed 0 Kint4g128_Vint4g128_Sint4g32sr     nll=5.0722 ±0.4398  (42s)
+seed 0 Kint4g128_Vint4g128_Sint4g32s      nll=3.5748 ±0.4248  (40s)
+seed 0 Kint4g128_Vint4g128_Sint4g32ssr    nll=8.2119 ±0.6034  (41s)
+seed 0 Kint4g128_Vint4g128_Sint4g64       nll=3.5734 ±0.3963  (41s)
+seed 0 Kint4g128_Vint4g128_Sint4g64sr     nll=6.6650 ±0.4834  (42s)
+seed 0 Kint4g128_Vint4g128_Sint4g64s      nll=4.1043 ±0.4040  (40s)
+seed 0 Kint4g128_Vint4g128_Sint4g64ssr    nll=9.6338 ±0.7454  (41s)
+seed 0 Kint4g128_Vint4g128_Sint4g128      nll=4.1569 ±0.4404  (41s)
+seed 0 Kint4g128_Vint4g128_Sint4g128sr    nll=8.2595 ±0.6217  (42s)
+seed 0 Kint4g128_Vint4g128_Sint4g128s     nll=6.3444 ±0.5486  (40s)
+seed 0 Kint4g128_Vint4g128_Sint4g128ssr   nll=10.9449 ±0.7823  (41s)
+seed 0 Kint4g128_Vint4g128_Sint4g-1       nll=4.1569 ±0.4404  (41s)
+seed 0 Kint4g128_Vint4g128_Sint4g-1sr     nll=8.2595 ±0.6217  (42s)
+seed 0 Kint4g128_Vint4g128_Sint4g-1s      nll=6.3444 ±0.5486  (40s)
+seed 0 Kint4g128_Vint4g128_Sint4g-1ssr    nll=10.9449 ±0.7823  (41s)
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 1)
+seed 1 Kint4g128_Vint4g128_Sint6g32       nll=3.0159 ±0.5045  (41s)
+seed 1 Kint4g128_Vint4g128_Sint6g32sr     nll=3.1765 ±0.5077  (42s)
+seed 1 Kint4g128_Vint4g128_Sint6g32s      nll=3.0632 ±0.5067  (40s)
+seed 1 Kint4g128_Vint4g128_Sint6g32ssr    nll=3.5888 ±0.5198  (41s)
+seed 1 Kint4g128_Vint4g128_Sint6g64       nll=3.0546 ±0.5085  (41s)
+seed 1 Kint4g128_Vint4g128_Sint6g64sr     nll=3.3957 ±0.5365  (42s)
+seed 1 Kint4g128_Vint4g128_Sint6g64s      nll=3.1288 ±0.5138  (40s)
+seed 1 Kint4g128_Vint4g128_Sint6g64ssr    nll=4.1407 ±0.6140  (41s)
+seed 1 Kint4g128_Vint4g128_Sint6g128      nll=3.1219 ±0.5116  (41s)
+seed 1 Kint4g128_Vint4g128_Sint6g128sr    nll=3.8433 ±0.5671  (42s)
+seed 1 Kint4g128_Vint4g128_Sint6g128s     nll=3.2746 ±0.5084  (40s)
+seed 1 Kint4g128_Vint4g128_Sint6g128ssr   nll=5.0204 ±0.6247  (41s)
+seed 1 Kint4g128_Vint4g128_Sint6g-1       nll=3.1219 ±0.5116  (41s)
+seed 1 Kint4g128_Vint4g128_Sint6g-1sr     nll=3.8433 ±0.5671  (42s)
+seed 1 Kint4g128_Vint4g128_Sint6g-1s      nll=3.2746 ±0.5084  (40s)
+seed 1 Kint4g128_Vint4g128_Sint6g-1ssr    nll=5.0204 ±0.6247  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g32       nll=3.2521 ±0.5006  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g32sr     nll=5.0523 ±0.5174  (42s)
+seed 1 Kint4g128_Vint4g128_Sint4g32s      nll=3.4907 ±0.5203  (40s)
+seed 1 Kint4g128_Vint4g128_Sint4g32ssr    nll=8.1557 ±0.7537  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g64       nll=3.4777 ±0.5137  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g64sr     nll=6.6349 ±0.5998  (42s)
+seed 1 Kint4g128_Vint4g128_Sint4g64s      nll=3.9915 ±0.5505  (40s)
+seed 1 Kint4g128_Vint4g128_Sint4g64ssr    nll=9.6734 ±0.7879  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g128      nll=4.0661 ±0.5538  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g128sr    nll=8.3115 ±0.7621  (42s)
+seed 1 Kint4g128_Vint4g128_Sint4g128s     nll=6.2305 ±0.7489  (40s)
+seed 1 Kint4g128_Vint4g128_Sint4g128ssr   nll=11.0039 ±0.8522  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g-1       nll=4.0661 ±0.5538  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g-1sr     nll=8.3115 ±0.7621  (42s)
+seed 1 Kint4g128_Vint4g128_Sint4g-1s      nll=6.2305 ±0.7489  (41s)
+seed 1 Kint4g128_Vint4g128_Sint4g-1ssr    nll=11.0039 ±0.8522  (41s)
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 2)
+seed 2 Kint4g128_Vint4g128_Sint6g32       nll=2.9979 ±0.3628  (42s)
+seed 2 Kint4g128_Vint4g128_Sint6g32sr     nll=3.1502 ±0.3751  (42s)
+seed 2 Kint4g128_Vint4g128_Sint6g32s      nll=3.0339 ±0.3718  (40s)
+seed 2 Kint4g128_Vint4g128_Sint6g32ssr    nll=3.5115 ±0.4041  (41s)
+seed 2 Kint4g128_Vint4g128_Sint6g64       nll=3.0296 ±0.3669  (42s)
+seed 2 Kint4g128_Vint4g128_Sint6g64sr     nll=3.3661 ±0.3840  (42s)
+seed 2 Kint4g128_Vint4g128_Sint6g64s      nll=3.1146 ±0.3841  (40s)
+seed 2 Kint4g128_Vint4g128_Sint6g64ssr    nll=4.0734 ±0.3867  (41s)
+seed 2 Kint4g128_Vint4g128_Sint6g128      nll=3.1041 ±0.3516  (41s)
+seed 2 Kint4g128_Vint4g128_Sint6g128sr    nll=3.7360 ±0.4137  (42s)
+seed 2 Kint4g128_Vint4g128_Sint6g128s     nll=3.2409 ±0.3834  (40s)
+seed 2 Kint4g128_Vint4g128_Sint6g128ssr   nll=4.9177 ±0.3621  (41s)
+seed 2 Kint4g128_Vint4g128_Sint6g-1       nll=3.1041 ±0.3516  (41s)
+seed 2 Kint4g128_Vint4g128_Sint6g-1sr     nll=3.7360 ±0.4137  (42s)
+seed 2 Kint4g128_Vint4g128_Sint6g-1s      nll=3.2409 ±0.3834  (40s)
+seed 2 Kint4g128_Vint4g128_Sint6g-1ssr    nll=4.9177 ±0.3621  (41s)
+seed 2 Kint4g128_Vint4g128_Sint4g32       nll=3.2279 ±0.3658  (41s)
+seed 2 Kint4g128_Vint4g128_Sint4g32sr     nll=4.9551 ±0.4605  (42s)
+seed 2 Kint4g128_Vint4g128_Sint4g32s      nll=3.4442 ±0.3727  (40s)
+seed 2 Kint4g128_Vint4g128_Sint4g32ssr    nll=8.0056 ±0.8480  (41s)
+seed 2 Kint4g128_Vint4g128_Sint4g64       nll=3.4288 ±0.3970  (41s)
+seed 2 Kint4g128_Vint4g128_Sint4g64sr     nll=6.5267 ±0.4895  (42s)
+seed 2 Kint4g128_Vint4g128_Sint4g64s      nll=3.9158 ±0.3818  (40s)
+seed 2 Kint4g128_Vint4g128_Sint4g64ssr    nll=9.4438 ±0.8860  (41s)
+seed 2 Kint4g128_Vint4g128_Sint4g128      nll=4.0153 ±0.4084  (41s)
+seed 2 Kint4g128_Vint4g128_Sint4g128sr    nll=8.0952 ±0.6855  (42s)
+seed 2 Kint4g128_Vint4g128_Sint4g128s     nll=6.3719 ±0.5990  (40s)
+seed 2 Kint4g128_Vint4g128_Sint4g128ssr   nll=10.7835 ±0.9358  (41s)
+seed 2 Kint4g128_Vint4g128_Sint4g-1       nll=4.0153 ±0.4084  (41s)
+seed 2 Kint4g128_Vint4g128_Sint4g-1sr     nll=8.0952 ±0.6855  (42s)
+seed 2 Kint4g128_Vint4g128_Sint4g-1s      nll=6.3719 ±0.5990  (40s)
+seed 2 Kint4g128_Vint4g128_Sint4g-1ssr    nll=10.7835 ±0.9358  (41s)
+done: results/r2_ablation_0.8b.jsonl
+[2026-10-14T06:33:16Z] step r2_ablation_0.8b OK
+# Report: r2_ablation_0.8b
+generated 2026-10-14T06:33:24+00:00 from r2_ablation_0.8b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-0.8B / wikitext2: fp 셀이 없어 Δ를 계산할 수 없습니다 (N/A (아직 실행 안 됨)).
+
+## [EN] Key Findings
+- Qwen3.5-0.8B / wikitext2: no fp cell, deltas unavailable.
+
+## [KR/EN] 표
+N/A (아직 실행 안 됨)
+
+## [KR/EN] 그림 목록
+- `results/figures/r2_ablation_0.8b/ablation_Qwen3.5-0.8B.pdf` / `.png`: state 양자화 포맷 ablation: group 크기 × (symmetric, stochastic), 셀별 패널 / State-format ablation: group size x (symmetric, stochastic), one panel per cell
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-0.8B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: bfloat16
+- commit: 1f517a6
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [20], 행 (rows): 96
+- 입력 파일 (sources): r2_ablation_0.8b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r2_ablation_0.8b.md
+[2026-10-14T06:33:25Z] report: results/reports/r2_ablation_0.8b.md
+[2026-10-14T06:33:26Z] push failed (logged), continuing
+[2026-10-14T06:33:26Z] rsynced results/ to Drive
+[2026-10-14T06:33:26Z] === step r2_c4_0.8b: python scripts/run_grid.py --config configs/r2_c4_0.8b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-0.8B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 16, "state_bits": 16}, {"kv_bits": 4, "state_bits": 16}, {"kv_bits": 16, "state_bits": 8}, {"kv_bits": 16, "state_bits": 6}, {"kv_bits": 16, "state_bits": 4}, {"kv_bits": 4, "state_bits": 6}, {"kv_bits": 2, "state_bits": 8}, {"kv_bits": 4, "state_bits": 4}], "seeds": [0, 1, 2], "n_docs": 20, "prefill": 256, "decode": 256, "step": 1, "batch_size": 8, "dataset": "c4", "out": "results/r2_c4_0.8b.jsonl"}
+42 runs (3 seeds); 0 already in results/r2_c4_0.8b.jsonl
+run metadata: {"git_commit": "4f6674b", "git_dirty": true, "transformers": "5.19.0.dev0", "torch": "2.11.0+cu130", "device": "NVIDIA A100-SXM4-40GB", "python": "3.13.15", "timestamp_utc": "2026-10-14T06:33:31+00:00", "config": "configs/r2_c4_0.8b.yaml"}
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:   0%|          | 1/320 [00:00<00:35,  8.90it/s]Loading weights:  33%|███▎      | 106/320 [00:00<00:00, 589.63it/s]Loading weights:  66%|██████▋   | 212/320 [00:00<00:00, 795.36it/s]Loading weights:  99%|█████████▉| 318/320 [00:00<00:00, 889.71it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 768.19it/s]
+model on cuda:0 dtype=bfloat16
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 4640 examples [00:00, 43938.15 examples/s]Generating train split: 9120 examples [00:00, 44048.05 examples/s]Generating train split: 13718 examples [00:00, 43728.24 examples/s]Generating train split: 22910 examples [00:00, 44765.03 examples/s]Generating train split: 32282 examples [00:00, 46318.09 examples/s]Generating train split: 36991 examples [00:00, 46477.56 examples/s]Generating train split: 45576 examples [00:00, 46493.66 examples/s]Generating train split: 45576 examples [00:00, 45856.75 examples/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (2338530 > 262144). Running this sequence through the model will result in indexing errors
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[data] c4/validation-shard0: 2,338,530 tokens -> 4567 windows of 512; loaded 20 docs (10,240 tokens, seed 0)
+seed 0 Kfp_Vfp_Sfp                        nll=3.1272 ±0.6347  (37s)
+seed 0 Kint4g128_Vint4g128_Sfp            nll=3.1482 ±0.6389  (38s)
+seed 0 Kfp_Vfp_Sint8g128                  nll=3.1554 ±0.6383  (39s)
+seed 0 Kfp_Vfp_Sint8g128ef                nll=3.1314 ±0.6332  (40s)
+seed 0 Kfp_Vfp_Sint6g128                  nll=3.2988 ±0.6628  (39s)
+seed 0 Kfp_Vfp_Sint6g128ef                nll=3.1753 ±0.6394  (40s)
+seed 0 Kfp_Vfp_Sint4g128                  nll=4.1454 ±0.7297  (39s)
+seed 0 Kfp_Vfp_Sint4g128ef                nll=3.6395 ±0.6861  (39s)
+seed 0 Kint4g128_Vint4g128_Sint6g128      nll=3.3231 ±0.6571  (41s)
+seed 0 Kint4g128_Vint4g128_Sint6g128ef    nll=3.1978 ±0.6471  (42s)
+seed 0 Kint2g128_Vint2g128_Sint8g128      nll=3.5401 ±0.6415  (42s)
+seed 0 Kint2g128_Vint2g128_Sint8g128ef    nll=3.5277 ±0.6513  (42s)
+seed 0 Kint4g128_Vint4g128_Sint4g128      nll=4.2250 ±0.7327  (42s)
+seed 0 Kint4g128_Vint4g128_Sint4g128ef    nll=3.6985 ±0.6845  (42s)
+[data] c4/validation-shard0: 2,338,530 tokens -> 4567 windows of 512; loaded 20 docs (10,240 tokens, seed 1)
+seed 1 Kfp_Vfp_Sfp                        nll=3.1315 ±0.7776  (35s)
+seed 1 Kint4g128_Vint4g128_Sfp            nll=3.1555 ±0.7775  (38s)
+seed 1 Kfp_Vfp_Sint8g128                  nll=3.1535 ±0.7764  (39s)
+seed 1 Kfp_Vfp_Sint8g128ef                nll=3.1328 ±0.7777  (40s)
+seed 1 Kfp_Vfp_Sint6g128                  nll=3.2840 ±0.8033  (39s)
+seed 1 Kfp_Vfp_Sint6g128ef                nll=3.1659 ±0.7883  (40s)
+seed 1 Kfp_Vfp_Sint4g128                  nll=4.1261 ±0.9358  (39s)
+seed 1 Kfp_Vfp_Sint4g128ef                nll=3.6346 ±0.8568  (40s)
+seed 1 Kint4g128_Vint4g128_Sint6g128      nll=3.3162 ±0.8033  (42s)
+seed 1 Kint4g128_Vint4g128_Sint6g128ef    nll=3.1960 ±0.7817  (42s)
+seed 1 Kint2g128_Vint2g128_Sint8g128      nll=3.5641 ±0.8007  (42s)
+seed 1 Kint2g128_Vint2g128_Sint8g128ef    nll=3.5492 ±0.8126  (42s)
+seed 1 Kint4g128_Vint4g128_Sint4g128      nll=4.1810 ±0.9193  (42s)
+seed 1 Kint4g128_Vint4g128_Sint4g128ef    nll=3.6749 ±0.8565  (42s)
+[data] c4/validation-shard0: 2,338,530 tokens -> 4567 windows of 512; loaded 20 docs (10,240 tokens, seed 2)
+seed 2 Kfp_Vfp_Sfp                        nll=3.2023 ±0.5052  (35s)
+seed 2 Kint4g128_Vint4g128_Sfp            nll=3.2273 ±0.5122  (38s)
+seed 2 Kfp_Vfp_Sint8g128                  nll=3.2283 ±0.5068  (39s)
+seed 2 Kfp_Vfp_Sint8g128ef                nll=3.2038 ±0.5046  (40s)
+seed 2 Kfp_Vfp_Sint6g128                  nll=3.3848 ±0.4961  (39s)
+seed 2 Kfp_Vfp_Sint6g128ef                nll=3.2500 ±0.5055  (40s)
+seed 2 Kfp_Vfp_Sint4g128                  nll=4.2837 ±0.5141  (39s)
+seed 2 Kfp_Vfp_Sint4g128ef                nll=3.7301 ±0.5308  (40s)
+seed 2 Kint4g128_Vint4g128_Sint6g128      nll=3.4070 ±0.5037  (42s)
+seed 2 Kint4g128_Vint4g128_Sint6g128ef    nll=3.2719 ±0.5124  (42s)
+seed 2 Kint2g128_Vint2g128_Sint8g128      nll=3.6304 ±0.5600  (42s)
+seed 2 Kint2g128_Vint2g128_Sint8g128ef    nll=3.6183 ±0.5716  (42s)
+seed 2 Kint4g128_Vint4g128_Sint4g128      nll=4.3396 ±0.5118  (42s)
+seed 2 Kint4g128_Vint4g128_Sint4g128ef    nll=3.7874 ±0.5510  (42s)
+done: results/r2_c4_0.8b.jsonl
+[2026-10-14T07:02:03Z] step r2_c4_0.8b OK
+# Report: r2_c4_0.8b
+generated 2026-10-14T07:02:13+00:00 from r2_c4_0.8b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-0.8B / c4: fp 베이스라인 mean NLL 3.154 (시드 3개, 문서 20개/시드).
+- state 4bit (KV fp): fp 대비 +1.031 nats (95% CI +0.975~+1.086).
+- KV 4bit (state fp): fp 대비 +0.023 nats (95% CI +0.019~+0.027).
+- state 8bit: fp 대비 +0.025 nats (95% CI +0.021~+0.030).
+- KV4+S4 초가산: 실측 Δ +1.095 대 단독합 +1.055, 초과분 +0.040 nats (문서 대응 95% CI +0.019~+0.060).
+- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.222 nats (6개 셀, 범위 -0.528~-0.013).
+
+## [EN] Key Findings
+- Qwen3.5-0.8B / c4: fp baseline mean NLL 3.154 (3 seeds, 20 docs per seed).
+- state 4-bit (KV fp): +1.031 nats over fp (95% CI +0.975~+1.086).
+- KV 4-bit (state fp): +0.023 nats over fp (95% CI +0.019~+0.027).
+- state 8-bit: +0.025 nats over fp (95% CI +0.021~+0.030).
+- KV4+S4 superadditivity: measured +1.095 vs sum of single effects +1.055; excess +0.040 nats (paired 95% CI +0.019~+0.060).
+- error feedback: mean change in dNLL versus RTN at the same bits -0.222 nats (6 cells, range -0.528~-0.013).
+
+## [KR/EN] 표
+### Qwen3.5-0.8B / c4
+| 셀 (cell) | 평균 NLL (mean NLL) | ± std (시드/문서) | Δ vs fp (delta) | 95% CI (paired bootstrap) | 총 메모리 MB, T=512 (memory) | 시드 (seeds) | 문서/시드 (docs) |
+|---|---|---|---|---|---|---|---|
+| fp | 3.1536 | ± 0.0422 (seeds) | +0.0000 | +0.000~+0.000 * | 15.73 | 3 | 20 |
+| fp+S8 | 3.1791 | ± 0.0427 (seeds) | +0.0254 | +0.021~+0.030 | 11.01 | 3 | 20 |
+| fp+S8[EF] | 3.1560 | ± 0.0414 (seeds) | +0.0024 | +0.001~+0.004 | 11.01 | 3 | 20 |
+| fp+S6 | 3.3225 | ± 0.0544 (seeds) | +0.1689 | +0.151~+0.187 | 9.83 | 3 | 20 |
+| fp+S6[EF] | 3.1971 | ± 0.0461 (seeds) | +0.0434 | +0.037~+0.049 | 9.83 | 3 | 20 |
+| fp+S4 | 4.1851 | ± 0.0860 (seeds) | +1.0314 | +0.975~+1.086 | 8.65 | 3 | 20 |
+| fp+S4[EF] | 3.6681 | ± 0.0537 (seeds) | +0.5144 | +0.484~+0.543 | 8.65 | 3 | 20 |
+| KV4+fp | 3.1770 | ± 0.0437 (seeds) | +0.0234 | +0.019~+0.027 | 11.01 | 3 | 20 |
+| KV4+S6 | 3.3488 | ± 0.0505 (seeds) | +0.1951 | +0.178~+0.212 | 5.11 | 3 | 20 |
+| KV4+S6[EF] | 3.2219 | ± 0.0433 (seeds) | +0.0683 | +0.062~+0.074 | 5.11 | 3 | 20 |
+| KV4+S4 | 4.2485 | ± 0.0819 (seeds) | +1.0949 | +1.035~+1.154 | 3.93 | 3 | 20 |
+| KV4+S4[EF] | 3.7202 | ± 0.0593 (seeds) | +0.5666 | +0.535~+0.598 | 3.93 | 3 | 20 |
+| KV2+S8 | 3.5782 | ± 0.0468 (seeds) | +0.4245 | +0.399~+0.452 | 5.51 | 3 | 20 |
+| KV2+S8[EF] | 3.5651 | ± 0.0473 (seeds) | +0.4114 | +0.388~+0.438 | 5.51 | 3 | 20 |
+
+\* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
+
+## [KR/EN] 그림 목록
+- `results/figures/r2_c4_0.8b/heatmap_Qwen3.5-0.8B.pdf` / `.png`: Qwen3.5-0.8B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-0.8B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
+- `results/figures/r2_c4_0.8b/lines_Qwen3.5-0.8B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
+- `results/figures/r2_c4_0.8b/pareto_Qwen3.5-0.8B.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/r2_c4_0.8b/curves_Qwen3.5-0.8B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
+- `results/figures/r2_c4_0.8b/violin_Qwen3.5-0.8B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-0.8B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: bfloat16
+- commit: 4f6674b
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [20], 행 (rows): 42
+- 입력 파일 (sources): r2_c4_0.8b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r2_c4_0.8b.md
+[2026-10-14T07:02:14Z] report: results/reports/r2_c4_0.8b.md
+[2026-10-14T07:02:14Z] push failed (logged), continuing
+[2026-10-14T07:02:15Z] rsynced results/ to Drive
+[2026-10-14T07:02:15Z] === step r2_niah_0.8b: python scripts/run_niah.py --config configs/r2_niah_0.8b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-0.8B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 16, "state_bits": 16}, {"kv_bits": 4, "state_bits": 16}, {"kv_bits": 2, "state_bits": 16}, {"kv_bits": 16, "state_bits": 8}, {"kv_bits": 16, "state_bits": 4}, {"kv_bits": 4, "state_bits": 4}, {"kv_bits": 2, "state_bits": 8}], "seeds": [0], "n_docs": 8, "prefill": 256, "decode": 256, "step": 1, "batch_size": 1, "dataset": "niah", "out": "results/r2_niah_0.8b.jsonl", "context_lens": [4096, 16384], "depths": [0.1, 0.3, 0.5, 0.7, 0.9], "n_per_depth": 10, "needle_seed": 0, "max_new_tokens": 32}
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:   7%|▋         | 22/320 [00:00<00:01, 214.60it/s]Loading weights:  41%|████▏     | 132/320 [00:00<00:00, 728.69it/s]Loading weights:  75%|███████▌  | 240/320 [00:00<00:00, 879.73it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 849.16it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (2506654 > 262144). Running this sequence through the model will result in indexing errors
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+filler: 2,506,654 WikiText-2 train tokens
+seed 0 Kfp_Vfp_Sfp: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sfp                        acc=1.000 on 100 problems
+seed 0 Kint4g128_Vint4g128_Sfp: 100 to do, 0 done
+seed 0 Kint4g128_Vint4g128_Sfp            acc=1.000 on 100 problems
+seed 0 Kint2g128_Vint2g128_Sfp: 100 to do, 0 done
+seed 0 Kint2g128_Vint2g128_Sfp            acc=0.430 on 100 problems
+seed 0 Kfp_Vfp_Sint8g128: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sint8g128                  acc=1.000 on 100 problems
+seed 0 Kfp_Vfp_Sint8g128ef: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sint8g128ef                acc=1.000 on 100 problems
+seed 0 Kfp_Vfp_Sint4g128: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sint4g128                  acc=1.000 on 100 problems
+seed 0 Kfp_Vfp_Sint4g128ef: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sint4g128ef                acc=1.000 on 100 problems
+seed 0 Kint4g128_Vint4g128_Sint4g128: 100 to do, 0 done
+seed 0 Kint4g128_Vint4g128_Sint4g128      acc=1.000 on 100 problems
+seed 0 Kint4g128_Vint4g128_Sint4g128ef: 100 to do, 0 done
+seed 0 Kint4g128_Vint4g128_Sint4g128ef    acc=1.000 on 100 problems
+seed 0 Kint2g128_Vint2g128_Sint8g128: 100 to do, 0 done
+seed 0 Kint2g128_Vint2g128_Sint8g128      acc=0.480 on 100 problems
+seed 0 Kint2g128_Vint2g128_Sint8g128ef: 100 to do, 0 done
+seed 0 Kint2g128_Vint2g128_Sint8g128ef    acc=0.460 on 100 problems
+done: results/r2_niah_0.8b.jsonl
+[2026-10-14T07:13:36Z] step r2_niah_0.8b OK
+# Report: r2_niah_0.8b
+generated 2026-10-14T07:13:38+00:00 from r2_niah_0.8b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-0.8B NIAH 컨텍스트 4096: fp 정확도 1.00 (문제 50개), 가장 낮은 셀 KV2+fp 0.32.
+- Qwen3.5-0.8B NIAH 컨텍스트 16384: fp 정확도 1.00 (문제 50개), 가장 낮은 셀 KV2+fp 0.54.
+
+## [EN] Key Findings
+- Qwen3.5-0.8B NIAH context 4096: fp accuracy 1.00 (50 problems); lowest cell KV2+fp at 0.32.
+- Qwen3.5-0.8B NIAH context 16384: fp accuracy 1.00 (50 problems); lowest cell KV2+fp at 0.54.
+
+## [KR/EN] 표
+### Qwen3.5-0.8B
+| model | cell | error_feedback | kv_bits | state_bits | context_len | acc | ci_lo | ci_hi | n |
+|---|---|---|---|---|---|---|---|---|---|
+| Qwen/Qwen3.5-0.8B | fp | False | 16 | 16 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp | False | 16 | 16 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp+S4 | False | 16 | 4 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp+S4 | False | 16 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp+S4[EF] | True | 16 | 4 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp+S4[EF] | True | 16 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp+S8 | False | 16 | 8 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp+S8 | False | 16 | 8 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp+S8[EF] | True | 16 | 8 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | fp+S8[EF] | True | 16 | 8 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | KV2+fp | False | 2 | 16 | 4096 | 0.3200 | 0.2000 | 0.4600 | 50 |
+| Qwen/Qwen3.5-0.8B | KV2+fp | False | 2 | 16 | 16384 | 0.5400 | 0.4000 | 0.6800 | 50 |
+| Qwen/Qwen3.5-0.8B | KV2+S8 | False | 2 | 8 | 4096 | 0.4200 | 0.3000 | 0.5600 | 50 |
+| Qwen/Qwen3.5-0.8B | KV2+S8 | False | 2 | 8 | 16384 | 0.5400 | 0.4000 | 0.6800 | 50 |
+| Qwen/Qwen3.5-0.8B | KV2+S8[EF] | True | 2 | 8 | 4096 | 0.3800 | 0.2600 | 0.5000 | 50 |
+| Qwen/Qwen3.5-0.8B | KV2+S8[EF] | True | 2 | 8 | 16384 | 0.5400 | 0.4200 | 0.6800 | 50 |
+| Qwen/Qwen3.5-0.8B | KV4+fp | False | 4 | 16 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | KV4+fp | False | 4 | 16 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | KV4+S4 | False | 4 | 4 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | KV4+S4 | False | 4 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | KV4+S4[EF] | True | 4 | 4 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-0.8B | KV4+S4[EF] | True | 4 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+
+## [KR/EN] 그림 목록
+- `results/figures/r2_niah_0.8b/niah_heatmap_Qwen3.5-0.8B.pdf` / `.png`: 셀 × 컨텍스트 길이 NIAH 정확도 / NIAH accuracy, cell x context length
+- `results/figures/r2_niah_0.8b/niah_depth_Qwen3.5-0.8B.pdf` / `.png`: 깊이 × 셀 정확도(길이별 패널) / Accuracy by needle depth x cell, one panel per context length
+- `results/figures/r2_niah_0.8b/niah_kv_vs_state_Qwen3.5-0.8B.pdf` / `.png`: KV-only 대 state-only: 회수 정확도(왼쪽)와 같은 셀의 ΔNLL(오른쪽), 태스크별 민감도 비교 / KV-only versus state-only: retrieval accuracy (left) and dNLL for the same cells (right)
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-0.8B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: N/A
+- commit: 0490bb2
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 1, 문서 수/시드 (docs): [], 행 (rows): 1100
+- 입력 파일 (sources): r2_niah_0.8b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r2_niah_0.8b.md
+[2026-10-14T07:13:39Z] report: results/reports/r2_niah_0.8b.md
+[2026-10-14T07:13:39Z] push failed (logged), continuing
+[2026-10-14T07:13:39Z] rsynced results/ to Drive
+[2026-10-14T07:13:39Z] === step r2_scale_2b: python scripts/run_grid.py --config configs/r2_scale_2b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-2B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 16, "state_bits": 16}, {"kv_bits": 4, "state_bits": 16}, {"kv_bits": 16, "state_bits": 8}, {"kv_bits": 16, "state_bits": 6}, {"kv_bits": 16, "state_bits": 4}, {"kv_bits": 4, "state_bits": 6}, {"kv_bits": 2, "state_bits": 8}, {"kv_bits": 4, "state_bits": 4}], "seeds": [0, 1, 2], "n_docs": 20, "prefill": 256, "decode": 256, "step": 1, "batch_size": 8, "dataset": "wikitext2", "out": "results/r2_scale_2b.jsonl"}
+42 runs (3 seeds); 0 already in results/r2_scale_2b.jsonl
+run metadata: {"git_commit": "cae4f7a", "git_dirty": true, "transformers": "5.19.0.dev0", "torch": "2.11.0+cu130", "device": "NVIDIA A100-SXM4-40GB", "python": "3.13.15", "timestamp_utc": "2026-10-14T07:13:44+00:00", "config": "configs/r2_scale_2b.yaml"}
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:   0%|          | 1/320 [00:00<01:06,  4.77it/s]Loading weights:  14%|█▍        | 45/320 [00:00<00:01, 179.60it/s]Loading weights:  29%|██▉       | 93/320 [00:00<00:00, 286.64it/s]Loading weights:  42%|████▏     | 134/320 [00:00<00:00, 324.59it/s]Loading weights:  58%|█████▊    | 185/320 [00:00<00:00, 377.18it/s]Loading weights:  71%|███████   | 226/320 [00:00<00:00, 385.03it/s]Loading weights:  86%|████████▌ | 275/320 [00:00<00:00, 415.80it/s]Loading weights: 100%|█████████▉| 319/320 [00:00<00:00, 413.91it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 342.27it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (297354 > 262144). Running this sequence through the model will result in indexing errors
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+model on cuda:0 dtype=bfloat16
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 0)
+seed 0 Kfp_Vfp_Sfp                        nll=2.6604 ±0.3769  (37s)
+seed 0 Kint4g128_Vint4g128_Sfp            nll=2.6684 ±0.3756  (38s)
+seed 0 Kfp_Vfp_Sint8g128                  nll=2.6692 ±0.3784  (39s)
+seed 0 Kfp_Vfp_Sint8g128ef                nll=2.6609 ±0.3776  (40s)
+seed 0 Kfp_Vfp_Sint6g128                  nll=2.7450 ±0.3882  (39s)
+seed 0 Kfp_Vfp_Sint6g128ef                nll=2.6862 ±0.3817  (40s)
+seed 0 Kfp_Vfp_Sint4g128                  nll=4.4498 ±0.4830  (39s)
+seed 0 Kfp_Vfp_Sint4g128ef                nll=3.2430 ±0.4321  (40s)
+seed 0 Kint4g128_Vint4g128_Sint6g128      nll=2.7598 ±0.3871  (42s)
+seed 0 Kint4g128_Vint4g128_Sint6g128ef    nll=2.7025 ±0.3821  (42s)
+seed 0 Kint2g128_Vint2g128_Sint8g128      nll=3.1388 ±0.4264  (42s)
+seed 0 Kint2g128_Vint2g128_Sint8g128ef    nll=3.1240 ±0.4263  (42s)
+seed 0 Kint4g128_Vint4g128_Sint4g128      nll=4.5466 ±0.4679  (42s)
+seed 0 Kint4g128_Vint4g128_Sint4g128ef    nll=3.2789 ±0.4427  (42s)
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 1)
+seed 1 Kfp_Vfp_Sfp                        nll=2.5694 ±0.4545  (35s)
+seed 1 Kint4g128_Vint4g128_Sfp            nll=2.5795 ±0.4518  (38s)
+seed 1 Kfp_Vfp_Sint8g128                  nll=2.5777 ±0.4535  (39s)
+seed 1 Kfp_Vfp_Sint8g128ef                nll=2.5716 ±0.4575  (39s)
+seed 1 Kfp_Vfp_Sint6g128                  nll=2.6684 ±0.4589  (39s)
+seed 1 Kfp_Vfp_Sint6g128ef                nll=2.5912 ±0.4571  (39s)
+seed 1 Kfp_Vfp_Sint4g128                  nll=4.4100 ±0.6532  (39s)
+seed 1 Kfp_Vfp_Sint4g128ef                nll=3.1836 ±0.5433  (39s)
+seed 1 Kint4g128_Vint4g128_Sint6g128      nll=2.6849 ±0.4602  (41s)
+seed 1 Kint4g128_Vint4g128_Sint6g128ef    nll=2.6073 ±0.4561  (42s)
+seed 1 Kint2g128_Vint2g128_Sint8g128      nll=2.9989 ±0.4756  (42s)
+seed 1 Kint2g128_Vint2g128_Sint8g128ef    nll=2.9830 ±0.4854  (42s)
+seed 1 Kint4g128_Vint4g128_Sint4g128      nll=4.4676 ±0.6574  (42s)
+seed 1 Kint4g128_Vint4g128_Sint4g128ef    nll=3.2267 ±0.5662  (42s)
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 2)
+seed 2 Kfp_Vfp_Sfp                        nll=2.5865 ±0.3357  (35s)
+seed 2 Kint4g128_Vint4g128_Sfp            nll=2.6027 ±0.3430  (38s)
+seed 2 Kfp_Vfp_Sint8g128                  nll=2.5984 ±0.3380  (39s)
+seed 2 Kfp_Vfp_Sint8g128ef                nll=2.5893 ±0.3366  (40s)
+seed 2 Kfp_Vfp_Sint6g128                  nll=2.6725 ±0.3444  (39s)
+seed 2 Kfp_Vfp_Sint6g128ef                nll=2.6118 ±0.3389  (40s)
+seed 2 Kfp_Vfp_Sint4g128                  nll=4.3820 ±0.4787  (40s)
+seed 2 Kfp_Vfp_Sint4g128ef                nll=3.1214 ±0.4061  (40s)
+seed 2 Kint4g128_Vint4g128_Sint6g128      nll=2.6899 ±0.3425  (42s)
+seed 2 Kint4g128_Vint4g128_Sint6g128ef    nll=2.6283 ±0.3461  (42s)
+seed 2 Kint2g128_Vint2g128_Sint8g128      nll=3.0578 ±0.4028  (42s)
+seed 2 Kint2g128_Vint2g128_Sint8g128ef    nll=3.0508 ±0.4375  (42s)
+seed 2 Kint4g128_Vint4g128_Sint4g128      nll=4.4023 ±0.4572  (42s)
+seed 2 Kint4g128_Vint4g128_Sint4g128ef    nll=3.1467 ±0.3922  (42s)
+done: results/r2_scale_2b.jsonl
+[2026-10-14T07:42:27Z] step r2_scale_2b OK
+# Report: r2_scale_2b
+generated 2026-10-14T07:42:37+00:00 from r2_scale_2b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-2B / wikitext2: fp 베이스라인 mean NLL 2.605 (시드 3개, 문서 20개/시드).
+- state 4bit (KV fp): fp 대비 +1.808 nats (95% CI +1.725~+1.896).
+- KV 4bit (state fp): fp 대비 +0.011 nats (95% CI +0.009~+0.014).
+- state 8bit: fp 대비 +0.010 nats (95% CI +0.006~+0.013).
+- KV4+S4 초가산: 실측 Δ +1.867 대 단독합 +1.820, 초과분 +0.047 nats (문서 대응 95% CI +0.021~+0.073).
+- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.440 nats (6개 셀, 범위 -1.255~-0.008).
+
+## [EN] Key Findings
+- Qwen3.5-2B / wikitext2: fp baseline mean NLL 2.605 (3 seeds, 20 docs per seed).
+- state 4-bit (KV fp): +1.808 nats over fp (95% CI +1.725~+1.896).
+- KV 4-bit (state fp): +0.011 nats over fp (95% CI +0.009~+0.014).
+- state 8-bit: +0.010 nats over fp (95% CI +0.006~+0.013).
+- KV4+S4 superadditivity: measured +1.867 vs sum of single effects +1.820; excess +0.047 nats (paired 95% CI +0.021~+0.073).
+- error feedback: mean change in dNLL versus RTN at the same bits -0.440 nats (6 cells, range -1.255~-0.008).
+
+## [KR/EN] 표
+### Qwen3.5-2B / wikitext2
+| 셀 (cell) | 평균 NLL (mean NLL) | ± std (시드/문서) | Δ vs fp (delta) | 95% CI (paired bootstrap) | 총 메모리 MB, T=512 (memory) | 시드 (seeds) | 문서/시드 (docs) |
+|---|---|---|---|---|---|---|---|
+| fp | 2.6054 | ± 0.0483 (seeds) | +0.0000 | +0.000~+0.000 * | 15.73 | 3 | 20 |
+| fp+S8 | 2.6151 | ± 0.0480 (seeds) | +0.0097 | +0.006~+0.013 | 11.01 | 3 | 20 |
+| fp+S8[EF] | 2.6073 | ± 0.0473 (seeds) | +0.0018 | +0.000~+0.003 | 11.01 | 3 | 20 |
+| fp+S6 | 2.6953 | ± 0.0431 (seeds) | +0.0899 | +0.080~+0.100 | 9.83 | 3 | 20 |
+| fp+S6[EF] | 2.6297 | ± 0.0500 (seeds) | +0.0243 | +0.019~+0.029 | 9.83 | 3 | 20 |
+| fp+S4 | 4.4139 | ± 0.0341 (seeds) | +1.8085 | +1.725~+1.896 | 8.65 | 3 | 20 |
+| fp+S4[EF] | 3.1827 | ± 0.0608 (seeds) | +0.5773 | +0.539~+0.612 | 8.65 | 3 | 20 |
+| KV4+fp | 2.6169 | ± 0.0461 (seeds) | +0.0114 | +0.009~+0.014 | 11.01 | 3 | 20 |
+| KV4+S6 | 2.7115 | ± 0.0419 (seeds) | +0.1061 | +0.096~+0.117 | 5.11 | 3 | 20 |
+| KV4+S6[EF] | 2.6460 | ± 0.0500 (seeds) | +0.0406 | +0.035~+0.047 | 5.11 | 3 | 20 |
+| KV4+S4 | 4.4722 | ± 0.0723 (seeds) | +1.8667 | +1.787~+1.951 | 3.93 | 3 | 20 |
+| KV4+S4[EF] | 3.2174 | ± 0.0665 (seeds) | +0.6120 | +0.570~+0.650 | 3.93 | 3 | 20 |
+| KV2+S8 | 3.0652 | ± 0.0702 (seeds) | +0.4597 | +0.432~+0.484 | 5.51 | 3 | 20 |
+| KV2+S8[EF] | 3.0526 | ± 0.0705 (seeds) | +0.4472 | +0.417~+0.477 | 5.51 | 3 | 20 |
+
+\* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
+
+## [KR/EN] 그림 목록
+- `results/figures/r2_scale_2b/heatmap_Qwen3.5-2B.pdf` / `.png`: Qwen3.5-2B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-2B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
+- `results/figures/r2_scale_2b/lines_Qwen3.5-2B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
+- `results/figures/r2_scale_2b/pareto_Qwen3.5-2B.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/r2_scale_2b/curves_Qwen3.5-2B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
+- `results/figures/r2_scale_2b/violin_Qwen3.5-2B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-2B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: bfloat16
+- commit: cae4f7a
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [20], 행 (rows): 42
+- 입력 파일 (sources): r2_scale_2b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r2_scale_2b.md
+[2026-10-14T07:42:38Z] report: results/reports/r2_scale_2b.md
+[2026-10-14T07:42:38Z] push failed (logged), continuing
+[2026-10-14T07:42:39Z] rsynced results/ to Drive
+[2026-10-14T07:42:39Z] === step r2_gsm8k_4b: python scripts/run_gsm8k.py --config configs/r2_gsm8k_4b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-4B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false], "cells": [{"kv_bits": 16, "state_bits": 16, "error_feedback": false}, {"kv_bits": 4, "state_bits": 16, "error_feedback": false}, {"kv_bits": 16, "state_bits": 8, "error_feedback": false}, {"kv_bits": 16, "state_bits": 6, "error_feedback": false}, {"kv_bits": 16, "state_bits": 4, "error_feedback": false}, {"kv_bits": 4, "state_bits": 6, "error_feedback": false}, {"kv_bits": 2, "state_bits": 8, "error_feedback": false}, {"kv_bits": 16, "state_bits": 6, "error_feedback": true}, {"kv_bits": 16, "state_bits": 4, "error_feedback": true}, {"kv_bits": 4, "state_bits": 6, "error_feedback": true}], "seeds": [0], "n_docs": 8, "prefill": 256, "decode": 256, "step": 1, "batch_size": 8, "dataset": "gsm8k", "out": "results/r2_gsm8k_4b.jsonl", "n_problems": 200, "subset_seed": 0, "subset_file": "results/gsm8k_subset200.json", "thinking": true, "max_new_tokens": 4096, "temperature": 1.0, "top_p": 0.95, "top_k": 20, "min_p": 0.0}
+Generating train split:   0%|          | 0/7473 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 7473/7473 [00:00<00:00, 396579.20 examples/s]
+Generating test split:   0%|          | 0/1319 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 1319/1319 [00:00<00:00, 314173.83 examples/s]
+200 problems from openai/gsm8k test (subset file results/gsm8k_subset200.json)
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:54,  3.70it/s]Loading weights:   6%|▋         | 27/426 [00:00<00:04, 89.98it/s]Loading weights:  11%|█         | 47/426 [00:00<00:03, 123.48it/s]Loading weights:  18%|█▊        | 78/426 [00:00<00:01, 181.82it/s]Loading weights:  24%|██▎       | 101/426 [00:00<00:01, 179.89it/s]Loading weights:  31%|███       | 132/426 [00:00<00:01, 210.25it/s]Loading weights:  37%|███▋      | 156/426 [00:00<00:01, 206.66it/s]Loading weights:  43%|████▎     | 185/426 [00:01<00:01, 216.60it/s]Loading weights:  49%|████▉     | 208/426 [00:01<00:01, 216.37it/s]Loading weights:  55%|█████▌    | 235/426 [00:01<00:00, 231.01it/s]Loading weights:  61%|██████    | 259/426 [00:01<00:00, 215.61it/s]Loading weights:  68%|██████▊   | 291/426 [00:01<00:00, 236.27it/s]Loading weights:  74%|███████▍  | 316/426 [00:01<00:00, 224.80it/s]Loading weights:  80%|████████  | 342/426 [00:01<00:00, 230.06it/s]Loading weights:  86%|████████▌ | 366/426 [00:01<00:00, 221.31it/s]Loading weights:  93%|█████████▎| 396/426 [00:01<00:00, 242.25it/s]Loading weights:  99%|█████████▉| 421/426 [00:02<00:00, 225.01it/s]Loading weights: 100%|██████████| 426/426 [00:02<00:00, 201.35it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[2026-10-14T11:57:45Z] step r2_gsm8k_4b FAILED (exit 143), continuing
+# Report: r2_gsm8k_4b
+generated 2026-10-14T11:57:47+00:00 from r2_gsm8k_4b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-4B GSM8K fp 정답률 0.600 (문제 200개, 95% CI 0.535~0.665), 평균 생성 토큰 2912, 예산 소진율 0.48.
+- fp+S8: 정답률 0.312 (fp 대비 -0.287), 토큰 3468, 반복률 0.122.
+- KV4+fp: 정답률 0.595 (fp 대비 -0.005), 토큰 3121, 반복률 0.087.
+
+## [EN] Key Findings
+- Qwen3.5-4B GSM8K fp accuracy 0.600 (200 problems, 95% CI 0.535~0.665), mean 2912 tokens, budget-exhaustion 0.48.
+- fp+S8: accuracy 0.312 (-0.287 vs fp), 3468 tokens, repeat ratio 0.122.
+- KV4+fp: accuracy 0.595 (-0.005 vs fp), 3121 tokens, repeat ratio 0.087.
+
+## [KR/EN] 표
+### Qwen3.5-4B
+| model | cell | error_feedback | kv_bits | state_bits | acc | acc_std_seeds | acc_ci_lo | acc_ci_hi | n | n_seeds | mean_tokens | budget_rate | repeat_ratio |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Qwen/Qwen3.5-4B | fp | False | 16 | 16 | 0.6000 | N/A | 0.5349 | 0.6650 | 200 | 1 | 2912.4450 | 0.4850 | 0.0856 |
+| Qwen/Qwen3.5-4B | fp+S8 | False | 16 | 8 | 0.3125 | N/A | 0.1562 | 0.4688 | 32 | 1 | 3467.5312 | 0.7500 | 0.1222 |
+| Qwen/Qwen3.5-4B | KV4+fp | False | 4 | 16 | 0.5950 | N/A | 0.5250 | 0.6600 | 200 | 1 | 3120.8400 | 0.5550 | 0.0867 |
+
+## [KR/EN] 그림 목록
+- `results/figures/r2_gsm8k_4b/gsm8k_acc_Qwen3.5-4B.pdf` / `.png`: 셀별 GSM8K 정답률(문제 부트스트랩 95% CI), EF 색 구분 / GSM8K accuracy per cell (bootstrap 95% CI over problems), colour = EF
+- `results/figures/r2_gsm8k_4b/gsm8k_tokens_Qwen3.5-4B.pdf` / `.png`: 셀별 생성 토큰 수 분포 / Generated-token distribution per cell
+- `results/figures/r2_gsm8k_4b/gsm8k_behaviour_Qwen3.5-4B.pdf` / `.png`: 예산 소진율과 8-gram 반복률 / Budget-exhaustion rate and 8-gram repeat ratio
+- `results/figures/r2_gsm8k_4b/gsm8k_acc_vs_tokens_Qwen3.5-4B.pdf` / `.png`: 정답률 대 평균 생성 토큰 수 / Accuracy versus mean generated tokens
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-4B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: N/A
+- commit: e33cb9f
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 1, 문서 수/시드 (docs): [], 행 (rows): 432
+- 입력 파일 (sources): r2_gsm8k_4b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r2_gsm8k_4b.md
+[2026-10-14T11:57:47Z] report: results/reports/r2_gsm8k_4b.md
+[2026-10-14T11:57:48Z] push failed (logged), continuing
+[2026-10-14T11:57:48Z] rsynced results/ to Drive
+[2026-10-14T11:57:48Z] === step r2_niah_4b: python scripts/run_niah.py --config configs/r2_niah_4b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-4B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 16, "state_bits": 16}, {"kv_bits": 4, "state_bits": 16}, {"kv_bits": 2, "state_bits": 16}, {"kv_bits": 16, "state_bits": 8}, {"kv_bits": 16, "state_bits": 4}, {"kv_bits": 4, "state_bits": 4}, {"kv_bits": 2, "state_bits": 8}], "seeds": [0], "n_docs": 8, "prefill": 256, "decode": 256, "step": 1, "batch_size": 1, "dataset": "niah", "out": "results/r2_niah_4b.jsonl", "context_lens": [4096, 16384], "depths": [0.1, 0.3, 0.5, 0.7, 0.9], "n_per_depth": 10, "needle_seed": 0, "max_new_tokens": 32}
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:47,  3.95it/s]Loading weights:   6%|▋         | 27/426 [00:00<00:04, 92.63it/s]Loading weights:  11%|█         | 47/426 [00:00<00:03, 125.46it/s]Loading weights:  18%|█▊        | 78/426 [00:00<00:01, 183.05it/s]Loading weights:  23%|██▎       | 100/426 [00:00<00:01, 176.73it/s]Loading weights:  30%|███       | 129/426 [00:00<00:01, 202.29it/s]Loading weights:  36%|███▌      | 152/426 [00:00<00:01, 198.06it/s]Loading weights:  43%|████▎     | 184/426 [00:01<00:01, 229.49it/s]Loading weights:  49%|████▉     | 209/426 [00:01<00:01, 215.16it/s]Loading weights:  55%|█████▌    | 236/426 [00:01<00:00, 228.48it/s]Loading weights:  61%|██████    | 260/426 [00:01<00:00, 213.97it/s]Loading weights:  68%|██████▊   | 290/426 [00:01<00:00, 236.72it/s]Loading weights:  74%|███████▍  | 315/426 [00:01<00:00, 220.81it/s]Loading weights:  81%|████████  | 344/426 [00:01<00:00, 232.65it/s]Loading weights:  86%|████████▋ | 368/426 [00:01<00:00, 222.15it/s]Loading weights:  93%|█████████▎| 396/426 [00:01<00:00, 230.75it/s]Loading weights:  99%|█████████▊| 420/426 [00:02<00:00, 221.82it/s]Loading weights: 100%|██████████| 426/426 [00:02<00:00, 200.95it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (2506654 > 262144). Running this sequence through the model will result in indexing errors
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+filler: 2,506,654 WikiText-2 train tokens
+seed 0 Kfp_Vfp_Sfp: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sfp                        acc=1.000 on 100 problems
+seed 0 Kint4g128_Vint4g128_Sfp: 100 to do, 0 done
+seed 0 Kint4g128_Vint4g128_Sfp            acc=1.000 on 100 problems
+seed 0 Kint2g128_Vint2g128_Sfp: 100 to do, 0 done
+seed 0 Kint2g128_Vint2g128_Sfp            acc=0.930 on 100 problems
+seed 0 Kfp_Vfp_Sint8g128: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sint8g128                  acc=1.000 on 100 problems
+seed 0 Kfp_Vfp_Sint8g128ef: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sint8g128ef                acc=1.000 on 100 problems
+seed 0 Kfp_Vfp_Sint4g128: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sint4g128                  acc=0.980 on 100 problems
+seed 0 Kfp_Vfp_Sint4g128ef: 100 to do, 0 done
+seed 0 Kfp_Vfp_Sint4g128ef                acc=0.980 on 100 problems
+seed 0 Kint4g128_Vint4g128_Sint4g128: 100 to do, 0 done
+seed 0 Kint4g128_Vint4g128_Sint4g128      acc=0.990 on 100 problems
+seed 0 Kint4g128_Vint4g128_Sint4g128ef: 100 to do, 0 done
+seed 0 Kint4g128_Vint4g128_Sint4g128ef    acc=1.000 on 100 problems
+seed 0 Kint2g128_Vint2g128_Sint8g128: 100 to do, 0 done
+seed 0 Kint2g128_Vint2g128_Sint8g128      acc=0.940 on 100 problems
+seed 0 Kint2g128_Vint2g128_Sint8g128ef: 100 to do, 0 done
+seed 0 Kint2g128_Vint2g128_Sint8g128ef    acc=0.940 on 100 problems
+done: results/r2_niah_4b.jsonl
+[2026-10-14T12:19:39Z] step r2_niah_4b OK
+# Report: r2_niah_4b
+generated 2026-10-14T12:19:41+00:00 from r2_niah_4b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-4B NIAH 컨텍스트 4096: fp 정확도 1.00 (문제 50개), 가장 낮은 셀 KV2+fp 0.94.
+- Qwen3.5-4B NIAH 컨텍스트 16384: fp 정확도 1.00 (문제 50개), 가장 낮은 셀 KV2+fp 0.92.
+
+## [EN] Key Findings
+- Qwen3.5-4B NIAH context 4096: fp accuracy 1.00 (50 problems); lowest cell KV2+fp at 0.94.
+- Qwen3.5-4B NIAH context 16384: fp accuracy 1.00 (50 problems); lowest cell KV2+fp at 0.92.
+
+## [KR/EN] 표
+### Qwen3.5-4B
+| model | cell | error_feedback | kv_bits | state_bits | context_len | acc | ci_lo | ci_hi | n |
+|---|---|---|---|---|---|---|---|---|---|
+| Qwen/Qwen3.5-4B | fp | False | 16 | 16 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp | False | 16 | 16 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp+S4 | False | 16 | 4 | 4096 | 0.9600 | 0.9000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp+S4 | False | 16 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp+S4[EF] | True | 16 | 4 | 4096 | 0.9600 | 0.9000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp+S4[EF] | True | 16 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp+S8 | False | 16 | 8 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp+S8 | False | 16 | 8 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp+S8[EF] | True | 16 | 8 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | fp+S8[EF] | True | 16 | 8 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV2+fp | False | 2 | 16 | 4096 | 0.9400 | 0.8600 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV2+fp | False | 2 | 16 | 16384 | 0.9200 | 0.8400 | 0.9800 | 50 |
+| Qwen/Qwen3.5-4B | KV2+S8 | False | 2 | 8 | 4096 | 0.9400 | 0.8600 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV2+S8 | False | 2 | 8 | 16384 | 0.9400 | 0.8600 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV2+S8[EF] | True | 2 | 8 | 4096 | 0.9400 | 0.8600 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV2+S8[EF] | True | 2 | 8 | 16384 | 0.9400 | 0.8600 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV4+fp | False | 4 | 16 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV4+fp | False | 4 | 16 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV4+S4 | False | 4 | 4 | 4096 | 0.9800 | 0.9400 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV4+S4 | False | 4 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV4+S4[EF] | True | 4 | 4 | 4096 | 1.0000 | 1.0000 | 1.0000 | 50 |
+| Qwen/Qwen3.5-4B | KV4+S4[EF] | True | 4 | 4 | 16384 | 1.0000 | 1.0000 | 1.0000 | 50 |
+
+## [KR/EN] 그림 목록
+- `results/figures/r2_niah_4b/niah_heatmap_Qwen3.5-4B.pdf` / `.png`: 셀 × 컨텍스트 길이 NIAH 정확도 / NIAH accuracy, cell x context length
+- `results/figures/r2_niah_4b/niah_depth_Qwen3.5-4B.pdf` / `.png`: 깊이 × 셀 정확도(길이별 패널) / Accuracy by needle depth x cell, one panel per context length
+- `results/figures/r2_niah_4b/niah_kv_vs_state_Qwen3.5-4B.pdf` / `.png`: KV-only 대 state-only: 회수 정확도(왼쪽)와 같은 셀의 ΔNLL(오른쪽), 태스크별 민감도 비교 / KV-only versus state-only: retrieval accuracy (left) and dNLL for the same cells (right)
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-4B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: N/A
+- commit: 935f3ad
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 1, 문서 수/시드 (docs): [], 행 (rows): 1100
+- 입력 파일 (sources): r2_niah_4b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r2_niah_4b.md
+[2026-10-14T12:19:41Z] report: results/reports/r2_niah_4b.md
+[2026-10-14T12:19:42Z] push failed (logged), continuing
+[2026-10-14T12:19:42Z] rsynced results/ to Drive
+[2026-10-14T12:19:51Z] 9B batch size from vram_check: 10
+[2026-10-14T12:19:51Z] === step r2_scale_9b: python scripts/run_grid.py --config configs/r2_scale_9b.yaml --batch-size 10 --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-9B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 16, "state_bits": 16}, {"kv_bits": 4, "state_bits": 16}, {"kv_bits": 16, "state_bits": 8}, {"kv_bits": 16, "state_bits": 6}, {"kv_bits": 16, "state_bits": 4}, {"kv_bits": 4, "state_bits": 6}, {"kv_bits": 2, "state_bits": 8}, {"kv_bits": 4, "state_bits": 4}], "seeds": [0, 1, 2], "n_docs": 20, "prefill": 256, "decode": 256, "step": 1, "batch_size": 10, "dataset": "wikitext2", "out": "results/r2_scale_9b.jsonl"}
+42 runs (3 seeds); 0 already in results/r2_scale_9b.jsonl
+run metadata: {"git_commit": "7fea085", "git_dirty": true, "transformers": "5.19.0.dev0", "torch": "2.11.0+cu130", "device": "NVIDIA A100-SXM4-40GB", "python": "3.13.15", "timestamp_utc": "2026-10-14T12:19:56+00:00", "config": "configs/r2_scale_9b.yaml"}
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files:  25%|██▌       | 1/4 [00:55<02:45, 55.23s/it]Fetching 4 files: 100%|██████████| 4/4 [00:55<00:00, 13.81s/it]
+Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:   0%|          | 1/427 [00:00<03:12,  2.22it/s]Loading weights:   0%|          | 2/427 [00:00<03:27,  2.05it/s]Loading weights:   3%|▎         | 14/427 [00:01<00:21, 19.09it/s]Loading weights:   7%|▋         | 29/427 [00:01<00:09, 40.66it/s]Loading weights:  10%|█         | 43/427 [00:01<00:06, 58.62it/s]Loading weights:  13%|█▎        | 54/427 [00:01<00:05, 68.87it/s]Loading weights:  16%|█▌        | 68/427 [00:01<00:04, 82.46it/s]Loading weights:  19%|█▉        | 82/427 [00:01<00:03, 93.61it/s]Loading weights:  22%|██▏       | 96/427 [00:01<00:03, 101.94it/s]Loading weights:  25%|██▌       | 108/427 [00:01<00:03, 104.16it/s]Loading weights:  28%|██▊       | 121/427 [00:01<00:02, 107.51it/s]Loading weights:  32%|███▏      | 135/427 [00:02<00:02, 112.07it/s]Loading weights:  35%|███▍      | 149/427 [00:02<00:02, 115.88it/s]Loading weights:  38%|███▊      | 161/427 [00:02<00:02, 115.49it/s]Loading weights:  41%|████      | 174/427 [00:02<00:02, 115.84it/s]Loading weights:  44%|████▍     | 188/427 [00:02<00:02, 118.59it/s]Loading weights:  47%|████▋     | 202/427 [00:02<00:01, 120.64it/s]Loading weights:  50%|█████     | 215/427 [00:02<00:01, 121.23it/s]Loading weights:  53%|█████▎    | 228/427 [00:02<00:01, 120.08it/s]Loading weights:  56%|█████▋    | 241/427 [00:02<00:01, 118.50it/s]Loading weights:  59%|█████▉    | 254/427 [00:03<00:01, 117.26it/s]Loading weights:  62%|██████▏   | 266/427 [00:03<00:01, 117.20it/s]Loading weights:  66%|██████▌   | 280/427 [00:03<00:01, 118.71it/s]Loading weights:  69%|██████▊   | 293/427 [00:03<00:01, 117.32it/s]Loading weights:  72%|███████▏  | 308/427 [00:03<00:00, 122.03it/s]Loading weights:  75%|███████▌  | 321/427 [00:03<00:00, 122.08it/s]Loading weights:  78%|███████▊  | 334/427 [00:03<00:00, 120.79it/s]Loading weights:  81%|████████▏ | 347/427 [00:03<00:00, 119.48it/s]Loading weights:  85%|████████▍ | 361/427 [00:03<00:00, 120.48it/s]Loading weights:  88%|████████▊ | 374/427 [00:04<00:00, 119.73it/s]Loading weights:  90%|█████████ | 386/427 [00:04<00:00, 114.85it/s]Loading weights:  93%|█████████▎| 399/427 [00:04<00:00, 114.08it/s]Loading weights:  97%|█████████▋| 414/427 [00:04<00:00, 119.61it/s]Loading weights: 100%|█████████▉| 426/427 [00:04<00:00, 117.75it/s]Loading weights: 100%|██████████| 427/427 [00:04<00:00, 94.45it/s] 
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (297354 > 262144). Running this sequence through the model will result in indexing errors
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+model on cuda:0 dtype=bfloat16
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 0)
+seed 0 Kfp_Vfp_Sfp                        nll=2.2050 ±0.3446  (35s)
+seed 0 Kint4g128_Vint4g128_Sfp            nll=2.2113 ±0.3483  (35s)
+seed 0 Kfp_Vfp_Sint8g128                  nll=2.2073 ±0.3474  (36s)
+seed 0 Kfp_Vfp_Sint8g128ef                nll=2.2082 ±0.3463  (37s)
+seed 0 Kfp_Vfp_Sint6g128                  nll=2.2785 ±0.3603  (36s)
+seed 0 Kfp_Vfp_Sint6g128ef                nll=2.2638 ±0.3438  (37s)
+seed 0 Kfp_Vfp_Sint4g128                  nll=2.5000 ±0.3939  (36s)
+seed 0 Kfp_Vfp_Sint4g128ef                nll=2.3768 ±0.3744  (37s)
+seed 0 Kint4g128_Vint4g128_Sint6g128      nll=2.2880 ±0.3589  (39s)
+seed 0 Kint4g128_Vint4g128_Sint6g128ef    nll=2.2715 ±0.3476  (40s)
+seed 0 Kint2g128_Vint2g128_Sint8g128      nll=2.3435 ±0.3472  (39s)
+seed 0 Kint2g128_Vint2g128_Sint8g128ef    nll=2.3456 ±0.3389  (39s)
+seed 0 Kint4g128_Vint4g128_Sint4g128      nll=2.5033 ±0.3901  (39s)
+seed 0 Kint4g128_Vint4g128_Sint4g128ef    nll=2.3786 ±0.3742  (39s)
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 1)
+seed 1 Kfp_Vfp_Sfp                        nll=2.1576 ±0.4301  (33s)
+seed 1 Kint4g128_Vint4g128_Sfp            nll=2.1631 ±0.4289  (35s)
+seed 1 Kfp_Vfp_Sint8g128                  nll=2.1611 ±0.4259  (36s)
+seed 1 Kfp_Vfp_Sint8g128ef                nll=2.1607 ±0.4296  (37s)
+seed 1 Kfp_Vfp_Sint6g128                  nll=2.2222 ±0.4312  (36s)
+seed 1 Kfp_Vfp_Sint6g128ef                nll=2.2147 ±0.4319  (37s)
+seed 1 Kfp_Vfp_Sint4g128                  nll=2.4403 ±0.4461  (36s)
+seed 1 Kfp_Vfp_Sint4g128ef                nll=2.3060 ±0.4567  (37s)
+seed 1 Kint4g128_Vint4g128_Sint6g128      nll=2.2307 ±0.4368  (39s)
+seed 1 Kint4g128_Vint4g128_Sint6g128ef    nll=2.2193 ±0.4360  (39s)
+seed 1 Kint2g128_Vint2g128_Sint8g128      nll=2.2859 ±0.4145  (39s)
+seed 1 Kint2g128_Vint2g128_Sint8g128ef    nll=2.2878 ±0.4188  (39s)
+seed 1 Kint4g128_Vint4g128_Sint4g128      nll=2.4504 ±0.4502  (39s)
+seed 1 Kint4g128_Vint4g128_Sint4g128ef    nll=2.3161 ±0.4594  (40s)
+[data] wikitext2/test: 297,354 tokens -> 580 windows of 512; loaded 20 docs (10,240 tokens, seed 2)
+seed 2 Kfp_Vfp_Sfp                        nll=2.1457 ±0.3605  (33s)
+seed 2 Kint4g128_Vint4g128_Sfp            nll=2.1517 ±0.3589  (36s)
+seed 2 Kfp_Vfp_Sint8g128                  nll=2.1492 ±0.3558  (36s)
+seed 2 Kfp_Vfp_Sint8g128ef                nll=2.1495 ±0.3599  (37s)
+seed 2 Kfp_Vfp_Sint6g128                  nll=2.2115 ±0.3487  (36s)
+seed 2 Kfp_Vfp_Sint6g128ef                nll=2.2025 ±0.3553  (37s)
+seed 2 Kfp_Vfp_Sint4g128                  nll=2.4165 ±0.3762  (36s)
+seed 2 Kfp_Vfp_Sint4g128ef                nll=2.2940 ±0.3462  (37s)
+seed 2 Kint4g128_Vint4g128_Sint6g128      nll=2.2175 ±0.3460  (39s)
+seed 2 Kint4g128_Vint4g128_Sint6g128ef    nll=2.2087 ±0.3505  (39s)
+seed 2 Kint2g128_Vint2g128_Sint8g128      nll=2.2714 ±0.3533  (39s)
+seed 2 Kint2g128_Vint2g128_Sint8g128ef    nll=2.2734 ±0.3474  (39s)
+seed 2 Kint4g128_Vint4g128_Sint4g128      nll=2.4154 ±0.3671  (39s)
+seed 2 Kint4g128_Vint4g128_Sint4g128ef    nll=2.3054 ±0.3447  (39s)
+done: results/r2_scale_9b.jsonl
+[2026-10-14T12:47:20Z] step r2_scale_9b OK
+# Report: r2_scale_9b
+generated 2026-10-14T12:47:30+00:00 from r2_scale_9b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-9B / wikitext2: fp 베이스라인 mean NLL 2.169 (시드 3개, 문서 20개/시드).
+- state 4bit (KV fp): fp 대비 +0.283 nats (95% CI +0.261~+0.303).
+- KV 4bit (state fp): fp 대비 +0.006 nats (95% CI +0.004~+0.008).
+- state 8bit: fp 대비 +0.003 nats (95% CI -0.000~+0.006) (구분 불가 / not distinguishable).
+- KV4+S4 초가산: 실측 Δ +0.287 대 단독합 +0.289, 초과분 -0.002 nats (문서 대응 95% CI -0.009~+0.005) (구분 불가 / not distinguishable).
+- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.045 nats (6개 셀, 범위 -0.127~+0.002).
+
+## [EN] Key Findings
+- Qwen3.5-9B / wikitext2: fp baseline mean NLL 2.169 (3 seeds, 20 docs per seed).
+- state 4-bit (KV fp): +0.283 nats over fp (95% CI +0.261~+0.303).
+- KV 4-bit (state fp): +0.006 nats over fp (95% CI +0.004~+0.008).
+- state 8-bit: +0.003 nats over fp (95% CI -0.000~+0.006) (구분 불가 / not distinguishable).
+- KV4+S4 superadditivity: measured +0.287 vs sum of single effects +0.289; excess -0.002 nats (paired 95% CI -0.009~+0.005) (구분 불가 / not distinguishable).
+- error feedback: mean change in dNLL versus RTN at the same bits -0.045 nats (6 cells, range -0.127~+0.002).
+
+## [KR/EN] 표
+### Qwen3.5-9B / wikitext2
+| 셀 (cell) | 평균 NLL (mean NLL) | ± std (시드/문서) | Δ vs fp (delta) | 95% CI (paired bootstrap) | 총 메모리 MB, T=512 (memory) | 시드 (seeds) | 문서/시드 (docs) |
+|---|---|---|---|---|---|---|---|
+| fp | 2.1695 | ± 0.0313 (seeds) | +0.0000 | +0.000~+0.000 * | 41.94 | 3 | 20 |
+| fp+S8 | 2.1725 | ± 0.0307 (seeds) | +0.0031 | -0.000~+0.006 * | 29.36 | 3 | 20 |
+| fp+S8[EF] | 2.1728 | ± 0.0312 (seeds) | +0.0033 | +0.001~+0.005 | 29.36 | 3 | 20 |
+| fp+S6 | 2.2374 | ± 0.0360 (seeds) | +0.0679 | +0.056~+0.082 | 26.21 | 3 | 20 |
+| fp+S6[EF] | 2.2270 | ± 0.0324 (seeds) | +0.0575 | +0.049~+0.066 | 26.21 | 3 | 20 |
+| fp+S4 | 2.4522 | ± 0.0430 (seeds) | +0.2828 | +0.261~+0.303 | 23.07 | 3 | 20 |
+| fp+S4[EF] | 2.3256 | ± 0.0447 (seeds) | +0.1562 | +0.140~+0.175 | 23.07 | 3 | 20 |
+| KV4+fp | 2.1754 | ± 0.0316 (seeds) | +0.0059 | +0.004~+0.008 | 29.36 | 3 | 20 |
+| KV4+S6 | 2.2454 | ± 0.0375 (seeds) | +0.0759 | +0.064~+0.090 | 13.63 | 3 | 20 |
+| KV4+S6[EF] | 2.2332 | ± 0.0336 (seeds) | +0.0637 | +0.055~+0.073 | 13.63 | 3 | 20 |
+| KV4+S4 | 2.4564 | ± 0.0442 (seeds) | +0.2869 | +0.265~+0.308 | 10.49 | 3 | 20 |
+| KV4+S4[EF] | 2.3334 | ± 0.0395 (seeds) | +0.1639 | +0.146~+0.182 | 10.49 | 3 | 20 |
+| KV2+S8 | 2.3003 | ± 0.0381 (seeds) | +0.1308 | +0.119~+0.144 | 14.68 | 3 | 20 |
+| KV2+S8[EF] | 2.3022 | ± 0.0382 (seeds) | +0.1328 | +0.121~+0.145 | 14.68 | 3 | 20 |
+
+\* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
+
+## [KR/EN] 그림 목록
+- `results/figures/r2_scale_9b/heatmap_Qwen3.5-9B.pdf` / `.png`: Qwen3.5-9B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-9B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
+- `results/figures/r2_scale_9b/lines_Qwen3.5-9B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
+- `results/figures/r2_scale_9b/pareto_Qwen3.5-9B.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/r2_scale_9b/curves_Qwen3.5-9B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
+- `results/figures/r2_scale_9b/violin_Qwen3.5-9B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-9B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: bfloat16
+- commit: 7fea085
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [20], 행 (rows): 42
+- 입력 파일 (sources): r2_scale_9b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r2_scale_9b.md
+[2026-10-14T12:47:32Z] report: results/reports/r2_scale_9b.md
+[2026-10-14T12:47:32Z] push failed (logged), continuing
+[2026-10-14T12:47:32Z] rsynced results/ to Drive
+[2026-10-14T12:47:32Z] === Falcon-H1 hook pre-check
+[2026-10-14T12:48:04Z] Falcon-H1 hooks OK
+[2026-10-14T12:48:04Z] === step r2_falcon_1.5b: python scripts/run_grid.py --config configs/r2_falcon_1.5b.yaml --dtype bf16
+settings: {"model": "tiiuae/Falcon-H1-1.5B-Instruct", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 16, "state_bits": 16}, {"kv_bits": 4, "state_bits": 16}, {"kv_bits": 16, "state_bits": 8}, {"kv_bits": 16, "state_bits": 6}, {"kv_bits": 16, "state_bits": 4}, {"kv_bits": 4, "state_bits": 6}, {"kv_bits": 2, "state_bits": 8}, {"kv_bits": 4, "state_bits": 4}], "seeds": [0, 1, 2], "n_docs": 20, "prefill": 256, "decode": 256, "step": 1, "batch_size": 8, "dataset": "wikitext2", "out": "results/r2_falcon_1.5b.jsonl"}
+42 runs (3 seeds); 0 already in results/r2_falcon_1.5b.jsonl
+run metadata: {"git_commit": "cbd6f92", "git_dirty": true, "transformers": "5.19.0.dev0", "torch": "2.11.0+cu130", "device": "NVIDIA A100-SXM4-40GB", "python": "3.13.15", "timestamp_utc": "2026-10-14T12:48:09+00:00", "config": "configs/r2_falcon_1.5b.yaml"}
+Loading weights:   0%|          | 0/411 [00:00<?, ?it/s]Loading weights:   4%|▎         | 15/411 [00:00<00:02, 149.91it/s]Loading weights:  18%|█▊        | 72/411 [00:00<00:00, 393.44it/s]Loading weights:  31%|███       | 127/411 [00:00<00:00, 464.37it/s]Loading weights:  45%|████▍     | 183/411 [00:00<00:00, 496.68it/s]Loading weights:  59%|█████▉    | 243/411 [00:00<00:00, 527.17it/s]Loading weights:  73%|███████▎  | 302/411 [00:00<00:00, 530.11it/s]Loading weights:  88%|████████▊ | 362/411 [00:00<00:00, 543.61it/s]Loading weights: 100%|██████████| 411/411 [00:00<00:00, 510.84it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `mamba_chunk_scan_combined` is falling back to its reference PyTorch implementation because `mamba_ssm` is not installed. This is correct but much slower; install `mamba_ssm` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `selective_state_update` is falling back to its reference PyTorch implementation because `mamba_ssm` is not installed. This is correct but much slower; install `mamba_ssm` for the optimized kernel.
+model on cuda:0 dtype=bfloat16
+[data] wikitext2/test: 359,517 tokens -> 702 windows of 512; loaded 20 docs (10,240 tokens, seed 0)
+seed 0 Kfp_Vfp_Sfp                        nll=5.8565 ±0.3687  (72s)
+seed 0 Kint4g128_Vint4g128_Sfp            nll=5.8566 ±0.3689  (83s)
+seed 0 Kfp_Vfp_Sint8g128                  nll=5.8621 ±0.3720  (77s)
+seed 0 Kfp_Vfp_Sint8g128ef                nll=5.8610 ±0.3708  (78s)
+seed 0 Kfp_Vfp_Sint6g128                  nll=5.8651 ±0.3594  (77s)
+seed 0 Kfp_Vfp_Sint6g128ef                nll=5.8656 ±0.3656  (78s)
+seed 0 Kfp_Vfp_Sint4g128                  nll=5.8068 ±0.3927  (77s)
+seed 0 Kfp_Vfp_Sint4g128ef                nll=5.8620 ±0.3507  (77s)
+seed 0 Kint4g128_Vint4g128_Sint6g128      nll=5.8634 ±0.3490  (88s)
+seed 0 Kint4g128_Vint4g128_Sint6g128ef    nll=5.8665 ±0.3624  (89s)
+seed 0 Kint2g128_Vint2g128_Sint8g128      nll=5.9752 ±0.4510  (88s)
+seed 0 Kint2g128_Vint2g128_Sint8g128ef    nll=5.9799 ±0.4497  (88s)
+seed 0 Kint4g128_Vint4g128_Sint4g128      nll=5.7985 ±0.4054  (88s)
+seed 0 Kint4g128_Vint4g128_Sint4g128ef    nll=5.8580 ±0.3654  (88s)
+[data] wikitext2/test: 359,517 tokens -> 702 windows of 512; loaded 20 docs (10,240 tokens, seed 1)
+seed 1 Kfp_Vfp_Sfp                        nll=5.9322 ±0.5909  (72s)
+seed 1 Kint4g128_Vint4g128_Sfp            nll=5.9180 ±0.5899  (83s)
+seed 1 Kfp_Vfp_Sint8g128                  nll=5.9246 ±0.5859  (77s)
+seed 1 Kfp_Vfp_Sint8g128ef                nll=5.9371 ±0.5935  (77s)
+seed 1 Kfp_Vfp_Sint6g128                  nll=5.9142 ±0.5632  (77s)
+seed 1 Kfp_Vfp_Sint6g128ef                nll=5.9370 ±0.5809  (77s)
+seed 1 Kfp_Vfp_Sint4g128                  nll=5.8667 ±0.5933  (77s)
+seed 1 Kfp_Vfp_Sint4g128ef                nll=5.9230 ±0.5618  (77s)
+seed 1 Kint4g128_Vint4g128_Sint6g128      nll=5.9006 ±0.5661  (88s)
+seed 1 Kint4g128_Vint4g128_Sint6g128ef    nll=5.9251 ±0.5826  (89s)
+seed 1 Kint2g128_Vint2g128_Sint8g128      nll=6.0414 ±0.5914  (88s)
+seed 1 Kint2g128_Vint2g128_Sint8g128ef    nll=6.0429 ±0.6050  (88s)
+seed 1 Kint4g128_Vint4g128_Sint4g128      nll=5.8638 ±0.5726  (88s)
+seed 1 Kint4g128_Vint4g128_Sint4g128ef    nll=5.9122 ±0.5596  (88s)
+[data] wikitext2/test: 359,517 tokens -> 702 windows of 512; loaded 20 docs (10,240 tokens, seed 2)
+seed 2 Kfp_Vfp_Sfp                        nll=5.8828 ±0.4655  (72s)
+seed 2 Kint4g128_Vint4g128_Sfp            nll=5.8674 ±0.4653  (83s)
+seed 2 Kfp_Vfp_Sint8g128                  nll=5.8857 ±0.4720  (77s)
+seed 2 Kfp_Vfp_Sint8g128ef                nll=5.8837 ±0.4662  (78s)
+seed 2 Kfp_Vfp_Sint6g128                  nll=5.8814 ±0.4940  (77s)
+seed 2 Kfp_Vfp_Sint6g128ef                nll=5.8936 ±0.4717  (77s)
+seed 2 Kfp_Vfp_Sint4g128                  nll=5.9072 ±0.5195  (77s)
+seed 2 Kfp_Vfp_Sint4g128ef                nll=5.8940 ±0.4301  (77s)
+seed 2 Kint4g128_Vint4g128_Sint6g128      nll=5.8765 ±0.4796  (88s)
+seed 2 Kint4g128_Vint4g128_Sint6g128ef    nll=5.8799 ±0.4683  (88s)
+seed 2 Kint2g128_Vint2g128_Sint8g128      nll=5.9828 ±0.5820  (88s)
+seed 2 Kint2g128_Vint2g128_Sint8g128ef    nll=5.9935 ±0.5732  (89s)
+seed 2 Kint4g128_Vint4g128_Sint4g128      nll=5.8894 ±0.4865  (88s)
+seed 2 Kint4g128_Vint4g128_Sint4g128ef    nll=5.8907 ±0.4448  (89s)
+done: results/r2_falcon_1.5b.jsonl
+[2026-10-14T13:45:47Z] step r2_falcon_1.5b OK
+# Report: r2_falcon_1.5b
+generated 2026-10-14T13:45:57+00:00 from r2_falcon_1.5b.jsonl
+
+## [KR] 핵심 요약
+- Falcon-H1-1.5B-Instruct / wikitext2: fp 베이스라인 mean NLL 5.890 (시드 3개, 문서 20개/시드).
+- state 4bit (KV fp): fp 대비 -0.030 nats (95% CI -0.069~+0.010) (구분 불가 / not distinguishable).
+- KV 4bit (state fp): fp 대비 -0.010 nats (95% CI -0.019~-0.001).
+- state 8bit: fp 대비 +0.000 nats (95% CI -0.006~+0.007) (구분 불가 / not distinguishable).
+- KV4+S4 초가산: 실측 Δ -0.040 대 단독합 -0.040, 초과분 +0.000 nats (문서 대응 95% CI -0.016~+0.015) (구분 불가 / not distinguishable).
+- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 +0.017 nats (6개 셀, 범위 +0.003~+0.036).
+
+## [EN] Key Findings
+- Falcon-H1-1.5B-Instruct / wikitext2: fp baseline mean NLL 5.890 (3 seeds, 20 docs per seed).
+- state 4-bit (KV fp): -0.030 nats over fp (95% CI -0.069~+0.010) (구분 불가 / not distinguishable).
+- KV 4-bit (state fp): -0.010 nats over fp (95% CI -0.019~-0.001).
+- state 8-bit: +0.000 nats over fp (95% CI -0.006~+0.007) (구분 불가 / not distinguishable).
+- KV4+S4 superadditivity: measured -0.040 vs sum of single effects -0.040; excess +0.000 nats (paired 95% CI -0.016~+0.015) (구분 불가 / not distinguishable).
+- error feedback: mean change in dNLL versus RTN at the same bits +0.017 nats (6 cells, range +0.003~+0.036).
+
+## [KR/EN] 표
+### Falcon-H1-1.5B-Instruct / wikitext2
+| 셀 (cell) | 평균 NLL (mean NLL) | ± std (시드/문서) | Δ vs fp (delta) | 95% CI (paired bootstrap) | 총 메모리 MB, T=512 (memory) | 시드 (seeds) | 문서/시드 (docs) |
+|---|---|---|---|---|---|---|---|
+| fp | 5.8905 | ± 0.0384 (seeds) | +0.0000 | +0.000~+0.000 * | 50.33 | 3 | 20 |
+| fp+S8 | 5.8908 | ± 0.0315 (seeds) | +0.0003 | -0.006~+0.007 * | 31.46 | 3 | 20 |
+| fp+S8[EF] | 5.8939 | ± 0.0391 (seeds) | +0.0034 | +0.002~+0.005 | 31.46 | 3 | 20 |
+| fp+S6 | 5.8869 | ± 0.0250 (seeds) | -0.0036 | -0.018~+0.012 * | 26.74 | 3 | 20 |
+| fp+S6[EF] | 5.8987 | ± 0.0360 (seeds) | +0.0082 | +0.002~+0.014 | 26.74 | 3 | 20 |
+| fp+S4 | 5.8603 | ± 0.0505 (seeds) | -0.0302 | -0.069~+0.010 * | 22.02 | 3 | 20 |
+| fp+S4[EF] | 5.8930 | ± 0.0305 (seeds) | +0.0025 | -0.014~+0.018 * | 22.02 | 3 | 20 |
+| KV4+fp | 5.8807 | ± 0.0328 (seeds) | -0.0098 | -0.019~-0.001 | 40.89 | 3 | 20 |
+| KV4+S6 | 5.8802 | ± 0.0189 (seeds) | -0.0103 | -0.026~+0.005 * | 17.30 | 3 | 20 |
+| KV4+S6[EF] | 5.8905 | ± 0.0307 (seeds) | +0.0000 | -0.011~+0.011 * | 17.30 | 3 | 20 |
+| KV4+S4 | 5.8506 | ± 0.0468 (seeds) | -0.0399 | -0.072~-0.008 | 12.58 | 3 | 20 |
+| KV4+S4[EF] | 5.8869 | ± 0.0273 (seeds) | -0.0036 | -0.020~+0.013 * | 12.58 | 3 | 20 |
+| KV2+S8 | 5.9998 | ± 0.0362 (seeds) | +0.1093 | +0.062~+0.164 | 20.45 | 3 | 20 |
+| KV2+S8[EF] | 6.0054 | ± 0.0332 (seeds) | +0.1149 | +0.069~+0.169 | 20.45 | 3 | 20 |
+
+\* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
+
+## [KR/EN] 그림 목록
+- `results/figures/r2_falcon_1.5b/heatmap_Falcon-H1-1.5B-Instruct.pdf` / `.png`: Falcon-H1-1.5B-Instruct KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Falcon-H1-1.5B-Instruct: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
+- `results/figures/r2_falcon_1.5b/lines_Falcon-H1-1.5B-Instruct.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
+- `results/figures/r2_falcon_1.5b/pareto_Falcon-H1-1.5B-Instruct.pdf` / `.png`: 총 메모리(T=512) 대 ΔNLL 파레토 산점도, 마커는 KV-only/state-only/joint / Memory (T=512) versus dNLL Pareto scatter; marker = KV-only / state-only / joint
+- `results/figures/r2_falcon_1.5b/curves_Falcon-H1-1.5B-Instruct.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
+- `results/figures/r2_falcon_1.5b/violin_Falcon-H1-1.5B-Instruct.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
+
+## 조건
+- 모델 (models): tiiuae/Falcon-H1-1.5B-Instruct
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: bfloat16
+- commit: cbd6f92
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [20], 행 (rows): 42
+- 입력 파일 (sources): r2_falcon_1.5b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r2_falcon_1.5b.md
+[2026-10-14T13:45:58Z] report: results/reports/r2_falcon_1.5b.md
+[2026-10-14T13:45:59Z] push failed (logged), continuing
+[2026-10-14T13:45:59Z] rsynced results/ to Drive
+[2026-10-14T13:45:59Z] round 2 finished

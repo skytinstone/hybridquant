@@ -1,0 +1,92 @@
+[2026-10-14T03:51:06Z] GPU: NVIDIA A100-SXM4-40GB, 40960 MiB, 35821 MiB
+[2026-10-14T03:51:06Z] estimated time (planning aid):
+config                                                     model                         hours
+grid_0.8b.yaml                                             Qwen/Qwen3.5-0.8B               1.6
+grid_4b_core.yaml                                          Qwen/Qwen3.5-4B                 1.2
+r2_ablation_0.8b.yaml                                      Qwen/Qwen3.5-0.8B               1.1
+r2_c4_0.8b.yaml                                            Qwen/Qwen3.5-0.8B               0.5
+r2_falcon_1.5b.yaml                                        tiiuae/Falcon-H1-1.5B-Instruct    0.7
+r2_scale_2b.yaml                                           Qwen/Qwen3.5-2B                 0.8
+r2_scale_9b.yaml                                           Qwen/Qwen3.5-9B                 1.9
+smoke_0.8b.yaml                                            Qwen/Qwen3.5-0.8B               0.0
+superadd_0.8b.yaml                                         Qwen/Qwen3.5-0.8B               0.2
+r2_gsm8k_4b.yaml (10 cells x 200 problems, ~1500 tok avg)  Qwen/Qwen3.5-4B                 4.6
+r2_niah_0.8b.yaml (11 cells x 100 prompts, 4k/16k prefill) Qwen/Qwen3.5-0.8B               0.5
+r2_niah_4b.yaml                                            Qwen/Qwen3.5-4B                 1.2
+TOTAL (one A100, sequential)                                                              14.4
+[2026-10-14T03:51:11Z] round 1 start on NVIDIA A100-SXM4-40GB
+[2026-10-14T03:51:11Z] === step smoke_0.8b: python scripts/run_grid.py --config configs/smoke_0.8b.yaml --dtype bf16
+[2026-10-14T03:51:25Z] step smoke_0.8b OK
+[2026-10-14T03:51:36Z] report: results/reports/smoke_0.8b.md
+[2026-10-14T03:51:36Z] push failed (logged to results/push_failures.log), continuing
+[2026-10-14T03:51:36Z] rsynced results/ to Drive
+[2026-10-14T03:51:36Z] === step grid_0.8b: python scripts/run_grid.py --config configs/grid_0.8b.yaml --dtype bf16
+[2026-10-14T04:35:31Z] step grid_0.8b OK
+[2026-10-14T04:35:43Z] report: results/reports/grid_0.8b.md
+[2026-10-14T04:35:44Z] push failed (logged to results/push_failures.log), continuing
+[2026-10-14T04:35:44Z] rsynced results/ to Drive
+[2026-10-14T04:35:44Z] === step superadd_0.8b: python scripts/run_grid.py --config configs/superadd_0.8b.yaml --dtype bf16
+[2026-10-14T04:48:08Z] step superadd_0.8b OK
+[2026-10-14T04:48:18Z] report: results/reports/superadd_0.8b.md
+[2026-10-14T04:48:18Z] push failed (logged to results/push_failures.log), continuing
+[2026-10-14T04:48:19Z] rsynced results/ to Drive
+[2026-10-14T04:48:19Z] === step layer_sweep_0.8b: python scripts/layer_sweep.py --model Qwen/Qwen3.5-0.8B --state-bits 4 --n-docs 8 --dtype bf16
+[2026-10-14T04:52:44Z] step layer_sweep_0.8b OK
+[2026-10-14T04:52:46Z] report: results/reports/layer_sweep_0.8b.md
+[2026-10-14T04:52:47Z] push failed (logged to results/push_failures.log), continuing
+[2026-10-14T04:52:47Z] rsynced results/ to Drive
+[2026-10-14T04:52:47Z] === step grid_4b_core: python scripts/run_grid.py --config configs/grid_4b_core.yaml --dtype bf16
+[2026-10-14T05:26:54Z] step grid_4b_core OK
+[2026-10-14T05:27:05Z] report: results/reports/grid_4b_core.md
+[2026-10-14T05:27:05Z] push failed (logged to results/push_failures.log), continuing
+[2026-10-14T05:27:05Z] rsynced results/ to Drive
+[2026-10-14T05:27:05Z] round 1 finished
+[2026-10-14T05:27:05Z] round 2 start on NVIDIA A100-SXM4-40GB
+[2026-10-14T05:27:05Z] === step r2_ablation_0.8b: python scripts/run_grid.py --config configs/r2_ablation_0.8b.yaml --dtype bf16
+[2026-10-14T06:33:16Z] step r2_ablation_0.8b OK
+[2026-10-14T06:33:25Z] report: results/reports/r2_ablation_0.8b.md
+[2026-10-14T06:33:26Z] push failed (logged), continuing
+[2026-10-14T06:33:26Z] rsynced results/ to Drive
+[2026-10-14T06:33:26Z] === step r2_c4_0.8b: python scripts/run_grid.py --config configs/r2_c4_0.8b.yaml --dtype bf16
+[2026-10-14T07:02:03Z] step r2_c4_0.8b OK
+[2026-10-14T07:02:14Z] report: results/reports/r2_c4_0.8b.md
+[2026-10-14T07:02:14Z] push failed (logged), continuing
+[2026-10-14T07:02:15Z] rsynced results/ to Drive
+[2026-10-14T07:02:15Z] === step r2_niah_0.8b: python scripts/run_niah.py --config configs/r2_niah_0.8b.yaml --dtype bf16
+[2026-10-14T07:13:36Z] step r2_niah_0.8b OK
+[2026-10-14T07:13:39Z] report: results/reports/r2_niah_0.8b.md
+[2026-10-14T07:13:39Z] push failed (logged), continuing
+[2026-10-14T07:13:39Z] rsynced results/ to Drive
+[2026-10-14T07:13:39Z] === step r2_scale_2b: python scripts/run_grid.py --config configs/r2_scale_2b.yaml --dtype bf16
+[2026-10-14T07:42:27Z] step r2_scale_2b OK
+[2026-10-14T07:42:38Z] report: results/reports/r2_scale_2b.md
+[2026-10-14T07:42:38Z] push failed (logged), continuing
+[2026-10-14T07:42:39Z] rsynced results/ to Drive
+[2026-10-14T07:42:39Z] === step r2_gsm8k_4b: python scripts/run_gsm8k.py --config configs/r2_gsm8k_4b.yaml --dtype bf16
+Terminated
+[2026-10-14T11:57:45Z] step r2_gsm8k_4b FAILED (exit 143), continuing
+[2026-10-14T11:57:47Z] report: results/reports/r2_gsm8k_4b.md
+[2026-10-14T11:57:48Z] push failed (logged), continuing
+[2026-10-14T11:57:48Z] rsynced results/ to Drive
+[2026-10-14T11:57:48Z] === step r2_niah_4b: python scripts/run_niah.py --config configs/r2_niah_4b.yaml --dtype bf16
+[2026-10-14T12:19:39Z] step r2_niah_4b OK
+[2026-10-14T12:19:41Z] report: results/reports/r2_niah_4b.md
+[2026-10-14T12:19:42Z] push failed (logged), continuing
+[2026-10-14T12:19:42Z] rsynced results/ to Drive
+[2026-10-14T12:19:51Z] 9B batch size from vram_check: 10
+[2026-10-14T12:19:51Z] === step r2_scale_9b: python scripts/run_grid.py --config configs/r2_scale_9b.yaml --batch-size 10 --dtype bf16
+[2026-10-14T12:47:20Z] step r2_scale_9b OK
+[2026-10-14T12:47:32Z] report: results/reports/r2_scale_9b.md
+[2026-10-14T12:47:32Z] push failed (logged), continuing
+[2026-10-14T12:47:32Z] rsynced results/ to Drive
+[2026-10-14T12:47:32Z] === Falcon-H1 hook pre-check
+[2026-10-14T12:48:04Z] Falcon-H1 hooks OK
+[2026-10-14T12:48:04Z] === step r2_falcon_1.5b: python scripts/run_grid.py --config configs/r2_falcon_1.5b.yaml --dtype bf16
+[2026-10-14T13:45:47Z] step r2_falcon_1.5b OK
+[2026-10-14T13:45:58Z] report: results/reports/r2_falcon_1.5b.md
+[2026-10-14T13:45:59Z] push failed (logged), continuing
+[2026-10-14T13:45:59Z] rsynced results/ to Drive
+[2026-10-14T13:45:59Z] round 2 finished
+[2026-10-14T13:46:36Z] summary report: results/reports/summary.md
+[2026-10-14T13:46:37Z] final push failed (logged)
+[2026-10-14T13:46:37Z] run_all finished
