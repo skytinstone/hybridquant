@@ -1,5 +1,5 @@
 # Report: all
-generated 2026-10-14T15:55:04+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, smoke_0.8b.jsonl, smoke_0.8b_mps.jsonl, superadd_0.8b.jsonl
+generated 2026-10-14T16:10:04+00:00 from grid_0.8b.jsonl, grid_4b_core.jsonl, layer_sweep_Qwen3.5-0.8B.jsonl, r2_ablation_0.8b.jsonl, r2_c4_0.8b.jsonl, r2_gsm8k_4b.jsonl, r2_niah_0.8b.jsonl, r2_niah_4b.jsonl, r2_scale_2b.jsonl, r2_scale_9b.jsonl, smoke_0.8b.jsonl, smoke_0.8b_mps.jsonl, superadd_0.8b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-0.8B / c4: fp 베이스라인 mean NLL 3.154 (시드 3개, 문서 20개/시드).

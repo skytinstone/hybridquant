@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Round 3 on one GPU: Falcon-H1 rerun (round-2 file was produced with the batched-decode bug) -> 4B recipe cells
-# (KV4,S8), (KV8,S8), (KV4,S4) and their NIAH -> 4B layer sweep -> long-decode checks (1024 decode tokens) on 0.8B and 4B. Same step/report/commit pattern as rounds 1 and 2.
+# (KV4,S8), (KV8,S8), (KV4,S4) and their NIAH -> GSM8K S8+EF -> 4B layer sweep -> long-decode checks (1024 decode tokens) on 0.8B and 4B. Same step/report/commit pattern as rounds 1 and 2.
 #   nohup bash scripts/run_round3.sh > results/round3_nohup.log 2>&1 &
 set -u
 set -o pipefail
@@ -66,6 +66,7 @@ fi
 
 step r3_recipe_4b      results/r3_recipe_4b.jsonl           $PY scripts/run_grid.py --config configs/r3_recipe_4b.yaml $DTYPE_ARGS
 step r3_niah_recipe_4b results/r3_niah_recipe_4b.jsonl      $PY scripts/run_niah.py --config configs/r3_niah_recipe_4b.yaml $DTYPE_ARGS
+step r3_gsm8k_s8ef_4b   results/r3_gsm8k_s8ef_4b.jsonl       $PY scripts/run_gsm8k.py --config configs/r3_gsm8k_s8ef_4b.yaml --batch-size 16 $DTYPE_ARGS
 step layer_sweep_4b     results/layer_sweep_Qwen3.5-4B.jsonl $PY scripts/layer_sweep.py --model Qwen/Qwen3.5-4B --state-bits 4 --n-docs 8 $DTYPE_ARGS
 step r3_longdecode_0.8b results/r3_longdecode_0.8b.jsonl     $PY scripts/run_grid.py --config configs/r3_longdecode_0.8b.yaml $DTYPE_ARGS
 step r3_longdecode_4b   results/r3_longdecode_4b.jsonl       $PY scripts/run_grid.py --config configs/r3_longdecode_4b.yaml $DTYPE_ARGS

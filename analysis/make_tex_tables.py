@@ -110,7 +110,7 @@ def table1() -> str:
     grid = [ROOT / "results" / f for f in ("grid_4b_core.jsonl", "r3_recipe_4b.jsonl") if (ROOT / "results" / f).exists()]
     agg = aggregate_grid(drop_cross_file_duplicates(load_jsonl(grid))) if grid else None
     fp_mem = agg[agg.label == FP_LABEL].mem_bytes_T512.iloc[0] if agg is not None and (agg.label == FP_LABEL).any() else np.nan
-    gsm = ROOT / "results" / "r2_gsm8k_4b.jsonl"
+    gsm = [ROOT / "results" / f for f in ("r2_gsm8k_4b.jsonl", "r3_gsm8k_s8ef_4b.jsonl")]
     niah = [ROOT / "results" / f for f in ("r2_niah_4b.jsonl", "r3_niah_recipe_4b.jsonl")]
     rows = [("bf16", "Kfp_Vfp_Sfp", False), ("KV-only (KV4)", "Kint4g128_Vint4g128_Sfp", False),
             ("State-only (S8, EF)", "Kfp_Vfp_Sint8g128", True), ("Joint KV4 + S6, EF", "Kint4g128_Vint4g128_Sint6g128", True),
@@ -124,7 +124,8 @@ def table1() -> str:
             d = "0" if label == FP_LABEL else f"${r.delta:+.3f}$"
         else:
             mem, d = "[PENDING]", "[PENDING]"
-        acc, n = _task_acc(gsm, label, ef)
+        gres = [_task_acc(p, label, ef) for p in gsm]; gres = [x for x in gres if x[0] is not None]
+        acc, n = (gres[0] if gres else (None, 0))
         g = f"{acc:.3f}" + ("" if n >= 200 else f" ($n$={n})") if acc is not None else "[PENDING]"
         accs = [_task_acc(p, label, ef) for p in niah]
         vals = [(x, m) for x, m in accs if x is not None]

@@ -492,7 +492,8 @@ def scale_figure(grid_df: pd.DataFrame, out_dir: Path):
         if len(f):
             ax.scatter(f.size_b, f.delta, marker="^", s=60, color=cmap(i / max(1, len(cells) - 1)), edgecolors="k")
     ax.set_xscale("log"); ax.set_xlabel("model size (B parameters, log)"); ax.set_ylabel("dNLL vs fp (nats)")
-    ax.set_title("dNLL across model sizes (circles Qwen3.5, triangles Falcon-H1)"); ax.legend(fontsize=7, ncol=2)
+    has_falcon = agg.model.str.contains("Falcon").any()
+    ax.set_title("dNLL across model sizes" + (" (circles Qwen3.5, triangles Falcon-H1)" if has_falcon else " (Qwen3.5)")); ax.legend(fontsize=7, ncol=2)
     return _save(fig, out_dir, "scale"), "모델 크기별 ΔNLL, 셀별 선, Falcon-H1은 삼각형", \
         "dNLL versus model size per cell; Falcon-H1 as triangles"
 
