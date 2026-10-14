@@ -97,6 +97,10 @@ def load_model(name: str, dtype="auto", device_map="auto", text_only: bool = Tru
     if move_to is not None:
         model = model.to(move_to)
     model.eval()
+    from .compat import apply_model_patches
+
+    for name in apply_model_patches(model):
+        print(f"[load_model] applied upstream work-around: {name}")
     return model, tok
 
 
