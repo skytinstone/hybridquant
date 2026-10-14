@@ -43,7 +43,7 @@ for p in sorted(glob.glob(f"{REPO}/results/*.jsonl")):
 # (2) 시작된 모든 단계의 보고서와 그림, 전체 요약 재생성 (FAILED 로 끝났다가 이어 돌린 단계도 포함합니다)
 print("\n[2] 보고서 재생성")
 stages = []
-for lg in ("round1.log", "round2.log"):
+for lg in ("round1.log", "round2.log", "round3.log"):
     p = f"{REPO}/results/{lg}"
     if os.path.exists(p):
         stages += [m.group(1) for l in open(p) for m in [re.search(r"=== step (\S+):", l)] if m]

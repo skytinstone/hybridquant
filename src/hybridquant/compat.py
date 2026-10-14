@@ -4,7 +4,9 @@ from __future__ import annotations
 import torch
 import torch.nn.functional as F
 
-__all__ = ["patch_falcon_h1_gated_norm", "apply_model_patches"]
+__all__ = ["patch_falcon_h1_gated_norm", "apply_model_patches", "APPLIED"]
+
+APPLIED: list[str] = []   # names of the work-arounds installed in this process (recorded in run metadata)
 
 
 def _gated_rmsnorm_forward(self, hidden_states, gate=None):
@@ -52,4 +54,7 @@ def apply_model_patches(model) -> list[str]:
     text_cfg = cfg.get_text_config(decoder=True) if cfg is not None and hasattr(cfg, "get_text_config") else cfg
     if getattr(text_cfg, "model_type", "") == "falcon_h1" and patch_falcon_h1_gated_norm():
         applied.append("falcon_h1_gated_norm")
+    for name in applied:
+        if name not in APPLIED:
+            APPLIED.append(name)
     return applied
