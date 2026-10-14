@@ -55,7 +55,9 @@ be marked [PENDING: ...] rather than guessed.
    0.96 to 1.00. Reasoning (GSM8K, thinking mode, 4B) is limited by the state: 4-bit KV is lossless
    (0.595 vs 0.600) while 8-bit state alone halves accuracy (0.31) [PENDING: final n and the EF cells].
 8. Practical recipe at 4B (Pareto front at T=512): KV4 + state6 + EF costs +0.04 nats at 32% of the
-   bf16 footprint (13.5 MB vs 42 MB); KV4 + state8 is lossless at about 70%. At T = 32k the KV cache
+   bf16 footprint (13.63 MB vs 41.94 MB). KV-only (KV4) and state-only (S8) each sit at 70% (29.36 MB).
+   KV4 + state8 is NOT a measured cell at 4B (it is at 0.8B: 6.29 MB = 40%, +0.043 RTN / +0.029 EF);
+   at 4B quote it only as [PENDING] or as the additive estimate (+0.001 + 0.004) with that caveat. At T = 32k the KV cache
    dominates memory and the state bits barely move the x axis (see the three-panel Pareto figure).
 
 ## Required changes to the draft, section by section
@@ -66,9 +68,9 @@ be marked [PENDING: ...] rather than guessed.
 - Introduction, contribution bullets: bullet 2 must say the error-propagation model gives a bound whose
   prediction about layer ordering is tested and NOT supported, and that the noise-matched control shows
   why (rounding is idempotent). Do not oversell the theory. Bullets 3, 4, 5: fill from items 3, 7, 8.
-- Table 1 (4B headline): rows bf16 / KV-only (KV4) / state-only (S8 with EF) / joint (KV4 + S6 + EF, and
-  KV4 + S8 + EF). Columns: memory % at T = 512 from the grid_4b_core table (memory MB column divided by
-  the fp row), dNLL from the same table, GSM8K from r2_gsm8k_4b.md [PENDING where the cell is not there yet],
+- Table 1 (4B headline): rows bf16 / KV-only (KV4) / state-only (S8 with EF) / joint (KV4 + S6 + EF). There is no
+  KV4 + S8 cell at 4B. Columns: memory % at T = 512 from the grid_4b_core table (memory MB column divided by
+  the fp row 41.94 MB; the tables are produced by analysis/report.py, there is no make_tables.py), dNLL from the same table, GSM8K from r2_gsm8k_4b.md [PENDING where the cell is not there yet],
   NIAH (mean of 4k and 16k) from r2_niah_4b.md.
 - Section 4.2 / Proposition 1: keep the proposition and proof as they are (they are correct as a bound),
   but change the sentence "Section 7 tests the prediction that layer sensitivity scales with n_1/2" to
@@ -133,9 +135,14 @@ error bars are (paired bootstrap 95% CI over documents unless the report says ot
 | 4B / WikiText-2 | 2.384 | +0.825 [0.751, 0.902] | +0.001 [-0.003, 0.004] n.s. | +0.004 [0.001, 0.007] | - | - | -0.090 (5 cells) |
 | 9B / WikiText-2 | 2.169 | +0.283 [0.261, 0.303] | +0.006 [0.004, 0.008] | +0.003 [-0.000, 0.006] n.s. | - | -0.002 [-0.009, 0.005] n.s. | -0.045 (6 cells) |
 0.8B grid with EF on: S4 +0.524, S5 +0.146, S6 +0.050, S8 +0.001 (KV fp). 0.8B KV4+S4 with EF: +0.566.
-4B Pareto (T=512): fp 42 MB; KV4+S6 13.5 MB +0.09; KV4+S6[EF] 13.5 MB +0.04; KV4+S8 15 MB about 0.
+4B grid (T=512, MB = bits x elements / 8, no scale/zero overhead; % of fp 41.94 MB): fp 41.94; KV4 29.36 (70%) +0.0006 n.s.;
+S8 29.36 (70%) +0.0043, S8[EF] -0.0002 n.s.; S6 26.21 +0.0875, S6[EF] +0.0373; S4 23.07 +0.825, S4[EF] +0.476;
+KV4+S6 13.63 (32%) +0.0912, KV4+S6[EF] +0.0439; KV2+S8 14.68 +0.258. Superadditivity at (KV4,S6): +0.003 (no paired CI computed).
+0.8B EF off -> on (KV fp): S4 1.049 -> 0.524, S5 0.372 -> 0.146, S6 0.135 -> 0.050, S8 0.015 -> 0.001; KV4+S8 6.29 MB (40%) +0.043 -> +0.029.
+4B EF off -> on: S4 0.825 -> 0.476, S6 0.088 -> 0.037, S8 0.004 -> -0.000. Layer sweep: Pearson -0.22 (p = 0.363) besides the Spearman value.
+GSM8K sampling: temperature 1.0, top_p 0.95, top_k 20, min_p 0.0, presence_penalty omitted (not in transformers.generate), 4096 new tokens, thinking on, subset seed 0.
 Noise control (0.8B): KV noise +1.061 vs KV quant +1.105; state noise +10.03 vs state quant +1.105.
-Layer sweep (0.8B, S4 one layer): max layer 0 +0.2175, min layer 9 -0.0085, sum +0.575; Spearman(n_1/2, dNLL) = -0.08, p = 0.783.
+Layer sweep (0.8B, S4 one layer): max layer 0 +0.2175 (38% of the sum), min layer 9 -0.0085, sum +0.575; Spearman(n_1/2, dNLL) = -0.08, p = 0.783.
 NIAH 4B (acc, n = 50 per length): fp 1.00/1.00; KV4 1.00/1.00; KV2 0.94/0.92; S4 0.96/1.00; S4[EF] 0.96/1.00; S8 1.00/1.00; KV4+S4 0.98/1.00. NIAH 0.8B: fp 1.00/1.00; KV2 0.32/0.54.
 GSM8K 4B (partial): fp 0.600 [0.535, 0.665] n = 200, mean 2912 tokens, 48% hit the 4096 budget; KV4 0.595 (n = 200); S8 0.312 [0.16, 0.47] (n = 32 so far) [PENDING].
 Model geometry: 0.8B and 2B: L = 24, L_a = 6, L_g = 18, H_kv = 2, d = 256, H = 16, d_k = d_v = 128, |KV|/token = 6,144, |S| = 4.72 M, T* = 768. 4B and 9B: L = 32, L_a = 8, L_g = 24, H_kv = 4, d = 256, H = 32, d_k = d_v = 128, |KV|/token = 16,384, |S| = 12.58 M, T* = 768. Falcon-H1-1.5B: L = 24 hybrid, H_kv = 2, d = 128, H = 48, d_head = 64, d_state = 256, |KV|/token = 12,288, |S| = 18.87 M, T* = 1,536.
