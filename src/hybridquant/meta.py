@@ -32,6 +32,7 @@ def run_metadata() -> dict:
       device         CUDA device name, "mps", or "cpu"
       python         interpreter version
       timestamp_utc  ISO 8601, UTC
+      patches        work-arounds applied by load_model in this process (see compat.py)
     """
     repo = Path(__file__).resolve().parents[2]
     commit = _git(["rev-parse", "--short", "HEAD"], repo) or "unknown"
@@ -44,6 +45,8 @@ def run_metadata() -> dict:
         device = "mps"
     else:
         device = "cpu"
+
+    from .compat import APPLIED
 
     try:
         import transformers
@@ -58,5 +61,6 @@ def run_metadata() -> dict:
         "torch": torch.__version__,
         "device": device,
         "python": platform.python_version(),
+        "patches": list(APPLIED),   # upstream work-arounds installed by load_model (hybridquant.compat)
         "timestamp_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
     }
