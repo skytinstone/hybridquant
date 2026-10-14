@@ -15,6 +15,8 @@ Hybrid LLMs keep two kinds of memory during inference:
 | KV cache | softmax attention layers | `[B, H_kv, T, d]` | yes |
 | recurrent state | Gated DeltaNet / Mamba-2 layers | `[B, H, d_k, d_v]` | no (fixed size) |
 
+Softmax attention keeps every past token's key and value and looks them up by similarity, so its memory grows with the context but it can retrieve any token exactly; linear attention (Gated DeltaNet, Mamba-2) folds the past into one fixed-size matrix that is decayed and rewritten at every token, so its memory is constant but a rounding error written into it is fed back into the next step instead of staying put. This difference in how an error lives on is why the two memories respond so differently to quantization.
+
 Prior work quantizes each memory in isolation. This repo asks a different question: **given a fixed total memory budget, how should the bits be split between the two, and how do their errors interact?**
 
 Everything here is **fake quantization** (quantize, then dequantize, in plain PyTorch). There are no custom kernels. We measure accuracy and memory, not latency.
