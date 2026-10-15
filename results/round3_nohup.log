@@ -18,3 +18,8 @@
 [2026-10-15T05:42:11Z] === step r3_gsm8k_s8ef_4b: python scripts/run_gsm8k.py --config configs/r3_gsm8k_s8ef_4b.yaml --batch-size 16 --dtype bf16
 [2026-10-15T05:42:25Z] step r3_gsm8k_s8ef_4b OK
 [2026-10-15T05:42:26Z] report failed for r3_gsm8k_s8ef_4b
+[2026-10-15T05:42:28Z] pushed: results: round3 r3_gsm8k_s8ef_4b
+[2026-10-15T05:42:28Z] rsynced results/ to Drive
+[2026-10-15T05:42:28Z] === step layer_sweep_4b: python scripts/layer_sweep.py --model Qwen/Qwen3.5-4B --state-bits 4 --n-docs 8 --dtype bf16
+[2026-10-15T05:43:02Z] step layer_sweep_4b OK
+[2026-10-15T05:43:04Z] report: results/reports/layer_sweep_4b.md

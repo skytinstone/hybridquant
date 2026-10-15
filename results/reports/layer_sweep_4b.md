@@ -1,5 +1,5 @@
 # Report: layer_sweep_4b
-generated 2026-10-15T04:42:44+00:00 from layer_sweep_Qwen3.5-4B.jsonl
+generated 2026-10-15T05:43:04+00:00 from layer_sweep_Qwen3.5-4B.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-4B: 레이어 하나만 state int4로 양자화했을 때 ΔNLL 최대는 레이어 0 (+0.3939), 최소는 레이어 6 (-0.0076), 전체 합 +0.4951.
