@@ -701,3 +701,30 @@ Traceback (most recent call last):
            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
 AttributeError: 'DataFrame' object has no attribute 'prefill'
 [2026-10-15T04:41:46Z] report failed for r3_niah_recipe_4b
+[2026-10-15T04:41:48Z] pushed: results: round3 r3_niah_recipe_4b
+[2026-10-15T04:41:48Z] rsynced results/ to Drive
+[2026-10-15T04:41:48Z] === step r3_gsm8k_s8ef_4b: python scripts/run_gsm8k.py --config configs/r3_gsm8k_s8ef_4b.yaml --batch-size 16 --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-4B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false], "cells": [{"kv_bits": 16, "state_bits": 8, "error_feedback": true}], "seeds": [0], "n_docs": 8, "prefill": 256, "decode": 256, "step": 1, "batch_size": 16, "dataset": "gsm8k", "out": "results/r3_gsm8k_s8ef_4b.jsonl", "n_problems": 200, "subset_seed": 0, "subset_file": "results/gsm8k_subset200.json", "thinking": true, "max_new_tokens": 4096, "temperature": 1.0, "top_p": 0.95, "top_k": 20, "min_p": 0.0}
+Generating train split:   0%|          | 0/7473 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 7473/7473 [00:00<00:00, 383281.98 examples/s]
+Generating test split:   0%|          | 0/1319 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 1319/1319 [00:00<00:00, 247562.85 examples/s]
+200 problems from openai/gsm8k test (subset file results/gsm8k_subset200.json)
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:51,  3.82it/s]Loading weights:   6%|▋         | 27/426 [00:00<00:04, 92.40it/s]Loading weights:  11%|█         | 46/426 [00:00<00:03, 122.17it/s]Loading weights:  19%|█▊        | 79/426 [00:00<00:01, 181.55it/s]Loading weights:  24%|██▎       | 101/426 [00:00<00:01, 182.73it/s]Loading weights:  31%|███       | 132/426 [00:00<00:01, 212.79it/s]Loading weights:  36%|███▋      | 155/426 [00:00<00:01, 206.15it/s]Loading weights:  43%|████▎     | 185/426 [00:01<00:01, 225.41it/s]Loading weights:  49%|████▉     | 209/426 [00:01<00:00, 217.17it/s]Loading weights:  55%|█████▌    | 236/426 [00:01<00:00, 225.35it/s]Loading weights:  61%|██████    | 259/426 [00:01<00:00, 215.56it/s]Loading weights:  68%|██████▊   | 291/426 [00:01<00:00, 236.57it/s]Loading weights:  74%|███████▍  | 315/426 [00:01<00:00, 225.48it/s]Loading weights:  81%|████████  | 344/426 [00:01<00:00, 236.31it/s]Loading weights:  86%|████████▋ | 368/426 [00:01<00:00, 225.25it/s]Loading weights:  93%|█████████▎| 397/426 [00:01<00:00, 235.71it/s]Loading weights:  99%|█████████▉| 421/426 [00:02<00:00, 224.25it/s]Loading weights: 100%|██████████| 426/426 [00:02<00:00, 202.38it/s]
+seed 0 Kfp_Vfp_Sint8g128ef: 0 to do, 200 done
+done: results/r3_gsm8k_s8ef_4b.jsonl
+[2026-10-15T04:42:03Z] step r3_gsm8k_s8ef_4b OK
+Traceback (most recent call last):
+  File "/content/hybridquant/analysis/report.py", line 262, in <module>
+    main()
+    ~~~~^^
+  File "/content/hybridquant/analysis/report.py", line 256, in main
+    text = build_report(args.stage, args.inputs, out)
+  File "/content/hybridquant/analysis/report.py", line 180, in build_report
+    df = borrow_fp_rows(df)
+  File "/content/hybridquant/analysis/common.py", line 82, in borrow_fp_rows
+    need.add((model, dataset, int(g.prefill.iloc[0]), int(g.decode.iloc[0]), int(g.n_docs.iloc[0])))
+                                  ^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/pandas/core/generic.py", line 6299, in __getattr__
+    return object.__getattribute__(self, name)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'prefill'
+[2026-10-15T04:42:04Z] report failed for r3_gsm8k_s8ef_4b
