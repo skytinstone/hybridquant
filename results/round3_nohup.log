@@ -4,3 +4,8 @@
 [2026-10-15T03:59:35Z] === step r2_falcon_1.5b: python scripts/run_grid.py --config configs/r2_falcon_1.5b.yaml --dtype bf16
 [2026-10-15T04:40:11Z] step r2_falcon_1.5b OK
 [2026-10-15T04:40:23Z] report: results/reports/r2_falcon_1.5b.md
+[2026-10-15T04:40:25Z] pushed: results: round3 r2_falcon_1.5b
+[2026-10-15T04:40:25Z] rsynced results/ to Drive
+[2026-10-15T04:40:25Z] === step r3_recipe_4b: python scripts/run_grid.py --config configs/r3_recipe_4b.yaml --dtype bf16
+[2026-10-15T04:41:08Z] step r3_recipe_4b OK
+[2026-10-15T04:41:18Z] report: results/reports/r3_recipe_4b.md

@@ -598,3 +598,77 @@ generated 2026-10-15T04:40:22+00:00 from r2_falcon_1.5b.jsonl
 
 wrote results/reports/r2_falcon_1.5b.md
 [2026-10-15T04:40:23Z] report: results/reports/r2_falcon_1.5b.md
+[2026-10-15T04:40:25Z] pushed: results: round3 r2_falcon_1.5b
+[2026-10-15T04:40:25Z] rsynced results/ to Drive
+[2026-10-15T04:40:25Z] === step r3_recipe_4b: python scripts/run_grid.py --config configs/r3_recipe_4b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-4B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 4, "state_bits": 8}, {"kv_bits": 8, "state_bits": 8}, {"kv_bits": 4, "state_bits": 4}], "seeds": [0, 1, 2], "n_docs": 20, "prefill": 256, "decode": 256, "step": 1, "batch_size": 8, "dataset": "wikitext2", "out": "results/r3_recipe_4b.jsonl"}
+18 runs (3 seeds); 18 already in results/r3_recipe_4b.jsonl
+run metadata: {"git_commit": "67f6e8a", "git_dirty": true, "transformers": "5.19.0.dev0", "torch": "2.11.0+cu130", "device": "NVIDIA A100-SXM4-40GB", "python": "3.13.15", "patches": [], "timestamp_utc": "2026-10-15T04:40:30+00:00", "config": "configs/r3_recipe_4b.yaml"}
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:26<00:26, 26.96s/it]Fetching 2 files: 100%|██████████| 2/2 [00:26<00:00, 13.48s/it]
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:52,  3.78it/s]Loading weights:   6%|▋         | 27/426 [00:00<00:04, 91.22it/s]Loading weights:  11%|█         | 47/426 [00:00<00:03, 123.91it/s]Loading weights:  18%|█▊        | 78/426 [00:00<00:01, 180.94it/s]Loading weights:  23%|██▎       | 100/426 [00:00<00:01, 175.40it/s]Loading weights:  30%|███       | 129/426 [00:00<00:01, 207.06it/s]Loading weights:  36%|███▌      | 152/426 [00:00<00:01, 195.75it/s]Loading weights:  43%|████▎     | 185/426 [00:01<00:01, 225.26it/s]Loading weights:  49%|████▉     | 209/426 [00:01<00:00, 217.13it/s]Loading weights:  56%|█████▌    | 237/426 [00:01<00:00, 233.59it/s]Loading weights:  62%|██████▏   | 262/426 [00:01<00:00, 218.64it/s]Loading weights:  68%|██████▊   | 291/426 [00:01<00:00, 230.75it/s]Loading weights:  74%|███████▍  | 315/426 [00:01<00:00, 221.12it/s]Loading weights:  81%|████████  | 344/426 [00:01<00:00, 232.16it/s]Loading weights:  86%|████████▋ | 368/426 [00:01<00:00, 222.34it/s]Loading weights:  92%|█████████▏| 393/426 [00:01<00:00, 229.46it/s]Loading weights:  98%|█████████▊| 417/426 [00:02<00:00, 213.30it/s]Loading weights: 100%|██████████| 426/426 [00:02<00:00, 200.23it/s]
+model on cuda:0 dtype=bfloat16
+skip (done) seed 0 Kint4g128_Vint4g128_Sint8g128
+skip (done) seed 0 Kint4g128_Vint4g128_Sint8g128ef
+skip (done) seed 0 Kint8g128_Vint8g128_Sint8g128
+skip (done) seed 0 Kint8g128_Vint8g128_Sint8g128ef
+skip (done) seed 0 Kint4g128_Vint4g128_Sint4g128
+skip (done) seed 0 Kint4g128_Vint4g128_Sint4g128ef
+skip (done) seed 1 Kint4g128_Vint4g128_Sint8g128
+skip (done) seed 1 Kint4g128_Vint4g128_Sint8g128ef
+skip (done) seed 1 Kint8g128_Vint8g128_Sint8g128
+skip (done) seed 1 Kint8g128_Vint8g128_Sint8g128ef
+skip (done) seed 1 Kint4g128_Vint4g128_Sint4g128
+skip (done) seed 1 Kint4g128_Vint4g128_Sint4g128ef
+skip (done) seed 2 Kint4g128_Vint4g128_Sint8g128
+skip (done) seed 2 Kint4g128_Vint4g128_Sint8g128ef
+skip (done) seed 2 Kint8g128_Vint8g128_Sint8g128
+skip (done) seed 2 Kint8g128_Vint8g128_Sint8g128ef
+skip (done) seed 2 Kint4g128_Vint4g128_Sint4g128
+skip (done) seed 2 Kint4g128_Vint4g128_Sint4g128ef
+done: results/r3_recipe_4b.jsonl
+[2026-10-15T04:41:08Z] step r3_recipe_4b OK
+/content/hybridquant/analysis/figures.py:50: RuntimeWarning: All-NaN slice encountered
+  vmax = np.nanmax(np.abs(sub.delta.values)) if len(sub) else 1
+# Report: r3_recipe_4b
+generated 2026-10-15T04:41:17+00:00 from r3_recipe_4b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-4B / wikitext2: fp 베이스라인 mean NLL 2.384 (시드 3개, 문서 20개/시드).
+- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.120 nats (3개 셀, 범위 -0.351~-0.004).
+
+## [EN] Key Findings
+- Qwen3.5-4B / wikitext2: fp baseline mean NLL 2.384 (3 seeds, 20 docs per seed).
+- error feedback: mean change in dNLL versus RTN at the same bits -0.120 nats (3 cells, range -0.351~-0.004).
+
+## [KR/EN] 표
+### Qwen3.5-4B / wikitext2
+| 셀 (cell) | 평균 NLL (mean NLL) | ± std (시드/문서) | Δ vs fp (delta) | 95% CI (paired bootstrap) | 총 메모리 MB, T=512 (memory) | 시드 (seeds) | 문서/시드 (docs) |
+|---|---|---|---|---|---|---|---|
+| fp | 2.3844 | ± 0.0485 (seeds) | +0.0000 | +0.000~+0.000 * | 41.94 | 3 | 20 |
+| KV8+S8 | 2.3886 | ± 0.0504 (seeds) | +0.0042 | +0.001~+0.007 | 20.97 | 3 | 20 |
+| KV8+S8[EF] | 2.3839 | ± 0.0479 (seeds) | -0.0005 | -0.002~+0.001 * | 20.97 | 3 | 20 |
+| KV4+S8 | 2.3879 | ± 0.0451 (seeds) | +0.0035 | -0.001~+0.007 * | 16.78 | 3 | 20 |
+| KV4+S8[EF] | 2.3839 | ± 0.0478 (seeds) | -0.0005 | -0.004~+0.003 * | 16.78 | 3 | 20 |
+| KV4+S4 | 3.2221 | ± 0.1255 (seeds) | +0.8377 | +0.764~+0.917 | 10.49 | 3 | 20 |
+| KV4+S4[EF] | 2.8715 | ± 0.0681 (seeds) | +0.4871 | +0.446~+0.529 | 10.49 | 3 | 20 |
+
+\* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
+
+## [KR/EN] 그림 목록
+- `results/figures/r3_recipe_4b/heatmap_Qwen3.5-4B.pdf` / `.png`: Qwen3.5-4B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-4B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
+- `results/figures/r3_recipe_4b/lines_Qwen3.5-4B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
+- `results/figures/r3_recipe_4b/pareto_Qwen3.5-4B.pdf` / `.png`: 총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint / Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint
+- `results/figures/r3_recipe_4b/curves_Qwen3.5-4B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-4B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: bfloat16
+- commit: 82b864f, a971d8d
+- 날짜 (dates): 2026-10-14
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [20], 행 (rows): 21
+- 입력 파일 (sources): grid_4b_core.jsonl (fp borrowed), r3_recipe_4b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r3_recipe_4b.md
+[2026-10-15T04:41:18Z] report: results/reports/r3_recipe_4b.md
