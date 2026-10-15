@@ -1,18 +1,19 @@
-transformers hub kernels enabled: True (USE_HUB_KERNELS=<unset>)
+transformers hub kernels enabled: False (USE_HUB_KERNELS=<unset>)
 cuda device: NVIDIA A100-SXM4-40GB capability=(8, 0)
-Loading weights:   0%|          | 0/411 [00:00<?, ?it/s]Loading weights:   1%|▏         | 6/411 [00:00<00:06, 58.24it/s]Loading weights:  16%|█▌        | 66/411 [00:00<00:00, 368.03it/s]Loading weights:  30%|███       | 124/411 [00:00<00:00, 460.92it/s]Loading weights:  44%|████▍     | 181/411 [00:00<00:00, 499.76it/s]Loading weights:  59%|█████▉    | 242/411 [00:00<00:00, 537.34it/s]Loading weights:  72%|███████▏  | 296/411 [00:00<00:00, 533.08it/s]Loading weights:  87%|████████▋ | 357/411 [00:00<00:00, 557.21it/s]Loading weights: 100%|██████████| 411/411 [00:00<00:00, 509.51it/s]
+Loading weights:   0%|          | 0/411 [00:00<?, ?it/s]Loading weights:   1%|          | 5/411 [00:00<00:08, 49.51it/s]Loading weights:  15%|█▍        | 61/411 [00:00<00:01, 339.58it/s]Loading weights:  30%|██▉       | 123/411 [00:00<00:00, 455.78it/s]Loading weights:  43%|████▎     | 176/411 [00:00<00:00, 476.17it/s]Loading weights:  56%|█████▋    | 232/411 [00:00<00:00, 503.01it/s]Loading weights:  71%|███████▏  | 293/411 [00:00<00:00, 531.80it/s]Loading weights:  84%|████████▍ | 347/411 [00:00<00:00, 528.63it/s]Loading weights:  98%|█████████▊| 403/411 [00:00<00:00, 536.32it/s]Loading weights: 100%|██████████| 411/411 [00:00<00:00, 494.63it/s]
 [transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
 [transformers] `mamba_chunk_scan_combined` is falling back to its reference PyTorch implementation because `mamba_ssm` is not installed. This is correct but much slower; install `mamba_ssm` for the optimized kernel.
 [transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
 [transformers] `selective_state_update` is falling back to its reference PyTorch implementation because `mamba_ssm` is not installed. This is correct but much slower; install `mamba_ssm` for the optimized kernel.
 [load_model] applied upstream work-around: falcon_h1_gated_norm
+[load_model] applied upstream work-around: falcon_h1_decode_state_write
 model: tiiuae/Falcon-H1-1.5B-Instruct on cuda:0 dtype=torch.bfloat16 use_kernels=False
 layer_types (24): ['hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid', 'hybrid']
 cache layer classes: ['LinearAttentionAndFullAttentionLayer']
-config Kint4g128_Vint4g128_Sint4g128: prefill=64 decode=8 mean_nll=0.0194
+config Kint4g128_Vint4g128_Sint4g128: prefill=64 decode=8 mean_nll=0.0216
 QuantStats:
   kv_calls=216 kv_tokens=1728 layers_seen_kv=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
-  state_calls=24 layers_seen_state=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+  state_calls=216 layers_seen_state=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 hook coverage: PASS
   kv:    calls=216 seen=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] expected=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] -> ok
-  state: calls=24 seen=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] expected=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] -> ok
+  state: calls=216 seen=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] expected=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] -> ok

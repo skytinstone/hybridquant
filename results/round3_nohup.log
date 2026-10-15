@@ -1,30 +1,6 @@
-[2026-10-14T23:00:05Z] round 3 start on NVIDIA A100-SXM4-40GB
-[2026-10-14T23:00:05Z] === Falcon-H1 hook pre-check
-[2026-10-14T23:00:17Z] === step r2_falcon_1.5b: python scripts/run_grid.py --config configs/r2_falcon_1.5b.yaml --dtype bf16
-[2026-10-14T23:37:52Z] step r2_falcon_1.5b OK
-[2026-10-14T23:38:04Z] report: results/reports/r2_falcon_1.5b.md
-[2026-10-14T23:38:06Z] pushed: results: round3 r2_falcon_1.5b
-[2026-10-14T23:38:06Z] rsynced results/ to Drive
-[2026-10-14T23:38:06Z] === step r3_recipe_4b: python scripts/run_grid.py --config configs/r3_recipe_4b.yaml --dtype bf16
-[2026-10-14T23:55:27Z] step r3_recipe_4b OK
-[2026-10-14T23:55:37Z] report: results/reports/r3_recipe_4b.md
-[2026-10-14T23:55:39Z] pushed: results: round3 r3_recipe_4b
-[2026-10-14T23:55:39Z] rsynced results/ to Drive
-[2026-10-14T23:55:39Z] === step r3_niah_recipe_4b: python scripts/run_niah.py --config configs/r3_niah_recipe_4b.yaml --dtype bf16
-[2026-10-15T00:03:53Z] step r3_niah_recipe_4b OK
-[2026-10-15T00:03:54Z] report failed for r3_niah_recipe_4b
-[2026-10-15T00:03:56Z] pushed: results: round3 r3_niah_recipe_4b
-[2026-10-15T00:03:56Z] rsynced results/ to Drive
-[2026-10-15T00:03:56Z] === step r3_gsm8k_s8ef_4b: python scripts/run_gsm8k.py --config configs/r3_gsm8k_s8ef_4b.yaml --batch-size 16 --dtype bf16
-[2026-10-15T01:09:24Z] step r3_gsm8k_s8ef_4b OK
-[2026-10-15T01:09:26Z] report failed for r3_gsm8k_s8ef_4b
-[2026-10-15T01:09:28Z] pushed: results: round3 r3_gsm8k_s8ef_4b
-[2026-10-15T01:09:28Z] rsynced results/ to Drive
-[2026-10-15T01:09:28Z] === step layer_sweep_4b: python scripts/layer_sweep.py --model Qwen/Qwen3.5-4B --state-bits 4 --n-docs 8 --dtype bf16
-[2026-10-15T01:16:52Z] step layer_sweep_4b OK
-[2026-10-15T01:16:55Z] report: results/reports/layer_sweep_4b.md
-[2026-10-15T01:16:57Z] pushed: results: round3 layer_sweep_4b
-[2026-10-15T01:16:57Z] rsynced results/ to Drive
-[2026-10-15T01:16:57Z] === step r3_longdecode_0.8b: python scripts/run_grid.py --config configs/r3_longdecode_0.8b.yaml --dtype bf16
-[2026-10-15T01:49:03Z] step r3_longdecode_0.8b OK
-[2026-10-15T01:49:14Z] report: results/reports/r3_longdecode_0.8b.md
+[2026-10-15T03:59:00Z] round 3 start on NVIDIA A100-SXM4-40GB
+[2026-10-15T03:59:00Z] moved invalid round-2 Falcon results to results/invalid/
+[2026-10-15T03:59:00Z] === Falcon-H1 hook pre-check
+[2026-10-15T03:59:35Z] === step r2_falcon_1.5b: python scripts/run_grid.py --config configs/r2_falcon_1.5b.yaml --dtype bf16
+[2026-10-15T04:40:11Z] step r2_falcon_1.5b OK
+[2026-10-15T04:40:23Z] report: results/reports/r2_falcon_1.5b.md
