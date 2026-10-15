@@ -8,3 +8,8 @@
 [2026-10-15T05:40:43Z] === step r3_recipe_4b: python scripts/run_grid.py --config configs/r3_recipe_4b.yaml --dtype bf16
 [2026-10-15T05:41:31Z] step r3_recipe_4b OK
 [2026-10-15T05:41:41Z] report: results/reports/r3_recipe_4b.md
+[2026-10-15T05:41:42Z] pushed: results: round3 r3_recipe_4b
+[2026-10-15T05:41:43Z] rsynced results/ to Drive
+[2026-10-15T05:41:43Z] === step r3_niah_recipe_4b: python scripts/run_niah.py --config configs/r3_niah_recipe_4b.yaml --dtype bf16
+[2026-10-15T05:42:09Z] step r3_niah_recipe_4b OK
+[2026-10-15T05:42:10Z] report failed for r3_niah_recipe_4b
