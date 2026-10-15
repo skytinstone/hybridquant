@@ -1,5 +1,5 @@
 # Report: r3_longdecode_0.8b
-generated 2026-10-15T01:49:13+00:00 from r3_longdecode_0.8b.jsonl
+generated 2026-10-15T04:43:17+00:00 from r3_longdecode_0.8b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-0.8B / wikitext2: fp 베이스라인 mean NLL 2.772 (시드 3개, 문서 10개/시드).

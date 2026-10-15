@@ -24,3 +24,8 @@
 [2026-10-15T04:42:06Z] === step layer_sweep_4b: python scripts/layer_sweep.py --model Qwen/Qwen3.5-4B --state-bits 4 --n-docs 8 --dtype bf16
 [2026-10-15T04:42:41Z] step layer_sweep_4b OK
 [2026-10-15T04:42:44Z] report: results/reports/layer_sweep_4b.md
+[2026-10-15T04:42:45Z] pushed: results: round3 layer_sweep_4b
+[2026-10-15T04:42:45Z] rsynced results/ to Drive
+[2026-10-15T04:42:45Z] === step r3_longdecode_0.8b: python scripts/run_grid.py --config configs/r3_longdecode_0.8b.yaml --dtype bf16
+[2026-10-15T04:43:07Z] step r3_longdecode_0.8b OK
+[2026-10-15T04:43:18Z] report: results/reports/r3_longdecode_0.8b.md
