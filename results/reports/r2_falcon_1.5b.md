@@ -1,5 +1,5 @@
 # Report: r2_falcon_1.5b
-generated 2026-10-15T04:40:22+00:00 from r2_falcon_1.5b.jsonl
+generated 2026-10-15T05:40:36+00:00 from r2_falcon_1.5b.jsonl
 
 ## [KR] 핵심 요약
 - Falcon-H1-1.5B-Instruct / wikitext2: fp 베이스라인 mean NLL 2.550 (시드 3개, 문서 20개/시드).
