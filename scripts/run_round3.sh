@@ -52,8 +52,10 @@ log "round 3 start on $(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev
 
 # The round-2 Falcon file is invalid (transformers batched single-token decode bug, see docs/decision_log.md 2026-10-14).
 # Move it aside so the resumable runner does not skip its rows; the patched load_model makes batch 8 correct.
-if [ -f results/r2_falcon_1.5b.jsonl ] && ! grep -q "falcon_h1_gated_norm" results/r2_falcon_1.5b.jsonl 2>/dev/null; then
-  mv results/r2_falcon_1.5b.jsonl results/invalid/r2_falcon_1.5b.batchbug.jsonl
+# Valid Falcon rows carry both work-arounds in meta.patches; anything else (batched-decode bug, or decode-time state
+# writes that bypassed the quantizer) is moved aside with a timestamp so it is never overwritten.
+if [ -f results/r2_falcon_1.5b.jsonl ] && ! grep -q "falcon_h1_decode_state_write" results/r2_falcon_1.5b.jsonl 2>/dev/null; then
+  mv results/r2_falcon_1.5b.jsonl "results/invalid/r2_falcon_1.5b.$(date -u +%Y%m%dT%H%M%S).jsonl"
   rm -rf results/figures/r2_falcon_1.5b results/reports/r2_falcon_1.5b.md
   log "moved invalid round-2 Falcon results to results/invalid/"
 fi

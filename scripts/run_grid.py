@@ -111,6 +111,10 @@ def main(argv=None):
     print("run metadata:", json.dumps(meta))
 
     model, tok = load_model(s["model"], dtype=s["dtype"])
+
+    from hybridquant.compat import APPLIED
+
+    meta["patches"] = list(APPLIED)   # work-arounds installed by load_model (meta was taken before loading)
     dtype_name = str(next(model.parameters()).dtype).replace("torch.", "")
     print(f"model on {next(model.parameters()).device} dtype={dtype_name}")
 
