@@ -672,3 +672,32 @@ generated 2026-10-15T04:41:17+00:00 from r3_recipe_4b.jsonl
 
 wrote results/reports/r3_recipe_4b.md
 [2026-10-15T04:41:18Z] report: results/reports/r3_recipe_4b.md
+[2026-10-15T04:41:19Z] pushed: results: round3 r3_recipe_4b
+[2026-10-15T04:41:20Z] rsynced results/ to Drive
+[2026-10-15T04:41:20Z] === step r3_niah_recipe_4b: python scripts/run_niah.py --config configs/r3_niah_recipe_4b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-4B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 4, "state_bits": 8}, {"kv_bits": 4, "state_bits": 6}], "seeds": [0], "n_docs": 8, "prefill": 256, "decode": 256, "step": 1, "batch_size": 1, "dataset": "niah", "out": "results/r3_niah_recipe_4b.jsonl", "context_lens": [4096, 16384], "depths": [0.1, 0.3, 0.5, 0.7, 0.9], "n_per_depth": 10, "needle_seed": 0, "max_new_tokens": 32}
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:49,  3.87it/s]Loading weights:   6%|▋         | 27/426 [00:00<00:04, 93.18it/s]Loading weights:  11%|█         | 47/426 [00:00<00:03, 125.64it/s]Loading weights:  18%|█▊        | 78/426 [00:00<00:01, 183.93it/s]Loading weights:  24%|██▎       | 101/426 [00:00<00:01, 180.82it/s]Loading weights:  31%|███       | 131/426 [00:00<00:01, 215.19it/s]Loading weights:  36%|███▋      | 155/426 [00:00<00:01, 203.84it/s]Loading weights:  42%|████▏     | 181/426 [00:01<00:01, 217.83it/s]Loading weights:  48%|████▊     | 205/426 [00:01<00:01, 205.92it/s]Loading weights:  56%|█████▌    | 237/426 [00:01<00:00, 236.63it/s]Loading weights:  62%|██████▏   | 262/426 [00:01<00:00, 221.35it/s]Loading weights:  68%|██████▊   | 291/426 [00:01<00:00, 232.97it/s]Loading weights:  74%|███████▍  | 315/426 [00:01<00:00, 222.85it/s]Loading weights:  81%|████████  | 344/426 [00:01<00:00, 234.56it/s]Loading weights:  86%|████████▋ | 368/426 [00:01<00:00, 220.95it/s]Loading weights:  93%|█████████▎| 396/426 [00:01<00:00, 232.79it/s]Loading weights:  99%|█████████▊| 420/426 [00:02<00:00, 222.56it/s]Loading weights: 100%|██████████| 426/426 [00:02<00:00, 201.95it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (2506654 > 262144). Running this sequence through the model will result in indexing errors
+filler: 2,506,654 WikiText-2 train tokens
+seed 0 Kint4g128_Vint4g128_Sint8g128: 0 to do, 100 done
+seed 0 Kint4g128_Vint4g128_Sint8g128ef: 0 to do, 100 done
+seed 0 Kint4g128_Vint4g128_Sint6g128: 0 to do, 100 done
+seed 0 Kint4g128_Vint4g128_Sint6g128ef: 0 to do, 100 done
+done: results/r3_niah_recipe_4b.jsonl
+[2026-10-15T04:41:45Z] step r3_niah_recipe_4b OK
+Traceback (most recent call last):
+  File "/content/hybridquant/analysis/report.py", line 262, in <module>
+    main()
+    ~~~~^^
+  File "/content/hybridquant/analysis/report.py", line 256, in main
+    text = build_report(args.stage, args.inputs, out)
+  File "/content/hybridquant/analysis/report.py", line 180, in build_report
+    df = borrow_fp_rows(df)
+  File "/content/hybridquant/analysis/common.py", line 82, in borrow_fp_rows
+    need.add((model, dataset, int(g.prefill.iloc[0]), int(g.decode.iloc[0]), int(g.n_docs.iloc[0])))
+                                  ^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/pandas/core/generic.py", line 6299, in __getattr__
+    return object.__getattribute__(self, name)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'prefill'
+[2026-10-15T04:41:46Z] report failed for r3_niah_recipe_4b
