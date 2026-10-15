@@ -365,3 +365,112 @@ generated 2026-10-15T01:16:55+00:00 from layer_sweep_Qwen3.5-4B.jsonl
 
 wrote results/reports/layer_sweep_4b.md
 [2026-10-15T01:16:55Z] report: results/reports/layer_sweep_4b.md
+[2026-10-15T01:16:57Z] pushed: results: round3 layer_sweep_4b
+[2026-10-15T01:16:57Z] rsynced results/ to Drive
+[2026-10-15T01:16:57Z] === step r3_longdecode_0.8b: python scripts/run_grid.py --config configs/r3_longdecode_0.8b.yaml --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-0.8B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false, true], "cells": [{"kv_bits": 16, "state_bits": 16}, {"kv_bits": 4, "state_bits": 16}, {"kv_bits": 16, "state_bits": 8}, {"kv_bits": 16, "state_bits": 6}, {"kv_bits": 16, "state_bits": 4}, {"kv_bits": 4, "state_bits": 6}, {"kv_bits": 4, "state_bits": 4}], "seeds": [0, 1, 2], "n_docs": 10, "prefill": 256, "decode": 1024, "step": 1, "batch_size": 10, "dataset": "wikitext2", "out": "results/r3_longdecode_0.8b.jsonl"}
+36 runs (3 seeds); 0 already in results/r3_longdecode_0.8b.jsonl
+run metadata: {"git_commit": "8508a1c", "git_dirty": true, "transformers": "5.19.0.dev0", "torch": "2.11.0+cu130", "device": "NVIDIA A100-SXM4-40GB", "python": "3.13.15", "patches": [], "timestamp_utc": "2026-10-15T01:17:02+00:00", "config": "configs/r3_longdecode_0.8b.yaml"}
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:   0%|          | 1/320 [00:00<00:36,  8.65it/s]Loading weights:  35%|███▌      | 113/320 [00:00<00:00, 622.18it/s]Loading weights:  68%|██████▊   | 218/320 [00:00<00:00, 802.89it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 778.33it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (297354 > 262144). Running this sequence through the model will result in indexing errors
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+model on cuda:0 dtype=bfloat16
+[data] wikitext2/test: 297,354 tokens -> 232 windows of 1280; loaded 10 docs (12,800 tokens, seed 0)
+seed 0 Kfp_Vfp_Sfp                        nll=2.8083 ±0.3327  (49s)
+seed 0 Kint4g128_Vint4g128_Sfp            nll=2.8337 ±0.3338  (51s)
+seed 0 Kfp_Vfp_Sint8g128                  nll=2.8524 ±0.3232  (52s)
+seed 0 Kfp_Vfp_Sint8g128ef                nll=2.8149 ±0.3341  (53s)
+seed 0 Kfp_Vfp_Sint6g128                  nll=3.0543 ±0.3282  (52s)
+seed 0 Kfp_Vfp_Sint6g128ef                nll=2.8581 ±0.3261  (53s)
+seed 0 Kfp_Vfp_Sint4g128                  nll=4.3473 ±0.3227  (52s)
+seed 0 Kfp_Vfp_Sint4g128ef                nll=3.4640 ±0.3472  (53s)
+seed 0 Kint4g128_Vint4g128_Sint6g128      nll=3.0770 ±0.3200  (55s)
+seed 0 Kint4g128_Vint4g128_Sint6g128ef    nll=2.8797 ±0.3148  (56s)
+seed 0 Kint4g128_Vint4g128_Sint4g128      nll=4.4278 ±0.3290  (55s)
+seed 0 Kint4g128_Vint4g128_Sint4g128ef    nll=3.5066 ±0.3409  (56s)
+[data] wikitext2/test: 297,354 tokens -> 232 windows of 1280; loaded 10 docs (12,800 tokens, seed 1)
+seed 1 Kfp_Vfp_Sfp                        nll=2.6717 ±0.2971  (47s)
+seed 1 Kint4g128_Vint4g128_Sfp            nll=2.6981 ±0.2973  (51s)
+seed 1 Kfp_Vfp_Sint8g128                  nll=2.7147 ±0.3113  (52s)
+seed 1 Kfp_Vfp_Sint8g128ef                nll=2.6736 ±0.2982  (53s)
+seed 1 Kfp_Vfp_Sint6g128                  nll=2.9069 ±0.3292  (52s)
+seed 1 Kfp_Vfp_Sint6g128ef                nll=2.7276 ±0.2987  (53s)
+seed 1 Kfp_Vfp_Sint4g128                  nll=4.0746 ±0.3472  (52s)
+seed 1 Kfp_Vfp_Sint4g128ef                nll=3.2375 ±0.3354  (53s)
+seed 1 Kint4g128_Vint4g128_Sint6g128      nll=2.9279 ±0.3345  (56s)
+seed 1 Kint4g128_Vint4g128_Sint6g128ef    nll=2.7516 ±0.3001  (56s)
+seed 1 Kint4g128_Vint4g128_Sint4g128      nll=4.1204 ±0.3415  (56s)
+seed 1 Kint4g128_Vint4g128_Sint4g128ef    nll=3.2748 ±0.3437  (56s)
+[data] wikitext2/test: 297,354 tokens -> 232 windows of 1280; loaded 10 docs (12,800 tokens, seed 2)
+seed 2 Kfp_Vfp_Sfp                        nll=2.8365 ±0.3596  (47s)
+seed 2 Kint4g128_Vint4g128_Sfp            nll=2.8658 ±0.3657  (51s)
+seed 2 Kfp_Vfp_Sint8g128                  nll=2.9011 ±0.3613  (52s)
+seed 2 Kfp_Vfp_Sint8g128ef                nll=2.8389 ±0.3598  (53s)
+seed 2 Kfp_Vfp_Sint6g128                  nll=3.1129 ±0.3718  (52s)
+seed 2 Kfp_Vfp_Sint6g128ef                nll=2.8908 ±0.3628  (53s)
+seed 2 Kfp_Vfp_Sint4g128                  nll=4.3594 ±0.5098  (52s)
+seed 2 Kfp_Vfp_Sint4g128ef                nll=3.4546 ±0.3955  (53s)
+seed 2 Kint4g128_Vint4g128_Sint6g128      nll=3.1259 ±0.3777  (56s)
+seed 2 Kint4g128_Vint4g128_Sint6g128ef    nll=2.9253 ±0.3577  (56s)
+seed 2 Kint4g128_Vint4g128_Sint4g128      nll=4.4118 ±0.5382  (55s)
+seed 2 Kint4g128_Vint4g128_Sint4g128ef    nll=3.4923 ±0.4113  (56s)
+done: results/r3_longdecode_0.8b.jsonl
+[2026-10-15T01:49:03Z] step r3_longdecode_0.8b OK
+# Report: r3_longdecode_0.8b
+generated 2026-10-15T01:49:13+00:00 from r3_longdecode_0.8b.jsonl
+
+## [KR] 핵심 요약
+- Qwen3.5-0.8B / wikitext2: fp 베이스라인 mean NLL 2.772 (시드 3개, 문서 10개/시드).
+- state 4bit (KV fp): fp 대비 +1.488 nats (95% CI +1.416~+1.566).
+- KV 4bit (state fp): fp 대비 +0.027 nats (95% CI +0.022~+0.031).
+- state 8bit: fp 대비 +0.051 nats (95% CI +0.040~+0.062).
+- KV4+S4 초가산: 실측 Δ +1.548 대 단독합 +1.515, 초과분 +0.033 nats (문서 대응 95% CI -0.000~+0.068) (구분 불가 / not distinguishable).
+- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.442 nats (5개 셀, 범위 -0.895~-0.047).
+
+## [EN] Key Findings
+- Qwen3.5-0.8B / wikitext2: fp baseline mean NLL 2.772 (3 seeds, 10 docs per seed).
+- state 4-bit (KV fp): +1.488 nats over fp (95% CI +1.416~+1.566).
+- KV 4-bit (state fp): +0.027 nats over fp (95% CI +0.022~+0.031).
+- state 8-bit: +0.051 nats over fp (95% CI +0.040~+0.062).
+- KV4+S4 superadditivity: measured +1.548 vs sum of single effects +1.515; excess +0.033 nats (paired 95% CI -0.000~+0.068) (구분 불가 / not distinguishable).
+- error feedback: mean change in dNLL versus RTN at the same bits -0.442 nats (5 cells, range -0.895~-0.047).
+
+## [KR/EN] 표
+### Qwen3.5-0.8B / wikitext2
+| 셀 (cell) | 평균 NLL (mean NLL) | ± std (시드/문서) | Δ vs fp (delta) | 95% CI (paired bootstrap) | 총 메모리 MB, T=512 (memory) | 시드 (seeds) | 문서/시드 (docs) |
+|---|---|---|---|---|---|---|---|
+| fp | 2.7722 | ± 0.0881 (seeds) | +0.0000 | +0.000~+0.000 * | 15.73 | 3 | 10 |
+| fp+S8 | 2.8227 | ± 0.0967 (seeds) | +0.0505 | +0.040~+0.062 | 11.01 | 3 | 10 |
+| fp+S8[EF] | 2.7758 | ± 0.0893 (seeds) | +0.0036 | +0.002~+0.005 | 11.01 | 3 | 10 |
+| fp+S6 | 3.0247 | ± 0.1062 (seeds) | +0.2525 | +0.229~+0.276 | 9.83 | 3 | 10 |
+| fp+S6[EF] | 2.8255 | ± 0.0863 (seeds) | +0.0533 | +0.046~+0.060 | 9.83 | 3 | 10 |
+| fp+S4 | 4.2604 | ± 0.1611 (seeds) | +1.4883 | +1.416~+1.566 | 8.65 | 3 | 10 |
+| fp+S4[EF] | 3.3854 | ± 0.1282 (seeds) | +0.6132 | +0.579~+0.647 | 8.65 | 3 | 10 |
+| KV4+fp | 2.7992 | ± 0.0890 (seeds) | +0.0270 | +0.022~+0.031 | 11.01 | 3 | 10 |
+| KV4+S6 | 3.0436 | ± 0.1032 (seeds) | +0.2714 | +0.249~+0.293 | 5.11 | 3 | 10 |
+| KV4+S6[EF] | 2.8522 | ± 0.0901 (seeds) | +0.0801 | +0.071~+0.089 | 5.11 | 3 | 10 |
+| KV4+S4 | 4.3200 | ± 0.1731 (seeds) | +1.5478 | +1.476~+1.624 | 3.93 | 3 | 10 |
+| KV4+S4[EF] | 3.4246 | ± 0.1299 (seeds) | +0.6524 | +0.619~+0.683 | 3.93 | 3 | 10 |
+
+\* CI가 0을 포함: fp와 구분 불가 / CI contains zero: not distinguishable from fp. 메모리는 비트 × 원소 수이며 scale/zero 오버헤드는 뺀 값입니다 / memory is bits x elements without scale/zero overhead.
+
+## [KR/EN] 그림 목록
+- `results/figures/r3_longdecode_0.8b/heatmap_Qwen3.5-0.8B.pdf` / `.png`: Qwen3.5-0.8B KV bits x state bits 격자의 fp 대비 NLL 증가(ΔNLL), EF off/on / Qwen3.5-0.8B: NLL increase over fp (dNLL) on the KV bits x state bits grid, EF off/on
+- `results/figures/r3_longdecode_0.8b/lines_Qwen3.5-0.8B.pdf` / `.png`: state bits별 ΔNLL, KV bits는 색, 음영은 문서 대응 부트스트랩 95% CI / dNLL versus state bits; colour = KV bits; shading = paired bootstrap 95% CI
+- `results/figures/r3_longdecode_0.8b/pareto_Qwen3.5-0.8B.pdf` / `.png`: 총 메모리 대 ΔNLL 파레토 산점도, T=512/4k/32k 패널, 마커는 KV-only/state-only/joint / Memory versus dNLL Pareto scatter at T = 512, 4k and 32k; marker = KV-only / state-only / joint
+- `results/figures/r3_longdecode_0.8b/curves_Qwen3.5-0.8B.pdf` / `.png`: 핵심 셀의 decode 위치별 NLL(이동평균 16), 음영은 문서 간 ±1 std / NLL by decode position for core cells (moving average 16); shading = ±1 std across documents
+- `results/figures/r3_longdecode_0.8b/violin_Qwen3.5-0.8B.pdf` / `.png`: 핵심 셀의 문서별 ΔNLL 분포(violin, 평균 표시) / Per-document dNLL distribution for core cells (violin, mean marked)
+
+## 조건
+- 모델 (models): Qwen/Qwen3.5-0.8B
+- GPU: NVIDIA A100-SXM4-40GB
+- dtype: bfloat16
+- commit: 8508a1c
+- 날짜 (dates): 2026-10-15
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [10], 행 (rows): 36
+- 입력 파일 (sources): r3_longdecode_0.8b.jsonl
+- 실패/건너뜀 기록 (failures): see results/push_failures.log
+
+wrote results/reports/r3_longdecode_0.8b.md
+[2026-10-15T01:49:14Z] report: results/reports/r3_longdecode_0.8b.md
