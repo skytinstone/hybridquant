@@ -1,5 +1,5 @@
 # Report: r3_recipe_4b
-generated 2026-10-15T04:41:17+00:00 from r3_recipe_4b.jsonl
+generated 2026-10-15T05:41:40+00:00 from r3_recipe_4b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-4B / wikitext2: fp 베이스라인 mean NLL 2.384 (시드 3개, 문서 20개/시드).
