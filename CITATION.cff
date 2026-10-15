@@ -2,11 +2,11 @@ cff-version: 1.2.0
 message: "If you use this code, please cite it as below."
 title: "hybridquant: joint KV-cache and recurrent-state quantization for hybrid linear-attention LLMs"
 authors:
-  - family-names: "Minseok"
-    given-names: ""
+  - family-names: "Shin"
+    given-names: "Minseok"
     alias: "skytinstone"
 year: 2026
-version: 0.0.1
+version: 1.0.0
 license: MIT
 repository-code: "https://github.com/skytinstone/hybridquant"
 keywords:
@@ -18,10 +18,10 @@ keywords:
   - Falcon-H1
 preferred-citation:
   type: misc
-  title: "Where Do the Bits Go? Joint KV-Cache and Recurrent-State Quantization for Hybrid Linear-Attention LLMs"
+  title: "Joint KV-Cache and Recurrent-State Quantization in Hybrid Linear-Attention LLMs"
   authors:
-    - family-names: "Minseok"
-      given-names: ""
+    - family-names: "Shin"
+      given-names: "Minseok"
       alias: "skytinstone"
   year: 2026
-  notes: "arXiv identifier: TODO"
+  url: "https://github.com/skytinstone/hybridquant"
