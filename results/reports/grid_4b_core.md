@@ -1,19 +1,21 @@
 # Report: grid_4b_core
-generated 2026-10-14T22:56:24+00:00 from grid_4b_core.jsonl
+generated 2026-10-15T07:42:00+00:00 from grid_4b_core.jsonl, r3_recipe_4b.jsonl
 
 ## [KR] 핵심 요약
 - Qwen3.5-4B / wikitext2: fp 베이스라인 mean NLL 2.384 (시드 3개, 문서 20개/시드).
 - state 4bit (KV fp): fp 대비 +0.825 nats (95% CI +0.751~+0.902).
 - KV 4bit (state fp): fp 대비 +0.001 nats (95% CI -0.003~+0.004) (구분 불가 / not distinguishable).
 - state 8bit: fp 대비 +0.004 nats (95% CI +0.001~+0.007).
-- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.090 nats (5개 셀, 범위 -0.349~+0.000).
+- KV4+S4 초가산: 실측 Δ +0.838 대 단독합 +0.826, 초과분 +0.012 nats (문서 대응 95% CI -0.000~+0.025) (구분 불가 / not distinguishable).
+- error feedback: 같은 비트의 RTN 대비 ΔNLL 변화 평균 -0.101 nats (8개 셀, 범위 -0.351~+0.000).
 
 ## [EN] Key Findings
 - Qwen3.5-4B / wikitext2: fp baseline mean NLL 2.384 (3 seeds, 20 docs per seed).
 - state 4-bit (KV fp): +0.825 nats over fp (95% CI +0.751~+0.902).
 - KV 4-bit (state fp): +0.001 nats over fp (95% CI -0.003~+0.004) (구분 불가 / not distinguishable).
 - state 8-bit: +0.004 nats over fp (95% CI +0.001~+0.007).
-- error feedback: mean change in dNLL versus RTN at the same bits -0.090 nats (5 cells, range -0.349~+0.000).
+- KV4+S4 superadditivity: measured +0.838 vs sum of single effects +0.826; excess +0.012 nats (paired 95% CI -0.000~+0.025) (구분 불가 / not distinguishable).
+- error feedback: mean change in dNLL versus RTN at the same bits -0.101 nats (8 cells, range -0.351~+0.000).
 
 ## [KR/EN] 표
 ### Qwen3.5-4B / wikitext2
@@ -26,9 +28,15 @@ generated 2026-10-14T22:56:24+00:00 from grid_4b_core.jsonl
 | fp+S6[EF] | 2.4217 | ± 0.0501 (seeds) | +0.0373 | +0.030~+0.045 | 26.21 | 3 | 20 |
 | fp+S4 | 3.2094 | ± 0.1225 (seeds) | +0.8250 | +0.751~+0.902 | 23.07 | 3 | 20 |
 | fp+S4[EF] | 2.8601 | ± 0.0686 (seeds) | +0.4757 | +0.437~+0.518 | 23.07 | 3 | 20 |
+| KV8+S8 | 2.3886 | ± 0.0504 (seeds) | +0.0042 | +0.001~+0.007 | 20.97 | 3 | 20 |
+| KV8+S8[EF] | 2.3839 | ± 0.0479 (seeds) | -0.0005 | -0.002~+0.001 * | 20.97 | 3 | 20 |
 | KV4+fp | 2.3850 | ± 0.0452 (seeds) | +0.0006 | -0.003~+0.004 * | 29.36 | 3 | 20 |
+| KV4+S8 | 2.3879 | ± 0.0451 (seeds) | +0.0035 | -0.001~+0.007 * | 16.78 | 3 | 20 |
+| KV4+S8[EF] | 2.3839 | ± 0.0478 (seeds) | -0.0005 | -0.004~+0.003 * | 16.78 | 3 | 20 |
 | KV4+S6 | 2.4756 | ± 0.0482 (seeds) | +0.0912 | +0.081~+0.101 | 13.63 | 3 | 20 |
 | KV4+S6[EF] | 2.4284 | ± 0.0494 (seeds) | +0.0439 | +0.036~+0.053 | 13.63 | 3 | 20 |
+| KV4+S4 | 3.2221 | ± 0.1255 (seeds) | +0.8377 | +0.764~+0.917 | 10.49 | 3 | 20 |
+| KV4+S4[EF] | 2.8715 | ± 0.0681 (seeds) | +0.4871 | +0.446~+0.529 | 10.49 | 3 | 20 |
 | KV2+S8 | 2.6422 | ± 0.0597 (seeds) | +0.2578 | +0.239~+0.279 | 14.68 | 3 | 20 |
 | KV2+S8[EF] | 2.6427 | ± 0.0621 (seeds) | +0.2582 | +0.240~+0.278 | 14.68 | 3 | 20 |
 
@@ -45,8 +53,8 @@ generated 2026-10-14T22:56:24+00:00 from grid_4b_core.jsonl
 - 모델 (models): Qwen/Qwen3.5-4B
 - GPU: NVIDIA A100-SXM4-40GB
 - dtype: bfloat16
-- commit: a971d8d
+- commit: 82b864f, a971d8d
 - 날짜 (dates): 2026-10-14
-- 시드 수 (seeds): 3, 문서 수/시드 (docs): [20], 행 (rows): 36
-- 입력 파일 (sources): grid_4b_core.jsonl
+- 시드 수 (seeds): 3, 문서 수/시드 (docs): [20], 행 (rows): 54
+- 입력 파일 (sources): grid_4b_core.jsonl, r3_recipe_4b.jsonl
 - 실패/건너뜀 기록 (failures): see results/push_failures.log
