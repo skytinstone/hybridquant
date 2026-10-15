@@ -231,3 +231,44 @@ Traceback (most recent call last):
            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
 AttributeError: 'DataFrame' object has no attribute 'prefill'
 [2026-10-15T00:03:54Z] report failed for r3_niah_recipe_4b
+[2026-10-15T00:03:56Z] pushed: results: round3 r3_niah_recipe_4b
+[2026-10-15T00:03:56Z] rsynced results/ to Drive
+[2026-10-15T00:03:56Z] === step r3_gsm8k_s8ef_4b: python scripts/run_gsm8k.py --config configs/r3_gsm8k_s8ef_4b.yaml --batch-size 16 --dtype bf16
+settings: {"model": "Qwen/Qwen3.5-4B", "dtype": "bf16", "kv_bits": [16, 8, 4, 2], "state_bits": [16, 8, 4], "kv_group": 128, "state_group": 128, "state_symmetric": false, "state_stochastic": false, "state_error_feedback": [false], "cells": [{"kv_bits": 16, "state_bits": 8, "error_feedback": true}], "seeds": [0], "n_docs": 8, "prefill": 256, "decode": 256, "step": 1, "batch_size": 16, "dataset": "gsm8k", "out": "results/r3_gsm8k_s8ef_4b.jsonl", "n_problems": 200, "subset_seed": 0, "subset_file": "results/gsm8k_subset200.json", "thinking": true, "max_new_tokens": 4096, "temperature": 1.0, "top_p": 0.95, "top_k": 20, "min_p": 0.0}
+200 problems from openai/gsm8k test (subset file results/gsm8k_subset200.json)
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:53,  3.75it/s]Loading weights:   6%|▋         | 27/426 [00:00<00:04, 90.65it/s]Loading weights:  11%|█         | 47/426 [00:00<00:03, 123.66it/s]Loading weights:  18%|█▊        | 78/426 [00:00<00:01, 174.96it/s]Loading weights:  23%|██▎       | 99/426 [00:00<00:01, 175.57it/s]Loading weights:  31%|███       | 130/426 [00:00<00:01, 214.24it/s]Loading weights:  36%|███▌      | 154/426 [00:00<00:01, 203.11it/s]Loading weights:  43%|████▎     | 184/426 [00:01<00:01, 228.55it/s]Loading weights:  49%|████▉     | 209/426 [00:01<00:01, 215.06it/s]Loading weights:  56%|█████▌    | 238/426 [00:01<00:00, 227.98it/s]Loading weights:  62%|██████▏   | 262/426 [00:01<00:00, 218.52it/s]Loading weights:  68%|██████▊   | 290/426 [00:01<00:00, 234.54it/s]Loading weights:  74%|███████▍  | 315/426 [00:01<00:00, 218.82it/s]Loading weights:  81%|████████  | 344/426 [00:01<00:00, 230.65it/s]Loading weights:  86%|████████▋ | 368/426 [00:01<00:00, 220.43it/s]Loading weights:  93%|█████████▎| 395/426 [00:01<00:00, 232.91it/s]Loading weights:  98%|█████████▊| 419/426 [00:02<00:00, 216.62it/s]Loading weights: 100%|██████████| 426/426 [00:02<00:00, 199.98it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+seed 0 Kfp_Vfp_Sint8g128ef: 200 to do, 0 done
+  problems 16/200 (307s/batch)
+  problems 32/200 (301s/batch)
+  problems 48/200 (301s/batch)
+  problems 64/200 (301s/batch)
+  problems 80/200 (301s/batch)
+  problems 96/200 (301s/batch)
+  problems 112/200 (301s/batch)
+  problems 128/200 (300s/batch)
+  problems 144/200 (299s/batch)
+  problems 160/200 (300s/batch)
+  problems 176/200 (300s/batch)
+  problems 192/200 (300s/batch)
+  problems 200/200 (297s/batch)
+seed 0 Kfp_Vfp_Sint8g128ef                acc=0.600 on 200 new problems
+done: results/r3_gsm8k_s8ef_4b.jsonl
+[2026-10-15T01:09:24Z] step r3_gsm8k_s8ef_4b OK
+Traceback (most recent call last):
+  File "/content/hybridquant/analysis/report.py", line 262, in <module>
+    main()
+    ~~~~^^
+  File "/content/hybridquant/analysis/report.py", line 256, in main
+    text = build_report(args.stage, args.inputs, out)
+  File "/content/hybridquant/analysis/report.py", line 180, in build_report
+    df = borrow_fp_rows(df)
+  File "/content/hybridquant/analysis/common.py", line 82, in borrow_fp_rows
+    need.add((model, dataset, int(g.prefill.iloc[0]), int(g.decode.iloc[0]), int(g.n_docs.iloc[0])))
+                                  ^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/pandas/core/generic.py", line 6299, in __getattr__
+    return object.__getattribute__(self, name)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'prefill'
+[2026-10-15T01:09:26Z] report failed for r3_gsm8k_s8ef_4b

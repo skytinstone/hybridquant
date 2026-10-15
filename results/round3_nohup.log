@@ -13,3 +13,8 @@
 [2026-10-14T23:55:39Z] === step r3_niah_recipe_4b: python scripts/run_niah.py --config configs/r3_niah_recipe_4b.yaml --dtype bf16
 [2026-10-15T00:03:53Z] step r3_niah_recipe_4b OK
 [2026-10-15T00:03:54Z] report failed for r3_niah_recipe_4b
+[2026-10-15T00:03:56Z] pushed: results: round3 r3_niah_recipe_4b
+[2026-10-15T00:03:56Z] rsynced results/ to Drive
+[2026-10-15T00:03:56Z] === step r3_gsm8k_s8ef_4b: python scripts/run_gsm8k.py --config configs/r3_gsm8k_s8ef_4b.yaml --batch-size 16 --dtype bf16
+[2026-10-15T01:09:24Z] step r3_gsm8k_s8ef_4b OK
+[2026-10-15T01:09:26Z] report failed for r3_gsm8k_s8ef_4b
