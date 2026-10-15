@@ -11,8 +11,14 @@
 | r2_c4_0.8b | 0.8B | 0.48 | |
 | r2_niah_0.8b | 0.8B | 0.19 | 1,100 prompts |
 | r2_scale_2b | 2B | 0.48 | |
-| r2_gsm8k_4b | 4B | 4.25 + resumed | 432 of 2,000 generations in the first launch (batch 8); resumed with batch 16 [PENDING: final hours] |
+| r2_gsm8k_4b | 4B | 13.2 | 4.25 h for the first 432 generations at batch 8, 8.95 h for the remaining 1,568 at batch 16 |
 | r2_niah_4b | 4B | 0.36 | 1,100 prompts |
 | r2_scale_9b | 9B | 0.46 | batch 10 |
-| r2_falcon_1.5b | Falcon-H1-1.5B | 0.96 | round-2 run invalid (batched-decode bug); rerun in round 3 [PENDING] |
-| total (valid NLL/NIAH stages) | | about 5.4 | excluding gsm8k and the invalid Falcon run |
+| r2_falcon_1.5b | Falcon-H1-1.5B | 0.68 | round-3 rerun with both Falcon fixes; two earlier runs (0.96 h, 0.63 h) invalid and excluded |
+| r3_recipe_4b | 4B | 0.29 | (KV4,S8), (KV8,S8), (KV4,S4), RTN and EF |
+| r3_niah_recipe_4b | 4B | 0.14 | 400 prompts |
+| r3_gsm8k_s8ef_4b | 4B | 1.09 | 200 generations, batch 16 |
+| layer_sweep_4b | 4B | 0.12 | 1 seed x 8 documents |
+| r3_longdecode_0.8b | 0.8B | 0.54 | decode 1024 |
+| r3_longdecode_4b | 4B | 1.53 | decode 1024 |
+| total (valid runs) | | about 22.6 | rounds 1 to 3; invalid Falcon runs (1.6 h) excluded |

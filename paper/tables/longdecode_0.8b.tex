@@ -1,0 +1,14 @@
+\begin{tabular}{rrrllr}
+\toprule
+$b_{kv}$ & $b_s$ & Mem.\ (MB, \%) & $\Delta$NLL RTN [95\% CI] & $\Delta$NLL EF [95\% CI] & $n$ \\
+\midrule
+bf16 & bf16 & 15.7 (100) & $+0.000$ [+0.000, +0.000] & n/a & 3$\times$10 \\
+bf16 & 8 & 11.0 (70) & $+0.051$ [+0.040, +0.062] & $+0.004$ [+0.002, +0.005] & 3$\times$10 \\
+bf16 & 6 & 9.8 (62) & $+0.253$ [+0.229, +0.276] & $+0.053$ [+0.046, +0.060] & 3$\times$10 \\
+bf16 & 4 & 8.7 (55) & $+1.488$ [+1.416, +1.566] & $+0.613$ [+0.579, +0.647] & 3$\times$10 \\
+4 & bf16 & 11.0 (70) & $+0.027$ [+0.022, +0.031] & n/a & 3$\times$10 \\
+4 & 6 & 5.1 (32) & $+0.271$ [+0.249, +0.293] & $+0.080$ [+0.071, +0.089] & 3$\times$10 \\
+4 & 4 & 3.9 (25) & $+1.548$ [+1.476, +1.624] & $+0.652$ [+0.619, +0.683] & 3$\times$10 \\
+\bottomrule
+\end{tabular}
+% Qwen3.5-0.8B, WikiText-2, prefill 256 + decode 1024, 3 seeds x 10 documents. Memory = bits x elements / 8 at T = 512 without scale/zero overhead; n = seeds x documents per cell.

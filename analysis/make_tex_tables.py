@@ -26,6 +26,8 @@ GRIDS = [
     ("grid_4b_core", ["grid_4b_core.jsonl", "r3_recipe_4b.jsonl"], "Qwen3.5-4B, WikiText-2: core and recipe cells."),
     ("grid_9b", ["r2_scale_9b.jsonl"], "Qwen3.5-9B, WikiText-2: core cells."),
     ("grid_falcon_1.5b", ["r2_falcon_1.5b.jsonl"], "Falcon-H1-1.5B-Instruct (Mamba-2), WikiText-2: core cells (round-3 rerun)."),
+    ("longdecode_0.8b", ["r3_longdecode_0.8b.jsonl"], "Qwen3.5-0.8B, WikiText-2, prefill 256 + decode 1024, 3 seeds x 10 documents."),
+    ("longdecode_4b", ["r3_longdecode_4b.jsonl"], "Qwen3.5-4B, WikiText-2, prefill 256 + decode 1024, 3 seeds x 10 documents."),
 ]
 
 
